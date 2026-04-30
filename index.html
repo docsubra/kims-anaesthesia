@@ -1197,7 +1197,7 @@ table.data-table {
     <div class="setup-banner">
       <b>⚠ Google Sheets connection not configured.</b><br>
       The app is running in local-only mode. Data will save to this browser only and will not be shared with other doctors.<br><br>
-      Open the HTML file in a text editor, find the line <code>const API_URL = 'https://script.google.com/macros/s/AKfycbwB2FKaFC5CUazZ3gTSaFIL5uIb81qfax58_UXNgvvIoa8GDswWoKj_cUm1Cw-_ec80/exec';</code> near the top of the script section, and paste your Apps Script Web App URL between the quotes. Then refresh this page.
+      Open the HTML file in a text editor, find the line <code>const API_URL = '';</code> near the top of the script section, and paste your Apps Script Web App URL between the quotes. Then refresh this page.
     </div>
   </div>
 
@@ -1264,12 +1264,24 @@ table.data-table {
                   <option>Nephrology</option>
                   <option>Dermatology</option>
                   <option>Psychiatry (ECT)</option>
+                  <option>Critical Care</option>
                 </optgroup>
                 <option value="Other">Other (specify)</option>
               </select>
               <input type="text" class="input hidden" id="f_specialty_other"
                      placeholder="Type specialty name..." maxlength="80"
                      style="margin-top: 8px;" />
+            </div>
+
+            <!-- v3: Surgical Approach (shows only when surgical specialty selected) -->
+            <div class="field hidden" id="surgicalApproachField">
+              <label class="field-label">Surgical Approach <span class="opt">(optional)</span></label>
+              <div class="pill-grid" data-group="approach">
+                <button type="button" class="pill small" data-val="Open">Open</button>
+                <button type="button" class="pill small" data-val="Laparoscopic">Laparoscopic</button>
+                <button type="button" class="pill small" data-val="Robotic">Robotic</button>
+                <button type="button" class="pill small" data-val="Endoscopic">Endoscopic</button>
+              </div>
             </div>
 
             <div class="field">
@@ -1291,7 +1303,9 @@ table.data-table {
                   <option>Bronchoscopy</option><option>Endoscopy</option>
                 </optgroup>
                 <optgroup label="Other Clinical Areas">
+                  <option>Preoperative Bay / PACU</option>
                   <option>Labour Room</option><option>ER</option><option>Ward</option>
+                  <option>ICU</option>
                   <option>MICU</option><option>SICU</option><option>CCU</option>
                   <option>PICU</option><option>NICU</option>
                 </optgroup>
@@ -1301,6 +1315,23 @@ table.data-table {
             <div class="field">
               <label class="field-label">Procedure <span class="opt">(optional)</span></label>
               <input type="text" class="input" id="f_procedure" placeholder="e.g. Lap cholecystectomy" maxlength="120" />
+            </div>
+
+            <!-- v3: Patient came from -->
+            <div class="field">
+              <label class="field-label">Patient came from <span class="opt">(optional)</span></label>
+              <div class="pill-grid" data-group="patientFrom">
+                <button type="button" class="pill small" data-val="Ward">Ward</button>
+                <button type="button" class="pill small" data-val="ICU">ICU</button>
+              </div>
+            </div>
+
+            <!-- v3: Second Anaesthetist -->
+            <div class="field">
+              <label class="field-label">Second Anaesthetist <span class="opt">(optional)</span></label>
+              <select class="input" id="f_second_anaesth">
+                <option value="">— None —</option>
+              </select>
             </div>
 
             <div class="field">
@@ -1329,6 +1360,7 @@ table.data-table {
                 <button type="button" class="pill" data-val="Spinal">Spinal</button>
                 <button type="button" class="pill" data-val="Epidural">Epidural</button>
                 <button type="button" class="pill" data-val="CSE">CSE</button>
+                <button type="button" class="pill" data-val="Block">Block</button>
                 <button type="button" class="pill" data-val="Sedation/MAC">Sedation/MAC</button>
                 <button type="button" class="pill" data-val="Local+Monitoring">Local+Monitoring</button>
                 <button type="button" class="pill" data-val="Awake">Awake</button>
@@ -1345,13 +1377,82 @@ table.data-table {
               </div>
             </div>
 
-            <!-- Sedation depth (shows only when Sedation/MAC selected) -->
+            <!-- v3: Spinal details (shows only when Spinal or CSE) -->
+            <div class="field hidden" id="spinalDetailsField">
+              <div style="background:#F5FBFA;border:1.5px solid var(--teal-light);border-radius:var(--radius-sm);padding:12px;">
+                <div style="font-size:12px;font-weight:600;color:var(--teal-dark);margin-bottom:10px;">Spinal details <span style="color:var(--text-soft);font-weight:400;">(optional)</span></div>
+                <div class="row-2" style="gap:10px;">
+                  <div>
+                    <label class="field-label" style="font-size:12px;">Number of attempts</label>
+                    <input type="number" class="input" id="f_spinal_attempts" min="1" max="20" placeholder="1" style="padding:8px;">
+                  </div>
+                  <div>
+                    <label class="field-label" style="font-size:12px;">Number of spaces tried</label>
+                    <input type="number" class="input" id="f_spinal_spaces" min="1" max="10" placeholder="1" style="padding:8px;">
+                  </div>
+                </div>
+                <div style="margin-top:10px;">
+                  <label class="field-label" style="font-size:12px;">Spinal needle type</label>
+                  <div class="pill-grid" data-group="spinalNeedle">
+                    <button type="button" class="pill small" data-val="Whitacre (pencil point)">Whitacre (pencil point)</button>
+                    <button type="button" class="pill small" data-val="Quincke (cutting)">Quincke (cutting)</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- v3: Epidural details (shows only when Epidural or CSE) -->
+            <div class="field hidden" id="epiduralDetailsField">
+              <div style="background:#F5FBFA;border:1.5px solid var(--teal-light);border-radius:var(--radius-sm);padding:12px;">
+                <div style="font-size:12px;font-weight:600;color:var(--teal-dark);margin-bottom:10px;">Epidural details <span style="color:var(--text-soft);font-weight:400;">(optional)</span></div>
+                <div>
+                  <label class="field-label" style="font-size:12px;">Level placed</label>
+                  <div class="pill-grid" data-group="epiduralLevel">
+                    <button type="button" class="pill small" data-val="High thoracic">High thoracic</button>
+                    <button type="button" class="pill small" data-val="Mid thoracic">Mid thoracic</button>
+                    <button type="button" class="pill small" data-val="Low thoracic">Low thoracic</button>
+                    <button type="button" class="pill small" data-val="Lumbar">Lumbar</button>
+                  </div>
+                </div>
+                <div class="row-2" style="margin-top:10px;gap:10px;">
+                  <div>
+                    <label class="field-label" style="font-size:12px;">Number of attempts</label>
+                    <input type="number" class="input" id="f_epidural_attempts" min="1" max="20" placeholder="1" style="padding:8px;">
+                  </div>
+                  <div>
+                    <label class="field-label" style="font-size:12px;">Loss of resistance</label>
+                    <div class="pill-grid" data-group="epiduralLor">
+                      <button type="button" class="pill small" data-val="Air">Air</button>
+                      <button type="button" class="pill small" data-val="Saline">Saline</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- v3: CSE technique (shows only when CSE selected) -->
+            <div class="field hidden" id="cseDetailsField">
+              <label class="field-label">CSE technique <span class="opt">(optional)</span></label>
+              <div class="pill-grid" data-group="cseTechnique">
+                <button type="button" class="pill small" data-val="Needle-through-needle">Needle-through-needle</button>
+                <button type="button" class="pill small" data-val="Separate (two-space)">Separate (two-space)</button>
+              </div>
+            </div>
+
+            <!-- v3: MAC restructured (shows only when Sedation/MAC selected) -->
             <div class="field hidden" id="sedationDepthField">
-              <label class="field-label">Sedation depth <span class="opt">(optional)</span></label>
-              <div class="pill-grid" data-group="seddepth">
-                <button type="button" class="pill small" data-val="Light">Light</button>
-                <button type="button" class="pill small" data-val="Deep">Deep</button>
-                <button type="button" class="pill small" data-val="Procedural">Procedural</button>
+              <label class="field-label">Sedation/MAC type <span class="opt">(optional)</span></label>
+              <div class="pill-grid" data-group="macType">
+                <button type="button" class="pill small" data-val="Monitoring only">Monitoring only</button>
+                <button type="button" class="pill small" data-val="Sedation given">Sedation given</button>
+              </div>
+              <div class="hidden" id="macSedationLevelField" style="margin-top:10px;">
+                <label class="field-label" style="font-size:12px;">Sedation level</label>
+                <div class="pill-grid" data-group="macLevel">
+                  <button type="button" class="pill small" data-val="Mild">Mild</button>
+                  <button type="button" class="pill small" data-val="Moderate">Moderate</button>
+                  <button type="button" class="pill small" data-val="Deep">Deep</button>
+                </div>
               </div>
             </div>
 
@@ -1428,6 +1529,12 @@ table.data-table {
               <div class="chk-grid" id="grp-olv"></div>
             </div>
 
+            <!-- v3: Special Analgesia Techniques -->
+            <div class="chk-group">
+              <div class="chk-group-title">Special Analgesia Techniques</div>
+              <div class="chk-grid" id="grp-special-analgesia"></div>
+            </div>
+
             <div class="chk-group">
               <div class="chk-group-title">Regional / Blocks</div>
               <div style="font-size:11px;color:var(--text-muted);font-weight:600;margin:8px 0 6px;">Upper Limb</div>
@@ -1438,8 +1545,8 @@ table.data-table {
               <div class="chk-grid" id="grp-blocks-trunk"></div>
               <div style="font-size:11px;color:var(--text-muted);font-weight:600;margin:12px 0 6px;">Head / Neck</div>
               <div class="chk-grid" id="grp-blocks-hn"></div>
-              <div style="font-size:11px;color:var(--text-muted);font-weight:600;margin:12px 0 6px;">Ophthalmic</div>
-              <div class="chk-grid" id="grp-blocks-eye"></div>
+              <!-- v3: Ophthalmic blocks group hidden (kept structurally for fallback) -->
+              <div class="chk-grid hidden" id="grp-blocks-eye"></div>
               <div style="font-size:11px;color:var(--text-muted);font-weight:600;margin:12px 0 6px;">Other Blocks</div>
               <div class="chk-grid" id="grp-blocks-other"></div>
 
@@ -1453,9 +1560,21 @@ table.data-table {
               </div>
             </div>
 
+            <!-- v3: Continuous Catheters section -->
             <div class="chk-group">
-              <div class="chk-group-title">Invasive Lines &amp; Monitoring</div>
+              <div class="chk-group-title">Continuous Catheter Placed</div>
+              <div class="chk-grid" id="grp-catheters"></div>
+            </div>
+
+            <!-- v3: Lines split from Monitoring -->
+            <div class="chk-group">
+              <div class="chk-group-title">Invasive Lines</div>
               <div class="chk-grid" id="grp-lines"></div>
+            </div>
+
+            <div class="chk-group">
+              <div class="chk-group-title">Monitoring</div>
+              <div class="chk-grid" id="grp-monitoring"></div>
             </div>
 
             <div class="chk-group">
@@ -1602,6 +1721,11 @@ table.data-table {
       <div class="chart-card"><h3>⑬ Local Anaesthetic Drugs Used</h3><div class="chart-wrap"><canvas id="ch13"></canvas></div></div>
       <div class="chart-card"><h3>⑭ Single-shot vs Continuous Blocks</h3><div class="chart-wrap"><canvas id="ch14"></canvas></div></div>
       <div class="chart-card"><h3>⑮ GA Technique Split (Volatile / TIVA)</h3><div class="chart-wrap"><canvas id="ch15"></canvas></div></div>
+      <div class="chart-card"><h3>⑯ Surgical Approach (Open / Lap / Robotic / Endo)</h3><div class="chart-wrap"><canvas id="ch16"></canvas></div></div>
+      <div class="chart-card"><h3>⑰ Continuous Catheters Placed</h3><div class="chart-wrap"><canvas id="ch17"></canvas></div></div>
+      <div class="chart-card"><h3>⑱ Spinal Needle Type</h3><div class="chart-wrap"><canvas id="ch18"></canvas></div></div>
+      <div class="chart-card"><h3>⑲ Catheters per Month</h3><div class="chart-wrap"><canvas id="ch19"></canvas></div></div>
+      <div class="chart-card"><h3>⑳ Patient Origin (Ward / ICU)</h3><div class="chart-wrap"><canvas id="ch20"></canvas></div></div>
     </div>
 
     <div class="table-card">
@@ -1668,23 +1792,36 @@ const DOCTORS = [
   { name: 'Dr Arbina Shaikh' }
 ];
 
-const AIRWAY = ['Video Laryngoscopy','Fibreoptic Bronchoscope (awake)','Fibreoptic Bronchoscope (asleep)','Difficult Airway (unanticipated)','Surgical Airway','Rapid Sequence Induction (RSI)'];
+const AIRWAY = ['Video Laryngoscopy','McCoy Laryngoscope blade','Fibreoptic Bronchoscope (awake)','Fibreoptic Bronchoscope (asleep)','Difficult Airway (unanticipated)','Surgical Airway','Rapid Sequence Induction (RSI)'];
 const OLV = ['Double-Lumen ETT (left)','Double-Lumen ETT (right)','Bronchial Blocker','One-lung ventilation (other)'];
-const BLOCKS_UL = ['Interscalene','Supraclavicular','Infraclavicular','Axillary','Wrist/peripheral nerve'];
-const BLOCKS_LL = ['Femoral/Adductor canal','Sciatic/Popliteal','Fascia Iliaca','PENG','Ankle block'];
-const BLOCKS_TRUNK = ['TAP block','ESPB','PECS I/II','Paravertebral','Quadratus Lumborum (QL)','Rectus Sheath'];
+const BLOCKS_UL = ['Interscalene','Supraclavicular','Costoclavicular','Infraclavicular','Axillary','Peripheral nerve block (forearm/hand)'];
+const BLOCKS_LL = ['Femoral/Adductor canal','Sciatic/Popliteal','Fascia Iliaca','PENG','Lumbar plexus','Sacral plexus','iPACK','Ankle block'];
+const BLOCKS_TRUNK = ['TAP block','ESPB','PECS I/II','Pecto-intercostal','External oblique intercostal','Paravertebral','Quadratus Lumborum (QL)','Rectus Sheath'];
 const BLOCKS_HN = ['Scalp block','Cervical plexus'];
-const BLOCKS_EYE = ['Peribulbar','Retrobulbar',"Sub-Tenon's"];
-const BLOCKS_OTHER = ['Continuous catheter placed','BIER block','Wound infiltration (surgeon)'];
-const LINES = ['Arterial line — Radial','Arterial line — Femoral/other','CVC — Internal Jugular','CVC — Subclavian','CVC — Femoral','PICC','Introducer/Cordis sheath','Pulmonary Artery Catheter (PAC/Swan-Ganz)','PiCCO / LiDCO / FloTrac','Intraoperative TOE/TEE','BIS/EEG monitoring','SSEP/MEP neuromonitoring','Pacing wire','Intraosseous (IO) access'];
+const BLOCKS_EYE = []; // v3: Ophthalmic blocks removed
+const BLOCKS_OTHER = ['BIER block','Wound infiltration (surgeon)'];
+const LINES = ['Arterial line — Radial','Arterial line — Femoral/other','CVC — Internal Jugular','CVC — Subclavian','CVC — Femoral','PICC','Introducer/Cordis sheath','Pulmonary Artery Catheter (PAC/Swan-Ganz)','Pacing wire','Intraosseous (IO) access'];
+const MONITORING = ['Intraoperative TOE/TEE','BIS','Entropy','EEG monitoring','SSEP/MEP neuromonitoring','NIRS / Cerebral oximetry','Continuous Cardiac Output (PiCCO/LiDCO/FloTrac)','Train-of-Four (TOF)'];
 const OTHER_SPECIAL = ['Cell salvage (intraop)','Deliberate hypotension','Awake craniotomy','Total IV Anaesthesia (TIVA)','High-frequency jet ventilation','Prone positioning (planned)'];
-const COMPLICATIONS = ['Hypotension','Hypertension','Bradycardia','Arrhythmia','Desaturation','Bronchospasm','Laryngospasm','Difficult airway','Failed intubation','High/total spinal','Failed block','LAST (local anaesthetic toxicity)','PONV','Awareness under GA','Anaphylaxis','Haemorrhage/coagulopathy','Cardiac arrest','Death on table','Line complication (pneumothorax/haematoma/arterial puncture)','Nerve injury (suspected)'];
+const COMPLICATIONS = ['Hypotension','Hypertension','Bradycardia','Arrhythmia','Desaturation','Bronchospasm','Laryngospasm','Unanticipated difficult intubation','Failed intubation','Failed spinal','Failed epidural','Accidental dural puncture','High/total spinal','Failed block','Change of anaesthesia plan','LAST (local anaesthetic toxicity)','Severe PONV','Awareness under GA','Anaphylaxis','Haemorrhage/coagulopathy','Cardiac arrest','Death on table','Line complication (pneumothorax/haematoma/arterial puncture)','Nerve injury (suspected)'];
 
 // NEW v2 — block detail pick lists
 const LA_DRUGS = ['Ropivacaine','Bupivacaine (plain)','Bupivacaine (heavy)'];
 const ADJUVANTS = ['Dexmedetomidine','Dexamethasone','Fentanyl','Morphine'];
 const SIDES = ['L','R','Bilateral'];
 const TIMINGS = ['Pre-op','Intra-op','Post-op'];
+
+// NEW v3 — additional reference lists
+const SPECIAL_ANALGESIA = ['Intrathecal morphine','Epidural morphine','PCA (Patient-Controlled Analgesia)','Fascial plane block','Multimodal IV analgesia'];
+const CATHETERS = ['Peripheral nerve block catheter','Fascial plane block catheter','Epidural catheter','Spinal catheter'];
+const SURGICAL_APPROACHES = ['Open','Laparoscopic','Robotic','Endoscopic'];
+const SPINAL_NEEDLE_TYPES = ['Whitacre (pencil point)','Quincke (cutting)'];
+const EPIDURAL_LEVELS = ['High thoracic','Mid thoracic','Low thoracic','Lumbar'];
+const EPIDURAL_LOR = ['Air','Saline'];
+const CSE_TECHNIQUES = ['Needle-through-needle','Separate (two-space)'];
+const MAC_TYPES = ['Monitoring only','Sedation given'];
+const MAC_SEDATION_LEVELS = ['Mild','Moderate','Deep'];
+const SURGICAL_SPECIALTIES = ['General Surgery','Orthopaedics','Gynaecology','Obstetrics','Urology','ENT','Ophthalmology','Neurosurgery','Cardiothoracic','Vascular Surgery','Plastics/Burns','Paediatric Surgery','Dental/Maxillofacial','Trauma/Emergency','Onco Surgery'];
 
 const LOCAL_KEY = 'kims_anaesth_local';
 const PENDING_KEY = 'kims_anaesth_pending'; // cases saved locally while offline
@@ -2064,30 +2201,97 @@ function initForm() {
 
   buildCheckGroup('grp-airway', AIRWAY, 'airway');
   buildCheckGroup('grp-olv', OLV, 'olv');
-  // NEW v2: blocks use expandable detail panels
+  // v3: special analgesia checklist
+  buildCheckGroup('grp-special-analgesia', SPECIAL_ANALGESIA, 'specialAnalgesia');
+  // v2: blocks use expandable detail panels
   buildBlockGroup('grp-blocks-ul', BLOCKS_UL);
   buildBlockGroup('grp-blocks-ll', BLOCKS_LL);
   buildBlockGroup('grp-blocks-trunk', BLOCKS_TRUNK);
   buildBlockGroup('grp-blocks-hn', BLOCKS_HN);
-  buildBlockGroup('grp-blocks-eye', BLOCKS_EYE);
+  buildBlockGroup('grp-blocks-eye', BLOCKS_EYE); // empty in v3
   buildBlockGroup('grp-blocks-other', BLOCKS_OTHER);
   initBlockInteractions();
 
+  // v3: catheters - simple checkbox list
+  buildCheckGroup('grp-catheters', CATHETERS, 'catheters');
+  // v3: lines and monitoring split into separate groups
   buildCheckGroup('grp-lines', LINES, 'lines');
+  buildCheckGroup('grp-monitoring', MONITORING, 'monitoring');
   buildCheckGroup('grp-other', OTHER_SPECIAL, 'other');
   buildCheckGroup('grp-complications', COMPLICATIONS, 'comp');
 
-  // Show/hide GA technique sub-field and Sedation depth sub-field based on anaesthesia type
+  // v3: populate Second Anaesthetist dropdown
+  const secondSel = document.getElementById('f_second_anaesth');
+  if (secondSel) {
+    DOCTORS.forEach(d => {
+      const o = document.createElement('option');
+      o.value = d.name;
+      o.textContent = d.name;
+      secondSel.appendChild(o);
+    });
+  }
+
+  // Show/hide anaesthesia-type-specific sub-fields
   const atypeGrp = document.querySelector('[data-group="atype"]');
   atypeGrp.addEventListener('click', () => {
-    // Wait a tick for the pill .on class to be updated by the generic toggle handler
     setTimeout(() => {
       const val = getGroupValue('atype');
       document.getElementById('gaTechniqueField').classList.toggle('hidden', val !== 'GA');
+      // v3: spinal details visible for Spinal or CSE
+      document.getElementById('spinalDetailsField').classList.toggle('hidden', val !== 'Spinal' && val !== 'CSE');
+      // v3: epidural details visible for Epidural or CSE
+      document.getElementById('epiduralDetailsField').classList.toggle('hidden', val !== 'Epidural' && val !== 'CSE');
+      // v3: CSE technique only when CSE
+      document.getElementById('cseDetailsField').classList.toggle('hidden', val !== 'CSE');
+      // v3: MAC restructured
       document.getElementById('sedationDepthField').classList.toggle('hidden', val !== 'Sedation/MAC');
       if (val !== 'GA') clearGroup('gatech');
-      if (val !== 'Sedation/MAC') clearGroup('seddepth');
+      if (val !== 'Spinal' && val !== 'CSE') {
+        clearGroup('spinalNeedle');
+        document.getElementById('f_spinal_attempts').value = '';
+        document.getElementById('f_spinal_spaces').value = '';
+      }
+      if (val !== 'Epidural' && val !== 'CSE') {
+        clearGroup('epiduralLevel');
+        clearGroup('epiduralLor');
+        document.getElementById('f_epidural_attempts').value = '';
+      }
+      if (val !== 'CSE') clearGroup('cseTechnique');
+      if (val !== 'Sedation/MAC') {
+        clearGroup('macType');
+        clearGroup('macLevel');
+        document.getElementById('macSedationLevelField').classList.add('hidden');
+      }
     }, 0);
+  });
+
+  // v3: when MAC type changes — show sedation level only if "Sedation given"
+  const macTypeGrp = document.querySelector('[data-group="macType"]');
+  if (macTypeGrp) {
+    macTypeGrp.addEventListener('click', () => {
+      setTimeout(() => {
+        const macType = getGroupValue('macType');
+        const showLevel = macType === 'Sedation given';
+        document.getElementById('macSedationLevelField').classList.toggle('hidden', !showLevel);
+        if (!showLevel) clearGroup('macLevel');
+      }, 0);
+    });
+  }
+
+  // v3: Show/hide Surgical Approach based on specialty
+  document.getElementById('f_specialty').addEventListener('change', (e) => {
+    const otherField = document.getElementById('f_specialty_other');
+    if (e.target.value === 'Other') {
+      otherField.classList.remove('hidden');
+      otherField.focus();
+    } else {
+      otherField.classList.add('hidden');
+      otherField.value = '';
+    }
+    // v3: surgical approach only for surgical specialties
+    const isSurgical = SURGICAL_SPECIALTIES.includes(e.target.value);
+    document.getElementById('surgicalApproachField').classList.toggle('hidden', !isSurgical);
+    if (!isSurgical) clearGroup('approach');
   });
 
   document.querySelectorAll('[data-cat="comp"]').forEach(cb => {
@@ -2111,18 +2315,6 @@ function initForm() {
 
   document.getElementById('f_notes').addEventListener('input', e => {
     document.getElementById('charCount').textContent = e.target.value.length;
-  });
-
-  // v2: specialty "Other" shows text field
-  document.getElementById('f_specialty').addEventListener('change', (e) => {
-    const otherField = document.getElementById('f_specialty_other');
-    if (e.target.value === 'Other') {
-      otherField.classList.remove('hidden');
-      otherField.focus();
-    } else {
-      otherField.classList.add('hidden');
-      otherField.value = '';
-    }
   });
 }
 
@@ -2206,15 +2398,70 @@ async function submitCase(e) {
   const blockDetails = getBlockDetails();
   const blockGuidance = blocks.length ? getGroupValue('bguidance') : null;
   const lines = Array.from(document.querySelectorAll('[data-cat="lines"]:checked')).map(c => c.value);
+  // v3: monitoring split out separately
+  const monitoring = Array.from(document.querySelectorAll('[data-cat="monitoring"]:checked')).map(c => c.value);
   const otherSpecial = Array.from(document.querySelectorAll('[data-cat="other"]:checked')).map(c => c.value);
   const complications = Array.from(document.querySelectorAll('[data-cat="comp"]:checked')).map(c => c.value);
   const compOther = document.getElementById('f_comp_other').value.trim();
   if (compOther) complications.push('Other: ' + compOther);
   const notes = document.getElementById('f_notes').value.trim();
 
-  // NEW v2: GA technique + sedation depth
+  // NEW v2: GA technique + sedation depth (sedationDepth deprecated in v3 but field kept for compatibility)
   const gaTechnique = atype === 'GA' ? getGroupValue('gatech') : null;
-  const sedationDepth = atype === 'Sedation/MAC' ? getGroupValue('seddepth') : null;
+
+  // NEW v3 fields
+  const surgicalApproach = SURGICAL_SPECIALTIES.includes(specialty) ? getGroupValue('approach') : null;
+  const secondAnaesthetist = document.getElementById('f_second_anaesth').value || null;
+  const patientFrom = getGroupValue('patientFrom');
+  const specialAnalgesia = Array.from(document.querySelectorAll('[data-cat="specialAnalgesia"]:checked')).map(c => c.value);
+  const catheters = Array.from(document.querySelectorAll('[data-cat="catheters"]:checked')).map(c => c.value);
+
+  // v3: build sub-detail JSONs (only when relevant type)
+  let spinalDetails = null;
+  if (atype === 'Spinal' || atype === 'CSE') {
+    const sa = parseInt(document.getElementById('f_spinal_attempts').value, 10);
+    const ss = parseInt(document.getElementById('f_spinal_spaces').value, 10);
+    const sn = getGroupValue('spinalNeedle');
+    if (sa || ss || sn) {
+      spinalDetails = {
+        attempts: isNaN(sa) ? null : sa,
+        spaces: isNaN(ss) ? null : ss,
+        needleType: sn || null
+      };
+    }
+  }
+
+  let epiduralDetails = null;
+  if (atype === 'Epidural' || atype === 'CSE') {
+    const ea = parseInt(document.getElementById('f_epidural_attempts').value, 10);
+    const el = getGroupValue('epiduralLevel');
+    const elor = getGroupValue('epiduralLor');
+    if (ea || el || elor) {
+      epiduralDetails = {
+        level: el || null,
+        attempts: isNaN(ea) ? null : ea,
+        lor: elor || null
+      };
+    }
+  }
+
+  let cseDetails = null;
+  if (atype === 'CSE') {
+    const ct = getGroupValue('cseTechnique');
+    if (ct) cseDetails = { technique: ct };
+  }
+
+  let macDetails = null;
+  let sedationDepth = null;
+  if (atype === 'Sedation/MAC') {
+    const macType = getGroupValue('macType');
+    const macLevel = macType === 'Sedation given' ? getGroupValue('macLevel') : null;
+    if (macType) {
+      macDetails = { type: macType, level: macLevel };
+      // For backward compat, also set sedationDepth
+      sedationDepth = macLevel || (macType === 'Monitoring only' ? 'None' : null);
+    }
+  }
 
   const id = 'c_' + Date.now() + '_' + Math.random().toString(36).slice(2,8);
   const record = {
@@ -2225,6 +2472,10 @@ async function submitCase(e) {
     lines, otherSpecial, complications, notes,
     // v2 fields
     gaTechnique, sedationDepth, blockDetails,
+    // v3 fields
+    surgicalApproach, secondAnaesthetist, patientFrom,
+    spinalDetails, epiduralDetails, cseDetails, macDetails,
+    specialAnalgesia, catheters, monitoring,
     createdAt: new Date().toISOString()
   };
 
@@ -2269,16 +2520,30 @@ function resetForm() {
   document.getElementById('caseForm').reset();
   document.getElementById('f_date').value = new Date().toISOString().slice(0,10);
   document.getElementById('f_doctor').value = currentUser.name;
-  // v2: include gatech and seddepth in groups to clear
-  ['ee','atype','asa','sex','gatech','seddepth'].forEach(clearGroup);
+  // v3: include all groups
+  ['ee','atype','asa','sex','gatech','seddepth','approach','patientFrom',
+   'spinalNeedle','epiduralLevel','epiduralLor','cseTechnique','macType','macLevel'
+  ].forEach(clearGroup);
   document.querySelectorAll('[data-group="bguidance"] button').forEach(b => b.classList.remove('on'));
   const us = document.querySelector('[data-group="bguidance"] [data-val="Ultrasound"]');
   if (us) us.classList.add('on');
   document.getElementById('blockGuidance').classList.add('hidden');
-  // v2: hide GA technique & sedation depth sub-fields
+  // v2/v3: hide all anaesthesia sub-fields
   document.getElementById('gaTechniqueField').classList.add('hidden');
   document.getElementById('sedationDepthField').classList.add('hidden');
-  // v2: clear all expandable block inputs
+  document.getElementById('spinalDetailsField').classList.add('hidden');
+  document.getElementById('epiduralDetailsField').classList.add('hidden');
+  document.getElementById('cseDetailsField').classList.add('hidden');
+  document.getElementById('macSedationLevelField').classList.add('hidden');
+  document.getElementById('surgicalApproachField').classList.add('hidden');
+  // v3: clear numeric inputs in detail panels
+  ['f_spinal_attempts','f_spinal_spaces','f_epidural_attempts'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.value = '';
+  });
+  // v3: reset second anaesthetist
+  document.getElementById('f_second_anaesth').value = '';
+  // v2: clear expandable block inputs
   clearBlockInputs();
   // v2: reset specialty Other field
   const specOther = document.getElementById('f_specialty_other');
@@ -2314,6 +2579,15 @@ async function loadAllCases() {
           try { bd = JSON.parse(bd); } catch { bd = []; }
         }
         if (!Array.isArray(bd)) bd = [];
+        // v3: parse JSON detail fields
+        const parseJson = (val) => {
+          if (!val) return null;
+          if (typeof val === 'object') return val;
+          if (typeof val === 'string') {
+            try { return JSON.parse(val); } catch { return null; }
+          }
+          return null;
+        };
         return {
           ...c,
           addons: Array.isArray(c.addons) ? c.addons : [],
@@ -2326,6 +2600,17 @@ async function loadAllCases() {
           blockDetails: bd,
           gaTechnique: c.gaTechnique || '',
           sedationDepth: c.sedationDepth || '',
+          // v3 fields
+          surgicalApproach: c.surgicalApproach || '',
+          secondAnaesthetist: c.secondAnaesthetist || '',
+          patientFrom: c.patientFrom || '',
+          spinalDetails: parseJson(c.spinalDetails),
+          epiduralDetails: parseJson(c.epiduralDetails),
+          cseDetails: parseJson(c.cseDetails),
+          macDetails: parseJson(c.macDetails),
+          specialAnalgesia: Array.isArray(c.specialAnalgesia) ? c.specialAnalgesia : [],
+          catheters: Array.isArray(c.catheters) ? c.catheters : [],
+          monitoring: Array.isArray(c.monitoring) ? c.monitoring : [],
           durationMin: Number(c.durationMin) || 0,
           patientAge: c.patientAge === '' || c.patientAge == null ? null : Number(c.patientAge)
         };
@@ -2393,12 +2678,46 @@ function renderCaseDetailHtml(c) {
     const pt = [c.patientAge ? c.patientAge + 'y' : null, c.patientSex].filter(Boolean).join(' · ');
     if (pt) rows.push(['Patient', escapeHtml(pt)]);
   }
+  // v3: surgical approach, second anaesthetist, patient from
+  if (c.surgicalApproach) rows.push(['Surgical Approach', escapeHtml(c.surgicalApproach)]);
+  if (c.secondAnaesthetist) rows.push(['Second Anaesthetist', escapeHtml(c.secondAnaesthetist)]);
+  if (c.patientFrom) rows.push(['Patient from', escapeHtml(c.patientFrom)]);
   // v2: GA technique / sedation depth
   if (c.gaTechnique) rows.push(['GA technique', escapeHtml(c.gaTechnique)]);
-  if (c.sedationDepth) rows.push(['Sedation depth', escapeHtml(c.sedationDepth)]);
+  // v3: detail panels
+  if (c.spinalDetails) {
+    const sd = c.spinalDetails;
+    const parts = [];
+    if (sd.attempts) parts.push(sd.attempts + ' attempt' + (sd.attempts > 1 ? 's' : ''));
+    if (sd.spaces) parts.push(sd.spaces + ' space' + (sd.spaces > 1 ? 's' : ''));
+    if (sd.needleType) parts.push(sd.needleType);
+    if (parts.length) rows.push(['Spinal details', escapeHtml(parts.join(' · '))]);
+  }
+  if (c.epiduralDetails) {
+    const ed = c.epiduralDetails;
+    const parts = [];
+    if (ed.level) parts.push(ed.level);
+    if (ed.attempts) parts.push(ed.attempts + ' attempt' + (ed.attempts > 1 ? 's' : ''));
+    if (ed.lor) parts.push('LOR: ' + ed.lor);
+    if (parts.length) rows.push(['Epidural details', escapeHtml(parts.join(' · '))]);
+  }
+  if (c.cseDetails && c.cseDetails.technique) {
+    rows.push(['CSE technique', escapeHtml(c.cseDetails.technique)]);
+  }
+  if (c.macDetails) {
+    const md = c.macDetails;
+    const parts = [];
+    if (md.type) parts.push(md.type);
+    if (md.level) parts.push(md.level);
+    if (parts.length) rows.push(['Sedation/MAC', escapeHtml(parts.join(' · '))]);
+  } else if (c.sedationDepth) {
+    rows.push(['Sedation depth', escapeHtml(c.sedationDepth)]);
+  }
   if (c.addons && c.addons.length) rows.push(['Add-ons', chipHtml(c.addons)]);
   if (c.airway && c.airway.length) rows.push(['Airway', chipHtml(c.airway)]);
   if (c.olv && c.olv.length) rows.push(['One-lung Vent', chipHtml(c.olv)]);
+  // v3: special analgesia
+  if (c.specialAnalgesia && c.specialAnalgesia.length) rows.push(['Special Analgesia', chipHtml(c.specialAnalgesia)]);
   // v2: render blocks with details if available
   if (c.blocks && c.blocks.length) {
     if (c.blockDetails && c.blockDetails.length) {
@@ -2408,7 +2727,11 @@ function renderCaseDetailHtml(c) {
     }
   }
   if (c.blockGuidance) rows.push(['Block guidance', escapeHtml(c.blockGuidance)]);
-  if (c.lines && c.lines.length) rows.push(['Lines/Monitoring', chipHtml(c.lines)]);
+  // v3: catheters
+  if (c.catheters && c.catheters.length) rows.push(['Catheters placed', chipHtml(c.catheters, '#FFF3E0', '#E65100')]);
+  // v3: lines and monitoring shown separately
+  if (c.lines && c.lines.length) rows.push(['Invasive Lines', chipHtml(c.lines)]);
+  if (c.monitoring && c.monitoring.length) rows.push(['Monitoring', chipHtml(c.monitoring)]);
   if (c.otherSpecial && c.otherSpecial.length) rows.push(['Other special', chipHtml(c.otherSpecial)]);
   if (c.complications && c.complications.length) rows.push(['Complications', chipHtml(c.complications, 'var(--danger-bg)', 'var(--danger)')]);
   if (c.notes) rows.push(['Notes', escapeHtml(c.notes)]);
@@ -2618,6 +2941,8 @@ function renderCharts() {
   renderCh5(); renderCh6(); renderCh7(); renderCh8();
   renderCh9(); renderCh10(); renderCh11(); renderCh12();
   renderCh13(); renderCh14(); renderCh15();
+  // v3 charts
+  renderCh16(); renderCh17(); renderCh18(); renderCh19(); renderCh20();
 }
 
 function lastNMonths(n) {
@@ -2892,6 +3217,116 @@ function renderCh15() {
   });
 }
 
+// v3: Surgical Approach split
+function renderCh16() {
+  const m = {};
+  filteredCases.forEach(c => {
+    if (c.surgicalApproach) m[c.surgicalApproach] = (m[c.surgicalApproach] || 0) + 1;
+  });
+  const canvas = document.getElementById('ch16');
+  if (!canvas) return;
+  const entries = Object.entries(m);
+  if (entries.length === 0) { drawEmptyChartMessage(canvas, 'No surgical approach data yet'); return; }
+  const colorMap = {
+    'Open': '#0A2342',
+    'Laparoscopic': '#00897B',
+    'Robotic': '#26A69A',
+    'Endoscopic': '#1E5A9F'
+  };
+  charts.ch16 = new Chart(canvas, {
+    type: 'doughnut',
+    data: { labels: entries.map(e => e[0]),
+      datasets: [{ data: entries.map(e => e[1]),
+        backgroundColor: entries.map(e => colorMap[e[0]] || '#5C6B80') }] },
+    options: { ...CHART_DEFAULTS }
+  });
+}
+
+// v3: Continuous Catheters placed (count by type)
+function renderCh17() {
+  const m = {};
+  filteredCases.forEach(c => {
+    (c.catheters || []).forEach(k => { m[k] = (m[k] || 0) + 1; });
+  });
+  const canvas = document.getElementById('ch17');
+  if (!canvas) return;
+  const entries = Object.entries(m).sort((a,b) => b[1] - a[1]);
+  if (entries.length === 0) { drawEmptyChartMessage(canvas, 'No catheter placements yet'); return; }
+  charts.ch17 = new Chart(canvas, {
+    type: 'bar',
+    data: { labels: entries.map(e => e[0]),
+      datasets: [{ label: 'Count', data: entries.map(e => e[1]), backgroundColor: '#F57C00', borderRadius: 3 }] },
+    options: { ...CHART_DEFAULTS, indexAxis: 'y',
+      plugins: { ...CHART_DEFAULTS.plugins, legend: { display: false } },
+      scales: { x: { beginAtZero: true, ticks: { precision: 0 } } } }
+  });
+}
+
+// v3: Spinal Needle Type
+function renderCh18() {
+  const m = {};
+  filteredCases.forEach(c => {
+    if (c.spinalDetails && c.spinalDetails.needleType) {
+      const n = c.spinalDetails.needleType;
+      m[n] = (m[n] || 0) + 1;
+    }
+  });
+  const canvas = document.getElementById('ch18');
+  if (!canvas) return;
+  const entries = Object.entries(m);
+  if (entries.length === 0) { drawEmptyChartMessage(canvas, 'No spinal needle data yet'); return; }
+  const colorMap = {
+    'Whitacre (pencil point)': '#00897B',
+    'Quincke (cutting)': '#0A2342'
+  };
+  charts.ch18 = new Chart(canvas, {
+    type: 'doughnut',
+    data: { labels: entries.map(e => e[0]),
+      datasets: [{ data: entries.map(e => e[1]),
+        backgroundColor: entries.map(e => colorMap[e[0]] || '#5C6B80') }] },
+    options: { ...CHART_DEFAULTS }
+  });
+}
+
+// v3: Catheters placed per month (line)
+function renderCh19() {
+  const months = lastNMonths(12);
+  const counts = months.map(m =>
+    filteredCases.filter(c => String(c.date || '').startsWith(m.key) && c.catheters && c.catheters.length > 0).length
+  );
+  const canvas = document.getElementById('ch19');
+  if (!canvas) return;
+  charts.ch19 = new Chart(canvas, {
+    type: 'line',
+    data: { labels: months.map(m => m.label),
+      datasets: [{ label: 'Cases with catheter', data: counts, borderColor: '#F57C00',
+        backgroundColor: 'rgba(245,124,0,0.15)', fill: true, tension: 0.3,
+        pointBackgroundColor: '#F57C00', pointRadius: 4, pointHoverRadius: 6 }] },
+    options: { ...CHART_DEFAULTS,
+      plugins: { ...CHART_DEFAULTS.plugins, legend: { display: false } },
+      scales: { y: { beginAtZero: true, ticks: { precision: 0 } } } }
+  });
+}
+
+// v3: Patient Origin (Ward vs ICU)
+function renderCh20() {
+  const m = {};
+  filteredCases.forEach(c => {
+    if (c.patientFrom) m[c.patientFrom] = (m[c.patientFrom] || 0) + 1;
+  });
+  const canvas = document.getElementById('ch20');
+  if (!canvas) return;
+  const entries = Object.entries(m);
+  if (entries.length === 0) { drawEmptyChartMessage(canvas, 'No patient origin data yet'); return; }
+  charts.ch20 = new Chart(canvas, {
+    type: 'doughnut',
+    data: { labels: entries.map(e => e[0]),
+      datasets: [{ data: entries.map(e => e[1]),
+        backgroundColor: entries.map(e => e[0] === 'ICU' ? '#D32F2F' : '#1E5A9F') }] },
+    options: { ...CHART_DEFAULTS }
+  });
+}
+
 function drawEmptyChartMessage(canvas, msg) {
   const ctx = canvas.getContext('2d');
   const rect = canvas.getBoundingClientRect();
@@ -2964,17 +3399,33 @@ function openCaseModal(id) {
    ============================================================ */
 function exportCsv() {
   if (filteredCases.length === 0) { showToast('No cases to export', true); return; }
-  const headers = ['Date','Doctor','Specialty','Procedure','Location','ElectiveEmergency','AnaesthesiaType','GATechnique','SedationDepth','Addons','ASAGrade','PatientAge','PatientSex','DurationMin','Airway','OLV','Blocks','BlockDetails','BlockGuidance','Lines','OtherSpecial','Complications','Notes','CreatedAt'];
+  const headers = [
+    'Date','Doctor','SecondAnaesthetist','Specialty','SurgicalApproach','Procedure',
+    'Location','PatientFrom','ElectiveEmergency','AnaesthesiaType','GATechnique','SedationDepth',
+    'SpinalDetails','EpiduralDetails','CSEDetails','MACDetails',
+    'Addons','ASAGrade','PatientAge','PatientSex','DurationMin',
+    'Airway','OLV','SpecialAnalgesia',
+    'Blocks','BlockDetails','BlockGuidance','Catheters',
+    'Lines','Monitoring','OtherSpecial','Complications','Notes','CreatedAt'
+  ];
+  const fmtJson = (obj) => obj ? Object.entries(obj).filter(([,v]) => v != null && v !== '').map(([k,v]) => k + ':' + v).join('; ') : '';
   const rows = filteredCases.map(c => [
-    c.date, c.doctor, c.specialty, c.procedure, c.location,
+    c.date, c.doctor, c.secondAnaesthetist || '',
+    c.specialty, c.surgicalApproach || '', c.procedure,
+    c.location, c.patientFrom || '',
     c.electiveEmergency, c.anaesthesiaType,
     c.gaTechnique || '', c.sedationDepth || '',
+    fmtJson(c.spinalDetails), fmtJson(c.epiduralDetails), fmtJson(c.cseDetails), fmtJson(c.macDetails),
     (c.addons || []).join('; '), c.asaGrade, c.patientAge, c.patientSex, c.durationMin,
     (c.airway || []).join('; '), (c.olv || []).join('; '),
+    (c.specialAnalgesia || []).join('; '),
     (c.blocks || []).join('; '),
     summariseBlockDetailsForCsv(c.blockDetails),
     c.blockGuidance || '',
-    (c.lines || []).join('; '), (c.otherSpecial || []).join('; '),
+    (c.catheters || []).join('; '),
+    (c.lines || []).join('; '),
+    (c.monitoring || []).join('; '),
+    (c.otherSpecial || []).join('; '),
     (c.complications || []).join('; '), c.notes || '', c.createdAt
   ]);
 
