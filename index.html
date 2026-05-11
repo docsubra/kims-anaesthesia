@@ -3598,25 +3598,10 @@ function initOnCallForm() {
     setGroupValue('oc_band', band);
   });
 
-  // Accordion behaviour for on-call form
-  document.querySelectorAll('#view-oncall .accordion-head').forEach(head => {
-    head.addEventListener('click', () => {
-      head.closest('.accordion').classList.toggle('open');
-    });
-  });
-
-  // Toggle/pill init for on-call groups
-  ['oc_callType','oc_sex','oc_urgency','oc_band','oc_senior','oc_timeSpent','oc_outcome'].forEach(g => {
-    const grp = document.querySelector(`[data-group="${g}"]`);
-    if (grp) {
-      grp.addEventListener('click', e => {
-        const btn = e.target.closest('button[data-val]');
-        if (!btn) return;
-        grp.querySelectorAll('button').forEach(b => b.classList.remove('on'));
-        btn.classList.add('on');
-      });
-    }
-  });
+  // NOTE: accordion click and pill toggle behaviour is already provided by
+  // the global initAccordions() and initToggleGroups() functions that run
+  // earlier in DOMContentLoaded. We do not re-attach those here, otherwise
+  // duplicate handlers fight each other and the sections appear unresponsive.
 
   // Notes char count
   document.getElementById('oc_notes').addEventListener('input', e => {
