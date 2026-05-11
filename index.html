@@ -1144,6 +1144,443 @@ table.data-table {
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: rgba(10,35,66,0.2); border-radius: 4px; }
 ::-webkit-scrollbar-thumb:hover { background: rgba(10,35,66,0.35); }
+
+/* ============================================================
+   v4.1 — COLORFUL ON-CALL FORM THEME
+   ============================================================ */
+
+/* Welcome banner */
+.oc-welcome-banner {
+  background: linear-gradient(135deg, #FF6B35 0%, #F7A05A 100%);
+  color: white;
+  padding: 20px 24px;
+  border-radius: 12px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 12px rgba(255, 107, 53, 0.25);
+  position: relative;
+  overflow: hidden;
+}
+.oc-welcome-banner::after {
+  content: '☎';
+  position: absolute;
+  font-size: 90px;
+  right: -10px;
+  top: -20px;
+  opacity: 0.15;
+  transform: rotate(-15deg);
+}
+.oc-welcome-title {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 4px;
+  letter-spacing: -0.3px;
+}
+.oc-welcome-sub {
+  font-size: 14px;
+  opacity: 0.95;
+}
+.oc-welcome-time {
+  display: inline-block;
+  margin-top: 8px;
+  padding: 4px 10px;
+  background: rgba(255,255,255,0.2);
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+/* Colored accordions per section */
+#view-oncall .accordion[data-oc-section="basics"] .accordion-head {
+  background: linear-gradient(135deg, #E0F2F1 0%, #B2DFDB 100%);
+  border-left: 5px solid #00897B;
+}
+#view-oncall .accordion[data-oc-section="basics"].open .accordion-head {
+  background: linear-gradient(135deg, #00897B 0%, #00695C 100%);
+  color: white;
+}
+#view-oncall .accordion[data-oc-section="basics"] .accordion-num {
+  background: #00897B;
+  color: white;
+}
+
+#view-oncall .accordion[data-oc-section="activity"] .accordion-head {
+  background: linear-gradient(135deg, #FFE0B2 0%, #FFCC80 100%);
+  border-left: 5px solid #F57C00;
+}
+#view-oncall .accordion[data-oc-section="activity"].open .accordion-head {
+  background: linear-gradient(135deg, #F57C00 0%, #E65100 100%);
+  color: white;
+}
+#view-oncall .accordion[data-oc-section="activity"] .accordion-num {
+  background: #F57C00;
+  color: white;
+}
+
+#view-oncall .accordion[data-oc-section="context"] .accordion-head {
+  background: linear-gradient(135deg, #E1BEE7 0%, #CE93D8 100%);
+  border-left: 5px solid #7B1FA2;
+}
+#view-oncall .accordion[data-oc-section="context"].open .accordion-head {
+  background: linear-gradient(135deg, #7B1FA2 0%, #4A148C 100%);
+  color: white;
+}
+#view-oncall .accordion[data-oc-section="context"] .accordion-num {
+  background: #7B1FA2;
+  color: white;
+}
+
+#view-oncall .accordion[data-oc-section="outcome"] .accordion-head {
+  background: linear-gradient(135deg, #C8E6C9 0%, #A5D6A7 100%);
+  border-left: 5px solid #2E7D32;
+}
+#view-oncall .accordion[data-oc-section="outcome"].open .accordion-head {
+  background: linear-gradient(135deg, #2E7D32 0%, #1B5E20 100%);
+  color: white;
+}
+#view-oncall .accordion[data-oc-section="outcome"] .accordion-num {
+  background: #2E7D32;
+  color: white;
+}
+
+#view-oncall .accordion[data-oc-section="notes"] .accordion-head {
+  background: linear-gradient(135deg, #BBDEFB 0%, #90CAF9 100%);
+  border-left: 5px solid #1565C0;
+}
+#view-oncall .accordion[data-oc-section="notes"].open .accordion-head {
+  background: linear-gradient(135deg, #1565C0 0%, #0D47A1 100%);
+  color: white;
+}
+#view-oncall .accordion[data-oc-section="notes"] .accordion-num {
+  background: #1565C0;
+  color: white;
+}
+
+#view-oncall .accordion .accordion-num {
+  display: inline-block;
+  width: 28px;
+  height: 28px;
+  line-height: 28px;
+  border-radius: 50%;
+  text-align: center;
+  font-weight: 700;
+  margin-right: 10px;
+  font-size: 14px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+}
+
+#view-oncall .accordion .accordion-head {
+  transition: all 0.3s ease;
+  font-weight: 600;
+}
+
+#view-oncall .accordion.open .accordion-head .chevron {
+  transform: rotate(90deg);
+}
+
+#view-oncall .accordion .chevron {
+  transition: transform 0.3s ease;
+}
+
+#view-oncall .accordion-body {
+  background: linear-gradient(180deg, #FAFBFC 0%, #FFFFFF 100%);
+  border-left: 5px solid #E0E6ED;
+  padding-left: 18px;
+}
+
+#view-oncall .accordion[data-oc-section="basics"] .accordion-body {
+  border-left-color: #00897B;
+}
+#view-oncall .accordion[data-oc-section="activity"] .accordion-body {
+  border-left-color: #F57C00;
+}
+#view-oncall .accordion[data-oc-section="context"] .accordion-body {
+  border-left-color: #7B1FA2;
+}
+#view-oncall .accordion[data-oc-section="outcome"] .accordion-body {
+  border-left-color: #2E7D32;
+}
+#view-oncall .accordion[data-oc-section="notes"] .accordion-body {
+  border-left-color: #1565C0;
+}
+
+/* Colored pills for on-call form */
+
+/* Call type toggle */
+#view-oncall .toggle-pair[data-group="oc_callType"] .tog[data-val="Procedural"].on {
+  background: linear-gradient(135deg, #F57C00 0%, #E65100 100%);
+  color: white;
+  border-color: #E65100;
+  box-shadow: 0 4px 10px rgba(245, 124, 0, 0.35);
+  transform: translateY(-1px);
+}
+#view-oncall .toggle-pair[data-group="oc_callType"] .tog[data-val="Non-procedural"].on {
+  background: linear-gradient(135deg, #1565C0 0%, #0D47A1 100%);
+  color: white;
+  border-color: #0D47A1;
+  box-shadow: 0 4px 10px rgba(21, 101, 192, 0.35);
+  transform: translateY(-1px);
+}
+
+/* Urgency pills */
+#view-oncall .pill-grid[data-group="oc_urgency"] .pill[data-val="Routine"].on {
+  background: linear-gradient(135deg, #43A047 0%, #2E7D32 100%);
+  color: white;
+  border-color: #2E7D32;
+  box-shadow: 0 4px 10px rgba(46, 125, 50, 0.35);
+}
+#view-oncall .pill-grid[data-group="oc_urgency"] .pill[data-val="Urgent"].on {
+  background: linear-gradient(135deg, #FB8C00 0%, #E65100 100%);
+  color: white;
+  border-color: #E65100;
+  box-shadow: 0 4px 10px rgba(251, 140, 0, 0.4);
+  animation: gentle-pulse 2s ease-in-out infinite;
+}
+#view-oncall .pill-grid[data-group="oc_urgency"] .pill[data-val="Emergency"].on {
+  background: linear-gradient(135deg, #E53935 0%, #B71C1C 100%);
+  color: white;
+  border-color: #B71C1C;
+  box-shadow: 0 4px 12px rgba(229, 57, 53, 0.45);
+  animation: urgent-pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes gentle-pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.04); }
+}
+@keyframes urgent-pulse {
+  0%, 100% { transform: scale(1); box-shadow: 0 4px 12px rgba(229, 57, 53, 0.45); }
+  50% { transform: scale(1.05); box-shadow: 0 6px 18px rgba(229, 57, 53, 0.6); }
+}
+
+/* Time-of-day band — gradient by time */
+#view-oncall .pill-grid[data-group="oc_band"] .pill[data-val="Morning (8am–12noon)"].on {
+  background: linear-gradient(135deg, #FFD54F 0%, #FFA000 100%);
+  color: #333;
+  border-color: #FFA000;
+}
+#view-oncall .pill-grid[data-group="oc_band"] .pill[data-val="Afternoon (12noon–4pm)"].on {
+  background: linear-gradient(135deg, #FF8A65 0%, #E64A19 100%);
+  color: white;
+  border-color: #E64A19;
+}
+#view-oncall .pill-grid[data-group="oc_band"] .pill[data-val="Evening (4pm–7pm)"].on {
+  background: linear-gradient(135deg, #9575CD 0%, #5E35B1 100%);
+  color: white;
+  border-color: #5E35B1;
+}
+#view-oncall .pill-grid[data-group="oc_band"] .pill[data-val="Night (7pm–8am)"].on {
+  background: linear-gradient(135deg, #303F9F 0%, #1A237E 100%);
+  color: white;
+  border-color: #1A237E;
+}
+
+/* Time spent — gradient from light to deep as time increases */
+#view-oncall .pill-grid[data-group="oc_timeSpent"] .pill[data-val="< 15 min"].on {
+  background: linear-gradient(135deg, #81D4FA 0%, #4FC3F7 100%);
+  color: #01579B;
+  border-color: #4FC3F7;
+}
+#view-oncall .pill-grid[data-group="oc_timeSpent"] .pill[data-val="15 – 30 min"].on {
+  background: linear-gradient(135deg, #4FC3F7 0%, #29B6F6 100%);
+  color: white;
+  border-color: #29B6F6;
+}
+#view-oncall .pill-grid[data-group="oc_timeSpent"] .pill[data-val="30 – 60 min"].on {
+  background: linear-gradient(135deg, #0288D1 0%, #01579B 100%);
+  color: white;
+  border-color: #01579B;
+}
+#view-oncall .pill-grid[data-group="oc_timeSpent"] .pill[data-val="> 60 min"].on {
+  background: linear-gradient(135deg, #6A1B9A 0%, #4A148C 100%);
+  color: white;
+  border-color: #4A148C;
+}
+
+/* Outcome pills */
+#view-oncall .pill-grid[data-group="oc_outcome"] .pill[data-val="Completed"].on {
+  background: linear-gradient(135deg, #43A047 0%, #2E7D32 100%);
+  color: white;
+  border-color: #2E7D32;
+  box-shadow: 0 4px 10px rgba(46, 125, 50, 0.35);
+}
+#view-oncall .pill-grid[data-group="oc_outcome"] .pill[data-val="Stabilised"].on {
+  background: linear-gradient(135deg, #FB8C00 0%, #E65100 100%);
+  color: white;
+  border-color: #E65100;
+  box-shadow: 0 4px 10px rgba(251, 140, 0, 0.4);
+}
+#view-oncall .pill-grid[data-group="oc_outcome"] .pill[data-val="Escalated"].on {
+  background: linear-gradient(135deg, #E53935 0%, #B71C1C 100%);
+  color: white;
+  border-color: #B71C1C;
+  box-shadow: 0 4px 12px rgba(229, 57, 53, 0.45);
+}
+
+/* Sex pills */
+#view-oncall .pill-grid[data-group="oc_sex"] .pill[data-val="M"].on {
+  background: linear-gradient(135deg, #42A5F5 0%, #1976D2 100%);
+  color: white;
+  border-color: #1976D2;
+}
+#view-oncall .pill-grid[data-group="oc_sex"] .pill[data-val="F"].on {
+  background: linear-gradient(135deg, #EC407A 0%, #C2185B 100%);
+  color: white;
+  border-color: #C2185B;
+}
+#view-oncall .pill-grid[data-group="oc_sex"] .pill[data-val="Other"].on {
+  background: linear-gradient(135deg, #78909C 0%, #455A64 100%);
+  color: white;
+  border-color: #455A64;
+}
+
+/* Senior consulted pills */
+#view-oncall .pill-grid[data-group="oc_senior"] .pill[data-val="Yes"].on {
+  background: linear-gradient(135deg, #66BB6A 0%, #43A047 100%);
+  color: white;
+  border-color: #43A047;
+}
+#view-oncall .pill-grid[data-group="oc_senior"] .pill[data-val="No"].on {
+  background: linear-gradient(135deg, #BDBDBD 0%, #757575 100%);
+  color: white;
+  border-color: #757575;
+}
+
+/* Hover/animation polish on all on-call pills */
+#view-oncall .pill {
+  transition: all 0.2s ease;
+}
+#view-oncall .pill:not(.on):hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+#view-oncall .pill.on {
+  transform: translateY(-1px);
+}
+
+/* Make on-call form inputs feel snappier */
+#view-oncall .input:focus,
+#view-oncall .textarea:focus {
+  border-color: #F57C00;
+  box-shadow: 0 0 0 3px rgba(245, 124, 0, 0.18);
+}
+
+/* Save button gradient */
+#view-oncall #oc_saveBtn {
+  background: linear-gradient(135deg, #F57C00 0%, #E65100 100%);
+  border: none;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  box-shadow: 0 4px 12px rgba(245, 124, 0, 0.35);
+  transition: all 0.25s ease;
+}
+#view-oncall #oc_saveBtn:hover:not(:disabled) {
+  background: linear-gradient(135deg, #E65100 0%, #BF360C 100%);
+  box-shadow: 0 6px 18px rgba(230, 81, 0, 0.45);
+  transform: translateY(-2px);
+}
+#view-oncall #oc_saveBtn:active {
+  transform: translateY(0);
+}
+
+/* Section icons */
+.oc-section-icon {
+  display: inline-block;
+  font-size: 16px;
+  margin-right: 4px;
+}
+
+/* Helpful mandatory badge styling */
+#view-oncall .accordion-mandatory {
+  background: rgba(0,0,0,0.1);
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  margin-left: 8px;
+}
+#view-oncall .accordion.open .accordion-mandatory {
+  background: rgba(255,255,255,0.25);
+  color: white;
+}
+#view-oncall .accordion-optional {
+  background: rgba(0,0,0,0.08);
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  margin-left: 8px;
+  color: #5C6B80;
+}
+#view-oncall .accordion.open .accordion-optional {
+  background: rgba(255,255,255,0.2);
+  color: white;
+}
+
+/* Field labels in on-call form get a subtle accent */
+#view-oncall .field-label {
+  position: relative;
+  padding-left: 4px;
+}
+#view-oncall .field-label .req {
+  background: #FFEBEE;
+  color: #C62828;
+  padding: 1px 5px;
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: 700;
+  margin-left: 4px;
+}
+#view-oncall .field-label .opt {
+  background: #E8F5E9;
+  color: #2E7D32;
+  padding: 1px 5px;
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: 500;
+  margin-left: 4px;
+}
+
+/* Make patient initials field stand out */
+#oc_initials {
+  font-size: 18px !important;
+  font-weight: 700 !important;
+  letter-spacing: 2px;
+  text-align: center;
+  background: linear-gradient(135deg, #FFF3E0 0%, #FFFFFF 100%);
+  border: 2px solid #FFB74D;
+}
+#oc_initials:focus {
+  border-color: #F57C00;
+}
+
+/* Ward details — when it appears, slide down nicely */
+#oc_wardDetailsField {
+  animation: slideDown 0.3s ease;
+}
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-10px); max-height: 0; }
+  to { opacity: 1; transform: translateY(0); max-height: 200px; }
+}
+
+/* Activity field reveal animation */
+#oc_proceduralField:not(.hidden),
+#oc_nonProcField:not(.hidden),
+#oc_activityOtherField:not(.hidden) {
+  animation: slideDown 0.3s ease;
+}
+
+/* Save button success feedback */
+@keyframes save-success {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); background: linear-gradient(135deg, #43A047, #2E7D32); }
+  100% { transform: scale(1); }
+}
+#view-oncall #oc_saveBtn.saved {
+  animation: save-success 0.5s ease;
+}
+
 </style>
 </head>
 <body>
@@ -1180,9 +1617,11 @@ table.data-table {
           <span class="nav-brand-name">Anaesthesia Registry</span>
         </div>
       </div>
-      <button class="nav-btn" data-view="entry">✎ <span class="lbl-long">Enter Case</span></button>
+      <button class="nav-btn" data-view="entry">✎ <span class="lbl-long">OT Case</span></button>
+      <button class="nav-btn" data-view="oncall">☎ <span class="lbl-long">On-Call</span></button>
       <button class="nav-btn" data-view="mycases">☰ <span class="lbl-long">My Cases</span></button>
-      <button class="nav-btn hidden" id="navDashboard" data-view="dashboard">▦ <span class="lbl-long">Dashboard</span></button>
+      <button class="nav-btn hidden" id="navOncallDash" data-view="oncalldash">▤ <span class="lbl-long">On-Call Dash</span></button>
+      <button class="nav-btn hidden" id="navDashboard" data-view="dashboard">▦ <span class="lbl-long">OT Dash</span></button>
       <span class="nav-user">
         <span style="opacity:0.6;">👤</span>
         <span id="navUserName"></span>
@@ -1605,7 +2044,7 @@ table.data-table {
         <div class="accordion" data-section="notes">
           <button type="button" class="accordion-head">
             <span class="accordion-title">
-              <span class="accordion-num optional">E</span> Notes
+              <span class="accordion-num optional">E</span> <span class="oc-section-icon">📝</span>Notes
               <span class="accordion-optional">OPTIONAL</span>
             </span>
             <span class="chevron">▶</span>
@@ -1621,10 +2060,358 @@ table.data-table {
     </div>
   </main>
 
+  <!-- ============ v4: ON-CALL ENTRY VIEW ============ -->
+  <main class="page hidden" id="view-oncall">
+    <div class="oc-welcome-banner">
+      <div class="oc-welcome-title">☎ On-Call / Out-of-OT Log</div>
+      <div class="oc-welcome-sub">Recognising the work you do outside the operating theatre.</div>
+      <div class="oc-welcome-time" id="oc_welcomeTime">Loading...</div>
+    </div>
+
+    <div class="form-wrapper">
+      <form id="oncallForm" autocomplete="off">
+
+        <!-- SECTION A: BASICS -->
+        <div class="accordion open" data-oc-section="basics">
+          <button type="button" class="accordion-head">
+            <span class="accordion-title">
+              <span class="accordion-num">A</span> <span class="oc-section-icon">📋</span>Basics
+              <span class="accordion-mandatory">REQUIRED</span>
+            </span>
+            <span class="chevron">▶</span>
+          </button>
+          <div class="accordion-body">
+            <div class="row-2">
+              <div class="field">
+                <label class="field-label">Date <span class="req">*</span></label>
+                <input type="date" class="input" id="oc_date" required />
+              </div>
+              <div class="field">
+                <label class="field-label">Time of call <span class="req">*</span></label>
+                <input type="time" class="input" id="oc_time" required />
+              </div>
+            </div>
+
+            <div class="field">
+              <label class="field-label">Anaesthetist <span class="req">*</span></label>
+              <input type="text" class="input" id="oc_doctor" readonly />
+            </div>
+
+            <div class="field">
+              <label class="field-label">Patient initials <span class="opt">(optional, e.g. RK)</span></label>
+              <input type="text" class="input" id="oc_initials" maxlength="5" placeholder="e.g. RK" style="text-transform: uppercase;" />
+            </div>
+
+            <div class="row-2">
+              <div class="field">
+                <label class="field-label">Patient age <span class="opt">(optional)</span></label>
+                <input type="number" class="input" id="oc_age" min="0" max="120" placeholder="years" />
+              </div>
+              <div class="field">
+                <label class="field-label">Sex <span class="opt">(optional)</span></label>
+                <div class="pill-grid" data-group="oc_sex">
+                  <button type="button" class="pill small" data-val="M">M</button>
+                  <button type="button" class="pill small" data-val="F">F</button>
+                  <button type="button" class="pill small" data-val="Other">Other</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="field">
+              <label class="field-label">Location <span class="req">*</span></label>
+              <select class="input" id="oc_location" required>
+                <option value="">-- Select location --</option>
+              </select>
+            </div>
+
+            <!-- Ward details — visible only when Location = Ward -->
+            <div class="field hidden" id="oc_wardDetailsField">
+              <label class="field-label">Ward details <span class="opt">(e.g. Ward 3, 8th floor, bed 14)</span></label>
+              <input type="text" class="input" id="oc_wardDetails" maxlength="80" placeholder="Specify ward / floor / bed..." />
+            </div>
+          </div>
+        </div>
+
+        <!-- SECTION B: CALL TYPE & ACTIVITY -->
+        <div class="accordion" data-oc-section="activity">
+          <button type="button" class="accordion-head">
+            <span class="accordion-title">
+              <span class="accordion-num">B</span> <span class="oc-section-icon">🩺</span>Activity
+              <span class="accordion-mandatory">REQUIRED</span>
+            </span>
+            <span class="chevron">▶</span>
+          </button>
+          <div class="accordion-body">
+            <div class="field">
+              <label class="field-label">Call type <span class="req">*</span></label>
+              <div class="toggle-pair" data-group="oc_callType">
+                <button type="button" class="tog" data-val="Procedural">Procedural</button>
+                <button type="button" class="tog" data-val="Non-procedural">Non-procedural</button>
+              </div>
+            </div>
+
+            <!-- Procedural activity dropdown (shows when Procedural selected) -->
+            <div class="field hidden" id="oc_proceduralField">
+              <label class="field-label">Specific procedural activity <span class="req">*</span></label>
+              <select class="input" id="oc_proceduralActivity">
+                <option value="">-- Select --</option>
+              </select>
+            </div>
+
+            <!-- Non-procedural activity dropdown (shows when Non-procedural selected) -->
+            <div class="field hidden" id="oc_nonProcField">
+              <label class="field-label">Specific non-procedural activity <span class="req">*</span></label>
+              <select class="input" id="oc_nonProcActivity">
+                <option value="">-- Select --</option>
+              </select>
+            </div>
+
+            <!-- "Other" text input shown when "Other" picked in either dropdown -->
+            <div class="field hidden" id="oc_activityOtherField">
+              <label class="field-label">Specify "Other" activity <span class="opt">(text)</span></label>
+              <input type="text" class="input" id="oc_activityOther" maxlength="120" placeholder="Describe the activity..." />
+            </div>
+          </div>
+        </div>
+
+        <!-- SECTION C: CONTEXT -->
+        <div class="accordion" data-oc-section="context">
+          <button type="button" class="accordion-head">
+            <span class="accordion-title">
+              <span class="accordion-num">C</span> <span class="oc-section-icon">⏰</span>Context
+              <span class="accordion-mandatory">URGENCY REQUIRED</span>
+            </span>
+            <span class="chevron">▶</span>
+          </button>
+          <div class="accordion-body">
+            <div class="field">
+              <label class="field-label">Urgency <span class="req">*</span></label>
+              <div class="pill-grid" data-group="oc_urgency">
+                <button type="button" class="pill" data-val="Routine">Routine</button>
+                <button type="button" class="pill" data-val="Urgent">Urgent</button>
+                <button type="button" class="pill" data-val="Emergency">Emergency</button>
+              </div>
+            </div>
+
+            <div class="field">
+              <label class="field-label">Time of day band <span class="opt">(optional, auto-suggested from time)</span></label>
+              <div class="pill-grid" data-group="oc_band">
+                <button type="button" class="pill small" data-val="Morning (8am–12noon)">Morning</button>
+                <button type="button" class="pill small" data-val="Afternoon (12noon–4pm)">Afternoon</button>
+                <button type="button" class="pill small" data-val="Evening (4pm–7pm)">Evening</button>
+                <button type="button" class="pill small" data-val="Night (7pm–8am)">Night</button>
+              </div>
+            </div>
+
+            <div class="field">
+              <label class="field-label">Called by <span class="opt">(referring department)</span></label>
+              <select class="input" id="oc_calledBy">
+                <option value="">-- Select --</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label class="field-label">Senior / supervisor consulted? <span class="opt">(optional)</span></label>
+              <div class="pill-grid" data-group="oc_senior">
+                <button type="button" class="pill small" data-val="Yes">Yes</button>
+                <button type="button" class="pill small" data-val="No">No</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SECTION D: OUTCOME -->
+        <div class="accordion" data-oc-section="outcome">
+          <button type="button" class="accordion-head">
+            <span class="accordion-title">
+              <span class="accordion-num">D</span> <span class="oc-section-icon">✅</span>Outcome
+              <span class="accordion-mandatory">REQUIRED</span>
+            </span>
+            <span class="chevron">▶</span>
+          </button>
+          <div class="accordion-body">
+            <div class="field">
+              <label class="field-label">Time spent <span class="req">*</span></label>
+              <div class="pill-grid" data-group="oc_timeSpent">
+                <button type="button" class="pill" data-val="< 15 min">&lt; 15 min</button>
+                <button type="button" class="pill" data-val="15 – 30 min">15 – 30 min</button>
+                <button type="button" class="pill" data-val="30 – 60 min">30 – 60 min</button>
+                <button type="button" class="pill" data-val="> 60 min">&gt; 60 min</button>
+              </div>
+            </div>
+
+            <div class="field">
+              <label class="field-label">Outcome <span class="req">*</span></label>
+              <div class="pill-grid" data-group="oc_outcome">
+                <button type="button" class="pill" data-val="Completed">Completed</button>
+                <button type="button" class="pill" data-val="Stabilised">Stabilised</button>
+                <button type="button" class="pill" data-val="Escalated">Escalated</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SECTION E: NOTES -->
+        <div class="accordion" data-oc-section="notes">
+          <button type="button" class="accordion-head">
+            <span class="accordion-title">
+              <span class="accordion-num optional">E</span> <span class="oc-section-icon">📝</span>Notes
+              <span class="accordion-optional">OPTIONAL</span>
+            </span>
+            <span class="chevron">▶</span>
+          </button>
+          <div class="accordion-body">
+            <textarea class="textarea" id="oc_notes" maxlength="500" placeholder="Any additional notes..."></textarea>
+            <div class="char-count"><span id="oc_charCount">0</span> / 500</div>
+          </div>
+        </div>
+
+        <button type="submit" class="save-btn" id="oc_saveBtn">SAVE ON-CALL LOG</button>
+      </form>
+    </div>
+  </main>
+
+  <!-- ============ v4: ON-CALL DASHBOARD VIEW (HOD only) ============ -->
+  <main class="page hidden" id="view-oncalldash">
+    <h1 class="page-title">On-Call Dashboard</h1>
+    <p class="page-sub">Out-of-OT work across the department.</p>
+
+    <div class="filter-bar open" id="oc_filterBar">
+      <button type="button" class="filter-head" id="oc_filterHeadBtn">
+        <span>☷ Filters</span>
+        <span class="chevron">▶</span>
+      </button>
+      <div class="filter-body">
+        <div class="filter-grid">
+          <div>
+            <label class="field-label">From</label>
+            <input type="date" class="input" id="oc_flt_from" />
+          </div>
+          <div>
+            <label class="field-label">To</label>
+            <input type="date" class="input" id="oc_flt_to" />
+          </div>
+          <div>
+            <label class="field-label">Doctor</label>
+            <select class="input" id="oc_flt_doctor"><option value="">All doctors</option></select>
+          </div>
+          <div>
+            <label class="field-label">Call type</label>
+            <select class="input" id="oc_flt_callType">
+              <option value="">All</option>
+              <option value="Procedural">Procedural</option>
+              <option value="Non-procedural">Non-procedural</option>
+            </select>
+          </div>
+          <div>
+            <label class="field-label">Urgency</label>
+            <select class="input" id="oc_flt_urgency">
+              <option value="">All</option>
+              <option>Routine</option>
+              <option>Urgent</option>
+              <option>Emergency</option>
+            </select>
+          </div>
+        </div>
+        <div class="filter-actions">
+          <button type="button" class="btn btn-primary" id="oc_applyFiltersBtn">Apply Filters</button>
+          <button type="button" class="btn btn-ghost" id="oc_clearFiltersBtn">Clear</button>
+          <button type="button" class="btn btn-ghost" id="oc_refreshBtn">↻ Refresh from Sheet</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Summary cards -->
+    <div class="summary-grid">
+      <div class="stat-card navy">
+        <div class="stat-label">Total Calls</div>
+        <div class="stat-value" id="oc_stat_total">0</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">This Month</div>
+        <div class="stat-value" id="oc_stat_month">0</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Procedural</div>
+        <div class="stat-value" id="oc_stat_proc">0</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Non-procedural</div>
+        <div class="stat-value" id="oc_stat_nonproc">0</div>
+      </div>
+      <div class="stat-card red">
+        <div class="stat-label">Escalations</div>
+        <div class="stat-value" id="oc_stat_escal">0</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Est. Hours (month)</div>
+        <div class="stat-value" id="oc_stat_hours">0</div>
+      </div>
+    </div>
+
+    <!-- Charts -->
+    <div class="chart-grid">
+      <div class="chart-card"><h3>① Calls per Month (last 12)</h3><div class="chart-wrap"><canvas id="ocCh1"></canvas></div></div>
+      <div class="chart-card"><h3>② Procedural vs Non-procedural</h3><div class="chart-wrap"><canvas id="ocCh2"></canvas></div></div>
+      <div class="chart-card"><h3>③ Top Procedural Activities</h3><div class="chart-wrap"><canvas id="ocCh3"></canvas></div></div>
+      <div class="chart-card"><h3>④ Top Non-procedural Activities</h3><div class="chart-wrap"><canvas id="ocCh4"></canvas></div></div>
+      <div class="chart-card"><h3>⑤ Calls by Location</h3><div class="chart-wrap"><canvas id="ocCh5"></canvas></div></div>
+      <div class="chart-card"><h3>⑥ Time of Day Distribution</h3><div class="chart-wrap"><canvas id="ocCh6"></canvas></div></div>
+      <div class="chart-card"><h3>⑦ Urgency Split</h3><div class="chart-wrap"><canvas id="ocCh7"></canvas></div></div>
+      <div class="chart-card"><h3>⑧ Outcomes (Completed / Stabilised / Escalated)</h3><div class="chart-wrap"><canvas id="ocCh8"></canvas></div></div>
+      <div class="chart-card"><h3>⑨ Per-doctor On-Call Workload</h3><div class="chart-wrap"><canvas id="ocCh9"></canvas></div></div>
+      <div class="chart-card"><h3>⑩ Called By (Referring Department)</h3><div class="chart-wrap"><canvas id="ocCh10"></canvas></div></div>
+    </div>
+
+    <!-- Handover PDF tool -->
+    <div class="table-card">
+      <div class="table-head">
+        <h3>📄 8am→8am Shift Handover</h3>
+        <div class="export-row">
+          <input type="date" class="input" id="oc_handoverDate" style="max-width: 180px; padding: 7px 10px;">
+          <button class="btn btn-primary" id="oc_handoverBtn">Generate Handover PDF</button>
+        </div>
+      </div>
+      <div style="padding: 14px 16px; font-size: 13px; color: var(--text-muted);">
+        Pick a date — the report will cover the 24 hours ending at 8:00 am on that morning. Defaults to today.
+      </div>
+    </div>
+
+    <!-- Data table -->
+    <div class="table-card">
+      <div class="table-head">
+        <h3>All On-Call Entries (<span id="oc_tableCount">0</span>)</h3>
+        <div class="export-row">
+          <button class="btn btn-ghost" id="oc_exportCsvBtn">↓ Export CSV</button>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table class="data-table" id="oc_dataTable">
+          <thead>
+            <tr>
+              <th>Date</th><th>Time</th><th>Doctor</th><th>Patient</th>
+              <th>Location</th><th>Call Type</th><th>Activity</th>
+              <th>Urgency</th><th>Time Spent</th><th>Outcome</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+
   <main class="page hidden" id="view-mycases">
-    <h1 class="page-title">My Cases</h1>
-    <p class="page-sub"><span id="myCaseCount">0</span> cases logged</p>
+    <h1 class="page-title">My Cases &amp; On-Call Logs</h1>
+    <p class="page-sub">Your recent entries.</p>
+
+    <!-- Tab toggle within My Cases view -->
+    <div style="display:flex; gap:8px; margin-bottom:16px;">
+      <button type="button" class="btn btn-primary" id="myTab_cases">OT Cases (<span id="myCaseCount">0</span>)</button>
+      <button type="button" class="btn btn-ghost" id="myTab_oncall">On-Call (<span id="myOncallCount">0</span>)</button>
+    </div>
+
     <div id="myCasesList"></div>
+    <div id="myOncallList" class="hidden"></div>
   </main>
 
   <main class="page hidden" id="view-dashboard">
@@ -1728,6 +2515,29 @@ table.data-table {
       <div class="chart-card"><h3>⑳ Patient Origin (Ward / ICU)</h3><div class="chart-wrap"><canvas id="ch20"></canvas></div></div>
     </div>
 
+    <!-- v4: Second Anaesthetist panel -->
+    <div class="table-card">
+      <div class="table-head">
+        <h3>👥 Second Anaesthetist Contributions</h3>
+      </div>
+      <div style="padding: 14px 16px; font-size: 13px; color: var(--text-muted);">
+        How many cases each doctor has assisted on as the second anaesthetist (separate from their primary case workload).
+      </div>
+      <div class="table-wrap">
+        <table class="data-table" id="secondAnaesthTable">
+          <thead>
+            <tr>
+              <th>Doctor</th>
+              <th>Cases as Second</th>
+              <th>Total Hours Contributed</th>
+              <th>Avg Case Duration</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+
     <div class="table-card">
       <div class="table-head">
         <h3>All Cases (<span id="tableCount">0</span>)</h3>
@@ -1781,7 +2591,7 @@ const DOCTORS = [
   { name: 'Dr Subramanyam Mahankali', role: 'HOD' },
   { name: 'Dr Amjad Maniar' },
   { name: 'Dr Manjunath M' },
-  { name: 'Dr Sathyanarayan J' },
+  { name: 'Dr Satyanarayana J' },
   { name: 'Dr Karthik B' },
   { name: 'Dr Divya BS' },
   { name: 'Dr Prarthana M Raj' },
@@ -1822,6 +2632,30 @@ const CSE_TECHNIQUES = ['Needle-through-needle','Separate (two-space)'];
 const MAC_TYPES = ['Monitoring only','Sedation given'];
 const MAC_SEDATION_LEVELS = ['Mild','Moderate','Deep'];
 const SURGICAL_SPECIALTIES = ['General Surgery','Orthopaedics','Gynaecology','Obstetrics','Urology','ENT','Ophthalmology','Neurosurgery','Cardiothoracic','Vascular Surgery','Plastics/Burns','Paediatric Surgery','Dental/Maxillofacial','Trauma/Emergency','Onco Surgery'];
+
+// === NEW v4 — On-Call / Out-of-OT reference data ===
+const ONCALL_LOCATIONS = ['Ward','ER','Labour Room','Cath Lab','Endoscopy/Bronchoscopy','Radiology','ICU','Other'];
+const ONCALL_PROCEDURAL_ACTIVITIES = [
+  'Difficult IV cannulation','Arterial Line Insertion','Central Line Insertion',
+  'Labour epidural','Epidural top-up','Procedural sedation',
+  'Emergency resuscitation','NG Tube Insertion','Other'
+];
+const ONCALL_NONPROC_ACTIVITIES = [
+  'Pain management call','Airway management','Pre-op assessment',
+  'Post-op review','ICU support','Other'
+];
+const ONCALL_URGENCY = ['Routine','Urgent','Emergency'];
+const ONCALL_TIME_BANDS = [
+  'Morning (8am–12noon)','Afternoon (12noon–4pm)','Evening (4pm–7pm)','Night (7pm–8am)'
+];
+const ONCALL_TIME_SPENT = ['< 15 min','15 – 30 min','30 – 60 min','> 60 min'];
+const ONCALL_OUTCOMES = ['Completed','Stabilised','Escalated'];
+const ONCALL_CALLED_BY = [
+  'General Surgery','Orthopaedics','Gynaecology','Obstetrics','Urology','ENT',
+  'Ophthalmology','Neurosurgery','Cardiothoracic','Vascular Surgery','Onco Surgery',
+  'Paediatric Surgery','Cardiology','Pulmonology','Gastroenterology','Neurology',
+  'Critical Care','Internal Medicine','ER','Other'
+];
 
 const LOCAL_KEY = 'kims_anaesth_local';
 const PENDING_KEY = 'kims_anaesth_pending'; // cases saved locally while offline
@@ -1876,14 +2710,27 @@ function setPendingQueue(arr) {
 async function flushPendingQueue() {
   if (!isConfigured()) return;
   const pending = getPendingQueue();
-  if (pending.length === 0) return;
-  const remaining = [];
-  for (const c of pending) {
-    try { await saveCaseToSheet(c); } catch { remaining.push(c); }
+  if (pending.length > 0) {
+    const remaining = [];
+    for (const c of pending) {
+      try { await saveCaseToSheet(c); } catch { remaining.push(c); }
+    }
+    setPendingQueue(remaining);
+    if (pending.length > remaining.length) {
+      showToast(`Synced ${pending.length - remaining.length} pending case(s) ✓`);
+    }
   }
-  setPendingQueue(remaining);
-  if (pending.length > remaining.length) {
-    showToast(`Synced ${pending.length - remaining.length} pending case(s) ✓`);
+  // v4: flush on-call pending queue
+  const ocPending = JSON.parse(localStorage.getItem('kims_oncall_pending') || '[]');
+  if (ocPending.length > 0) {
+    const remaining = [];
+    for (const e of ocPending) {
+      try { await apiAddOnCall(e); } catch { remaining.push(e); }
+    }
+    localStorage.setItem('kims_oncall_pending', JSON.stringify(remaining));
+    if (ocPending.length > remaining.length) {
+      showToast(`Synced ${ocPending.length - remaining.length} pending on-call entry(s) ✓`);
+    }
   }
 }
 
@@ -1893,6 +2740,9 @@ async function flushPendingQueue() {
 let currentUser = null;
 let allCases = [];
 let filteredCases = [];
+// v4: on-call state
+let allOnCallEntries = [];
+let filteredOnCallEntries = [];
 const charts = {};
 let connectionOk = false;
 
@@ -1941,15 +2791,19 @@ function showApp() {
   document.getElementById('app').classList.remove('hidden');
   document.getElementById('navUserName').textContent = currentUser.name;
   document.getElementById('f_doctor').value = currentUser.name;
+  // v4: also fill on-call doctor field
+  const ocDoc = document.getElementById('oc_doctor');
+  if (ocDoc) ocDoc.value = currentUser.name;
   if (currentUser.role === 'HOD') {
     document.getElementById('navDashboard').classList.remove('hidden');
+    document.getElementById('navOncallDash').classList.remove('hidden');
   }
-  // Show setup banner if not configured
   if (!isConfigured()) {
     document.getElementById('setupBanner').classList.remove('hidden');
   }
   setView('entry');
   loadAllCases();
+  loadAllOnCall();  // v4
   flushPendingQueue();
 }
 
@@ -1979,10 +2833,14 @@ function setView(view) {
     b.classList.toggle('active', b.getAttribute('data-view') === view);
   });
   document.getElementById('view-entry').classList.toggle('hidden', view !== 'entry');
+  document.getElementById('view-oncall').classList.toggle('hidden', view !== 'oncall');
   document.getElementById('view-mycases').classList.toggle('hidden', view !== 'mycases');
   document.getElementById('view-dashboard').classList.toggle('hidden', view !== 'dashboard');
+  document.getElementById('view-oncalldash').classList.toggle('hidden', view !== 'oncalldash');
+  if (view === 'oncall' && typeof updateOnCallWelcomeBanner === 'function') updateOnCallWelcomeBanner();
   if (view === 'mycases') renderMyCases();
   if (view === 'dashboard') renderDashboard();
+  if (view === 'oncalldash') renderOnCallDashboard();
   window.scrollTo({ top: 0, behavior: 'instant' });
 }
 
@@ -2629,6 +3487,863 @@ async function loadAllCases() {
 }
 
 /* ============================================================
+   v4: ON-CALL MODULE
+   ============================================================ */
+
+// --- API for on-call ---
+async function apiAddOnCall(entry) {
+  const res = await fetch(API_URL, {
+    method: 'POST',
+    mode: 'cors',
+    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+    body: JSON.stringify({ action: 'addOnCall', entry })
+  });
+  const data = await res.json();
+  if (!data.ok) throw new Error(data.error || 'Server error');
+  return data.result;
+}
+
+async function apiListOnCall() {
+  const res = await fetch(API_URL, {
+    method: 'POST',
+    mode: 'cors',
+    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+    body: JSON.stringify({ action: 'listOnCall' })
+  });
+  const data = await res.json();
+  if (!data.ok) throw new Error(data.error || 'Server error');
+  return data.entries || [];
+}
+
+// --- Initialize on-call form ---
+function initOnCallForm() {
+  const today = new Date().toISOString().slice(0,10);
+  document.getElementById('oc_date').value = today;
+
+  // v4.1: greeting banner with live time/date
+  updateOnCallWelcomeBanner();
+  setInterval(updateOnCallWelcomeBanner, 60000); // update every minute
+
+  // Populate Location dropdown
+  const locSel = document.getElementById('oc_location');
+  ONCALL_LOCATIONS.forEach(l => {
+    const o = document.createElement('option');
+    o.value = l; o.textContent = l;
+    locSel.appendChild(o);
+  });
+
+  // Populate Procedural activity dropdown
+  const procSel = document.getElementById('oc_proceduralActivity');
+  ONCALL_PROCEDURAL_ACTIVITIES.forEach(a => {
+    const o = document.createElement('option');
+    o.value = a; o.textContent = a;
+    procSel.appendChild(o);
+  });
+
+  // Populate Non-procedural activity dropdown
+  const npSel = document.getElementById('oc_nonProcActivity');
+  ONCALL_NONPROC_ACTIVITIES.forEach(a => {
+    const o = document.createElement('option');
+    o.value = a; o.textContent = a;
+    npSel.appendChild(o);
+  });
+
+  // Populate Called By dropdown
+  const calledSel = document.getElementById('oc_calledBy');
+  ONCALL_CALLED_BY.forEach(c => {
+    const o = document.createElement('option');
+    o.value = c; o.textContent = c;
+    calledSel.appendChild(o);
+  });
+
+  // Location change → show/hide ward details
+  locSel.addEventListener('change', () => {
+    document.getElementById('oc_wardDetailsField').classList.toggle('hidden', locSel.value !== 'Ward');
+    if (locSel.value !== 'Ward') document.getElementById('oc_wardDetails').value = '';
+  });
+
+  // Call type change → show appropriate activity dropdown
+  const ctGrp = document.querySelector('[data-group="oc_callType"]');
+  if (ctGrp) {
+    ctGrp.addEventListener('click', () => {
+      setTimeout(() => {
+        const v = getGroupValue('oc_callType');
+        document.getElementById('oc_proceduralField').classList.toggle('hidden', v !== 'Procedural');
+        document.getElementById('oc_nonProcField').classList.toggle('hidden', v !== 'Non-procedural');
+        document.getElementById('oc_activityOtherField').classList.add('hidden');
+        if (v !== 'Procedural') document.getElementById('oc_proceduralActivity').value = '';
+        if (v !== 'Non-procedural') document.getElementById('oc_nonProcActivity').value = '';
+      }, 0);
+    });
+  }
+
+  // Activity dropdown change → show "Other" text if needed
+  procSel.addEventListener('change', () => {
+    document.getElementById('oc_activityOtherField').classList.toggle('hidden', procSel.value !== 'Other');
+  });
+  npSel.addEventListener('change', () => {
+    document.getElementById('oc_activityOtherField').classList.toggle('hidden', npSel.value !== 'Other');
+  });
+
+  // Time of call → auto-suggest time band
+  document.getElementById('oc_time').addEventListener('change', (e) => {
+    const t = e.target.value;
+    if (!t) return;
+    const [h] = t.split(':').map(Number);
+    let band;
+    if (h >= 8 && h < 12) band = 'Morning (8am–12noon)';
+    else if (h >= 12 && h < 16) band = 'Afternoon (12noon–4pm)';
+    else if (h >= 16 && h < 19) band = 'Evening (4pm–7pm)';
+    else band = 'Night (7pm–8am)';
+    setGroupValue('oc_band', band);
+  });
+
+  // Accordion behaviour for on-call form
+  document.querySelectorAll('#view-oncall .accordion-head').forEach(head => {
+    head.addEventListener('click', () => {
+      head.closest('.accordion').classList.toggle('open');
+    });
+  });
+
+  // Toggle/pill init for on-call groups
+  ['oc_callType','oc_sex','oc_urgency','oc_band','oc_senior','oc_timeSpent','oc_outcome'].forEach(g => {
+    const grp = document.querySelector(`[data-group="${g}"]`);
+    if (grp) {
+      grp.addEventListener('click', e => {
+        const btn = e.target.closest('button[data-val]');
+        if (!btn) return;
+        grp.querySelectorAll('button').forEach(b => b.classList.remove('on'));
+        btn.classList.add('on');
+      });
+    }
+  });
+
+  // Notes char count
+  document.getElementById('oc_notes').addEventListener('input', e => {
+    document.getElementById('oc_charCount').textContent = e.target.value.length;
+  });
+
+  // Form submit
+  document.getElementById('oncallForm').addEventListener('submit', submitOnCall);
+}
+
+// --- Set group value programmatically ---
+function setGroupValue(groupName, value) {
+  const grp = document.querySelector(`[data-group="${groupName}"]`);
+  if (!grp) return;
+  grp.querySelectorAll('button').forEach(b => {
+    b.classList.toggle('on', b.getAttribute('data-val') === value);
+  });
+}
+
+// v4.1: Update welcome banner with greeting based on time of day
+function updateOnCallWelcomeBanner() {
+  const banner = document.getElementById('oc_welcomeTime');
+  if (!banner) return;
+  const now = new Date();
+  const h = now.getHours();
+  let greeting = 'Good day';
+  let emoji = '☀';
+  if (h < 12) { greeting = 'Good morning'; emoji = '🌅'; }
+  else if (h < 17) { greeting = 'Good afternoon'; emoji = '☀'; }
+  else if (h < 21) { greeting = 'Good evening'; emoji = '🌆'; }
+  else { greeting = 'Good night'; emoji = '🌙'; }
+
+  const dayName = now.toLocaleDateString('en-IN', { weekday: 'long' });
+  const dateStr = now.toLocaleDateString('en-IN', { day: 'numeric', month: 'short' });
+  const timeStr = now.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', hour12: true });
+
+  banner.innerHTML = `${emoji} ${greeting}, ${currentUser ? currentUser.name.replace(/^Dr /, 'Dr ') : ''} · ${dayName}, ${dateStr} · ${timeStr}`;
+}
+
+// --- Submit on-call entry ---
+async function submitOnCall(e) {
+  e.preventDefault();
+  if (!currentUser) { alert('Please log in first'); return; }
+
+  const date = document.getElementById('oc_date').value;
+  const callTime = document.getElementById('oc_time').value;
+  const location = document.getElementById('oc_location').value;
+  const callType = getGroupValue('oc_callType');
+  const urgency = getGroupValue('oc_urgency');
+  const timeSpent = getGroupValue('oc_timeSpent');
+  const outcome = getGroupValue('oc_outcome');
+
+  // Activity logic
+  let specificActivity = '';
+  let activityOther = document.getElementById('oc_activityOther').value.trim();
+  if (callType === 'Procedural') {
+    specificActivity = document.getElementById('oc_proceduralActivity').value;
+  } else if (callType === 'Non-procedural') {
+    specificActivity = document.getElementById('oc_nonProcActivity').value;
+  }
+
+  // Validation
+  const missing = [];
+  if (!date) missing.push('Date');
+  if (!callTime) missing.push('Time of call');
+  if (!location) missing.push('Location');
+  if (!callType) missing.push('Call type');
+  if (!specificActivity) missing.push('Specific activity');
+  if (specificActivity === 'Other' && !activityOther) missing.push('"Other" activity description');
+  if (!urgency) missing.push('Urgency');
+  if (!timeSpent) missing.push('Time spent');
+  if (!outcome) missing.push('Outcome');
+  if (missing.length) {
+    alert('Please fill: ' + missing.join(', '));
+    return;
+  }
+
+  const entry = {
+    id: 'oc_' + Date.now() + '_' + Math.random().toString(36).slice(2,8),
+    createdAt: new Date().toISOString(),
+    date,
+    callTime,
+    doctor: currentUser.name,
+    patientInitials: document.getElementById('oc_initials').value.trim().toUpperCase(),
+    patientAge: document.getElementById('oc_age').value ? parseInt(document.getElementById('oc_age').value, 10) : null,
+    patientSex: getGroupValue('oc_sex') || '',
+    location,
+    wardDetails: location === 'Ward' ? document.getElementById('oc_wardDetails').value.trim() : '',
+    callType,
+    specificActivity,
+    activityOther: specificActivity === 'Other' ? activityOther : '',
+    urgency,
+    timeOfDayBand: getGroupValue('oc_band') || '',
+    calledBy: document.getElementById('oc_calledBy').value || '',
+    seniorConsulted: getGroupValue('oc_senior') || '',
+    timeSpent,
+    outcome,
+    notes: document.getElementById('oc_notes').value.trim()
+  };
+
+  const saveBtn = document.getElementById('oc_saveBtn');
+  saveBtn.disabled = true;
+  saveBtn.textContent = 'Saving...';
+
+  try {
+    if (isConfigured() && connectionOk) {
+      await apiAddOnCall(entry);
+      allOnCallEntries.unshift(entry);
+      showToast('On-call log saved ✓');
+      saveBtn.classList.add('saved');
+      setTimeout(() => saveBtn.classList.remove('saved'), 600);
+    } else {
+      // Queue locally if offline / unconfigured
+      const pending = JSON.parse(localStorage.getItem('kims_oncall_pending') || '[]');
+      pending.push(entry);
+      localStorage.setItem('kims_oncall_pending', JSON.stringify(pending));
+      allOnCallEntries.unshift(entry);
+      showToast('Saved locally (will sync later)', 'warn');
+    }
+    resetOnCallForm();
+  } catch (err) {
+    console.error(err);
+    const pending = JSON.parse(localStorage.getItem('kims_oncall_pending') || '[]');
+    pending.push(entry);
+    localStorage.setItem('kims_oncall_pending', JSON.stringify(pending));
+    allOnCallEntries.unshift(entry);
+    showToast('Saved locally (server unreachable)', 'warn');
+    resetOnCallForm();
+  } finally {
+    saveBtn.disabled = false;
+    saveBtn.textContent = 'SAVE ON-CALL LOG';
+  }
+}
+
+function resetOnCallForm() {
+  document.getElementById('oncallForm').reset();
+  document.getElementById('oc_date').value = new Date().toISOString().slice(0,10);
+  document.getElementById('oc_doctor').value = currentUser.name;
+  ['oc_callType','oc_sex','oc_urgency','oc_band','oc_senior','oc_timeSpent','oc_outcome'].forEach(g => {
+    document.querySelectorAll(`[data-group="${g}"] button`).forEach(b => b.classList.remove('on'));
+  });
+  document.getElementById('oc_wardDetailsField').classList.add('hidden');
+  document.getElementById('oc_proceduralField').classList.add('hidden');
+  document.getElementById('oc_nonProcField').classList.add('hidden');
+  document.getElementById('oc_activityOtherField').classList.add('hidden');
+  document.getElementById('oc_charCount').textContent = '0';
+  document.querySelectorAll('#view-oncall .accordion').forEach(a => a.classList.remove('open'));
+  document.querySelector('#view-oncall .accordion[data-oc-section="basics"]').classList.add('open');
+}
+
+// --- Load all on-call entries from sheet ---
+async function loadAllOnCall() {
+  // Load from local first
+  const cached = localStorage.getItem('kims_oncall_cache');
+  if (cached) {
+    try { allOnCallEntries = JSON.parse(cached); } catch { allOnCallEntries = []; }
+  }
+  // Local pending
+  const pending = JSON.parse(localStorage.getItem('kims_oncall_pending') || '[]');
+
+  if (isConfigured() && connectionOk) {
+    try {
+      const remote = await apiListOnCall();
+      allOnCallEntries = remote.map(e => ({
+        ...e,
+        patientAge: e.patientAge === '' || e.patientAge == null ? null : Number(e.patientAge)
+      }));
+      // Merge pending that haven't synced
+      pending.forEach(p => {
+        if (!allOnCallEntries.some(x => x.id === p.id)) allOnCallEntries.push(p);
+      });
+      localStorage.setItem('kims_oncall_cache', JSON.stringify(allOnCallEntries));
+    } catch (err) {
+      console.warn('On-call load fallback to cache:', err);
+    }
+  }
+  allOnCallEntries.sort((a,b) => {
+    const dt = (b.date || '').localeCompare(a.date || '');
+    if (dt !== 0) return dt;
+    return (b.callTime || '').localeCompare(a.callTime || '');
+  });
+}
+
+// --- Render My On-Call list ---
+function renderMyOnCall() {
+  const list = document.getElementById('myOncallList');
+  const mine = allOnCallEntries.filter(e => e.doctor === currentUser.name);
+  document.getElementById('myOncallCount').textContent = mine.length;
+  if (mine.length === 0) {
+    list.innerHTML = '<div style="text-align:center; padding:40px; color:var(--text-muted);">No on-call entries yet.</div>';
+    return;
+  }
+  list.innerHTML = mine.map(e => `
+    <div class="case-card">
+      <div class="case-card-head">
+        <div>
+          <span class="case-date">${escapeHtml(e.date || '')} ${e.callTime ? '· ' + escapeHtml(e.callTime) : ''}</span>
+          <span class="case-specialty">${escapeHtml(e.callType || '')}</span>
+        </div>
+        <span class="case-duration">${escapeHtml(e.timeSpent || '')}</span>
+      </div>
+      <div class="case-card-body">
+        <div class="detail-row"><div class="k">Location</div><div class="v">${escapeHtml(e.location || '')}${e.wardDetails ? ' · ' + escapeHtml(e.wardDetails) : ''}</div></div>
+        <div class="detail-row"><div class="k">Activity</div><div class="v">${escapeHtml(e.specificActivity === 'Other' ? (e.activityOther || 'Other') : (e.specificActivity || ''))}</div></div>
+        ${e.patientInitials ? `<div class="detail-row"><div class="k">Patient</div><div class="v">${escapeHtml(e.patientInitials)}${e.patientAge ? ' (' + e.patientAge + 'y' + (e.patientSex ? ' ' + e.patientSex : '') + ')' : ''}</div></div>` : ''}
+        ${e.urgency ? `<div class="detail-row"><div class="k">Urgency</div><div class="v">${escapeHtml(e.urgency)}</div></div>` : ''}
+        ${e.calledBy ? `<div class="detail-row"><div class="k">Called by</div><div class="v">${escapeHtml(e.calledBy)}</div></div>` : ''}
+        <div class="detail-row"><div class="k">Outcome</div><div class="v">${escapeHtml(e.outcome || '')}</div></div>
+        ${e.notes ? `<div class="detail-row"><div class="k">Notes</div><div class="v">${escapeHtml(e.notes)}</div></div>` : ''}
+      </div>
+    </div>
+  `).join('');
+}
+
+// --- On-Call Dashboard ---
+function renderOnCallDashboard() {
+  // Populate doctor filter dropdown
+  const doctorSel = document.getElementById('oc_flt_doctor');
+  if (doctorSel.options.length <= 1) {
+    DOCTORS.forEach(d => {
+      const o = document.createElement('option');
+      o.value = d.name; o.textContent = d.name;
+      doctorSel.appendChild(o);
+    });
+  }
+  // Set default handover date to today
+  if (!document.getElementById('oc_handoverDate').value) {
+    document.getElementById('oc_handoverDate').value = new Date().toISOString().slice(0,10);
+  }
+  applyOnCallFilters();
+}
+
+function applyOnCallFilters() {
+  const from = document.getElementById('oc_flt_from').value;
+  const to = document.getElementById('oc_flt_to').value;
+  const doc = document.getElementById('oc_flt_doctor').value;
+  const ct = document.getElementById('oc_flt_callType').value;
+  const urg = document.getElementById('oc_flt_urgency').value;
+
+  filteredOnCallEntries = allOnCallEntries.filter(e => {
+    if (from && (e.date || '') < from) return false;
+    if (to && (e.date || '') > to) return false;
+    if (doc && e.doctor !== doc) return false;
+    if (ct && e.callType !== ct) return false;
+    if (urg && e.urgency !== urg) return false;
+    return true;
+  });
+
+  renderOnCallSummary();
+  renderOnCallCharts();
+  renderOnCallDataTable();
+}
+
+function clearOnCallFilters() {
+  document.getElementById('oc_flt_from').value = '';
+  document.getElementById('oc_flt_to').value = '';
+  document.getElementById('oc_flt_doctor').value = '';
+  document.getElementById('oc_flt_callType').value = '';
+  document.getElementById('oc_flt_urgency').value = '';
+  applyOnCallFilters();
+}
+
+function renderOnCallSummary() {
+  document.getElementById('oc_stat_total').textContent = filteredOnCallEntries.length;
+  const thisMonth = new Date().toISOString().slice(0,7);
+  const monthCount = filteredOnCallEntries.filter(e => (e.date || '').startsWith(thisMonth)).length;
+  document.getElementById('oc_stat_month').textContent = monthCount;
+  document.getElementById('oc_stat_proc').textContent = filteredOnCallEntries.filter(e => e.callType === 'Procedural').length;
+  document.getElementById('oc_stat_nonproc').textContent = filteredOnCallEntries.filter(e => e.callType === 'Non-procedural').length;
+  document.getElementById('oc_stat_escal').textContent = filteredOnCallEntries.filter(e => e.outcome === 'Escalated').length;
+
+  // Estimated hours this month
+  const monthEntries = filteredOnCallEntries.filter(e => (e.date || '').startsWith(thisMonth));
+  const totalMinutes = monthEntries.reduce((sum, e) => sum + estimateMinutes(e.timeSpent), 0);
+  document.getElementById('oc_stat_hours').textContent = (totalMinutes / 60).toFixed(1);
+}
+
+function estimateMinutes(band) {
+  switch (band) {
+    case '< 15 min': return 10;
+    case '15 – 30 min': return 22;
+    case '30 – 60 min': return 45;
+    case '> 60 min': return 75;
+    default: return 0;
+  }
+}
+
+function renderOnCallCharts() {
+  // Destroy any existing charts in the oc namespace
+  Object.keys(charts).filter(k => k.startsWith('oc')).forEach(k => {
+    if (charts[k]) { charts[k].destroy(); delete charts[k]; }
+  });
+  renderOcCh1(); renderOcCh2(); renderOcCh3(); renderOcCh4(); renderOcCh5();
+  renderOcCh6(); renderOcCh7(); renderOcCh8(); renderOcCh9(); renderOcCh10();
+}
+
+// ① Calls per Month
+function renderOcCh1() {
+  const months = lastNMonths(12);
+  const counts = months.map(m =>
+    filteredOnCallEntries.filter(e => String(e.date || '').startsWith(m.key)).length
+  );
+  const canvas = document.getElementById('ocCh1');
+  if (!canvas) return;
+  charts.ocCh1 = new Chart(canvas, {
+    type: 'line',
+    data: { labels: months.map(m => m.label),
+      datasets: [{ label: 'Calls', data: counts, borderColor: '#00897B',
+        backgroundColor: 'rgba(0,137,123,0.15)', fill: true, tension: 0.3,
+        pointBackgroundColor: '#00897B', pointRadius: 4 }] },
+    options: { ...CHART_DEFAULTS,
+      plugins: { ...CHART_DEFAULTS.plugins, legend: { display: false } },
+      scales: { y: { beginAtZero: true, ticks: { precision: 0 } } } }
+  });
+}
+
+// ② Procedural vs Non-procedural
+function renderOcCh2() {
+  const proc = filteredOnCallEntries.filter(e => e.callType === 'Procedural').length;
+  const nonProc = filteredOnCallEntries.filter(e => e.callType === 'Non-procedural').length;
+  const canvas = document.getElementById('ocCh2');
+  if (!canvas) return;
+  if (proc + nonProc === 0) { drawEmptyChartMessage(canvas, 'No data yet'); return; }
+  charts.ocCh2 = new Chart(canvas, {
+    type: 'doughnut',
+    data: { labels: ['Procedural', 'Non-procedural'],
+      datasets: [{ data: [proc, nonProc], backgroundColor: ['#F57C00', '#1E5A9F'] }] },
+    options: { ...CHART_DEFAULTS }
+  });
+}
+
+// ③ Top procedural activities
+function renderOcCh3() {
+  const m = {};
+  filteredOnCallEntries.filter(e => e.callType === 'Procedural').forEach(e => {
+    const k = e.specificActivity === 'Other' ? 'Other' : (e.specificActivity || '—');
+    m[k] = (m[k] || 0) + 1;
+  });
+  const canvas = document.getElementById('ocCh3');
+  if (!canvas) return;
+  const entries = Object.entries(m).sort((a,b) => b[1] - a[1]).slice(0,10);
+  if (entries.length === 0) { drawEmptyChartMessage(canvas, 'No procedural calls yet'); return; }
+  charts.ocCh3 = new Chart(canvas, {
+    type: 'bar',
+    data: { labels: entries.map(e => e[0]),
+      datasets: [{ data: entries.map(e => e[1]), backgroundColor: '#F57C00', borderRadius: 3 }] },
+    options: { ...CHART_DEFAULTS, indexAxis: 'y',
+      plugins: { ...CHART_DEFAULTS.plugins, legend: { display: false } },
+      scales: { x: { beginAtZero: true, ticks: { precision: 0 } } } }
+  });
+}
+
+// ④ Top non-procedural activities
+function renderOcCh4() {
+  const m = {};
+  filteredOnCallEntries.filter(e => e.callType === 'Non-procedural').forEach(e => {
+    const k = e.specificActivity === 'Other' ? 'Other' : (e.specificActivity || '—');
+    m[k] = (m[k] || 0) + 1;
+  });
+  const canvas = document.getElementById('ocCh4');
+  if (!canvas) return;
+  const entries = Object.entries(m).sort((a,b) => b[1] - a[1]).slice(0,10);
+  if (entries.length === 0) { drawEmptyChartMessage(canvas, 'No non-procedural calls yet'); return; }
+  charts.ocCh4 = new Chart(canvas, {
+    type: 'bar',
+    data: { labels: entries.map(e => e[0]),
+      datasets: [{ data: entries.map(e => e[1]), backgroundColor: '#1E5A9F', borderRadius: 3 }] },
+    options: { ...CHART_DEFAULTS, indexAxis: 'y',
+      plugins: { ...CHART_DEFAULTS.plugins, legend: { display: false } },
+      scales: { x: { beginAtZero: true, ticks: { precision: 0 } } } }
+  });
+}
+
+// ⑤ Calls by Location
+function renderOcCh5() {
+  const m = {};
+  filteredOnCallEntries.forEach(e => {
+    const k = e.location || '—';
+    m[k] = (m[k] || 0) + 1;
+  });
+  const canvas = document.getElementById('ocCh5');
+  if (!canvas) return;
+  const entries = Object.entries(m).sort((a,b) => b[1] - a[1]);
+  if (entries.length === 0) { drawEmptyChartMessage(canvas, 'No data yet'); return; }
+  charts.ocCh5 = new Chart(canvas, {
+    type: 'bar',
+    data: { labels: entries.map(e => e[0]),
+      datasets: [{ data: entries.map(e => e[1]), backgroundColor: '#00897B', borderRadius: 3 }] },
+    options: { ...CHART_DEFAULTS,
+      plugins: { ...CHART_DEFAULTS.plugins, legend: { display: false } },
+      scales: { y: { beginAtZero: true, ticks: { precision: 0 } } } }
+  });
+}
+
+// ⑥ Time of Day Distribution
+function renderOcCh6() {
+  const order = ['Morning (8am–12noon)','Afternoon (12noon–4pm)','Evening (4pm–7pm)','Night (7pm–8am)'];
+  const m = {};
+  order.forEach(o => m[o] = 0);
+  filteredOnCallEntries.forEach(e => {
+    if (e.timeOfDayBand) m[e.timeOfDayBand] = (m[e.timeOfDayBand] || 0) + 1;
+  });
+  const canvas = document.getElementById('ocCh6');
+  if (!canvas) return;
+  const data = order.map(o => m[o]);
+  if (data.every(v => v === 0)) { drawEmptyChartMessage(canvas, 'No data yet'); return; }
+  charts.ocCh6 = new Chart(canvas, {
+    type: 'bar',
+    data: { labels: ['Morning','Afternoon','Evening','Night'],
+      datasets: [{ data: data, backgroundColor: ['#FFB300','#F57C00','#7E57C2','#1A237E'], borderRadius: 3 }] },
+    options: { ...CHART_DEFAULTS,
+      plugins: { ...CHART_DEFAULTS.plugins, legend: { display: false } },
+      scales: { y: { beginAtZero: true, ticks: { precision: 0 } } } }
+  });
+}
+
+// ⑦ Urgency
+function renderOcCh7() {
+  const m = { Routine: 0, Urgent: 0, Emergency: 0 };
+  filteredOnCallEntries.forEach(e => {
+    if (e.urgency in m) m[e.urgency]++;
+  });
+  const canvas = document.getElementById('ocCh7');
+  if (!canvas) return;
+  const total = m.Routine + m.Urgent + m.Emergency;
+  if (total === 0) { drawEmptyChartMessage(canvas, 'No data yet'); return; }
+  charts.ocCh7 = new Chart(canvas, {
+    type: 'doughnut',
+    data: { labels: ['Routine','Urgent','Emergency'],
+      datasets: [{ data: [m.Routine, m.Urgent, m.Emergency],
+        backgroundColor: ['#1E5A9F','#F57C00','#D32F2F'] }] },
+    options: { ...CHART_DEFAULTS }
+  });
+}
+
+// ⑧ Outcomes
+function renderOcCh8() {
+  const m = { Completed: 0, Stabilised: 0, Escalated: 0 };
+  filteredOnCallEntries.forEach(e => {
+    if (e.outcome in m) m[e.outcome]++;
+  });
+  const canvas = document.getElementById('ocCh8');
+  if (!canvas) return;
+  const total = m.Completed + m.Stabilised + m.Escalated;
+  if (total === 0) { drawEmptyChartMessage(canvas, 'No data yet'); return; }
+  charts.ocCh8 = new Chart(canvas, {
+    type: 'doughnut',
+    data: { labels: ['Completed','Stabilised','Escalated'],
+      datasets: [{ data: [m.Completed, m.Stabilised, m.Escalated],
+        backgroundColor: ['#2E7D32','#FFA000','#D32F2F'] }] },
+    options: { ...CHART_DEFAULTS }
+  });
+}
+
+// ⑨ Per-doctor workload
+function renderOcCh9() {
+  const m = {};
+  filteredOnCallEntries.forEach(e => {
+    const k = e.doctor || '—';
+    m[k] = (m[k] || 0) + 1;
+  });
+  const canvas = document.getElementById('ocCh9');
+  if (!canvas) return;
+  const entries = Object.entries(m).sort((a,b) => b[1] - a[1]);
+  if (entries.length === 0) { drawEmptyChartMessage(canvas, 'No data yet'); return; }
+  charts.ocCh9 = new Chart(canvas, {
+    type: 'bar',
+    data: { labels: entries.map(e => e[0].replace(/^Dr /, '')),
+      datasets: [{ data: entries.map(e => e[1]), backgroundColor: '#0A2342', borderRadius: 3 }] },
+    options: { ...CHART_DEFAULTS, indexAxis: 'y',
+      plugins: { ...CHART_DEFAULTS.plugins, legend: { display: false } },
+      scales: { x: { beginAtZero: true, ticks: { precision: 0 } } } }
+  });
+}
+
+// ⑩ Called By
+function renderOcCh10() {
+  const m = {};
+  filteredOnCallEntries.forEach(e => {
+    if (e.calledBy) m[e.calledBy] = (m[e.calledBy] || 0) + 1;
+  });
+  const canvas = document.getElementById('ocCh10');
+  if (!canvas) return;
+  const entries = Object.entries(m).sort((a,b) => b[1] - a[1]).slice(0,10);
+  if (entries.length === 0) { drawEmptyChartMessage(canvas, 'No data yet'); return; }
+  charts.ocCh10 = new Chart(canvas, {
+    type: 'bar',
+    data: { labels: entries.map(e => e[0]),
+      datasets: [{ data: entries.map(e => e[1]), backgroundColor: '#00695C', borderRadius: 3 }] },
+    options: { ...CHART_DEFAULTS, indexAxis: 'y',
+      plugins: { ...CHART_DEFAULTS.plugins, legend: { display: false } },
+      scales: { x: { beginAtZero: true, ticks: { precision: 0 } } } }
+  });
+}
+
+// On-Call data table
+function renderOnCallDataTable() {
+  const tbody = document.querySelector('#oc_dataTable tbody');
+  document.getElementById('oc_tableCount').textContent = filteredOnCallEntries.length;
+  if (filteredOnCallEntries.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="10" style="text-align:center; padding:24px; color:var(--text-muted);">No entries match the current filters.</td></tr>';
+    return;
+  }
+  tbody.innerHTML = filteredOnCallEntries.map(e => {
+    const act = e.specificActivity === 'Other' ? (e.activityOther || 'Other') : (e.specificActivity || '');
+    const patient = [e.patientInitials, e.patientAge ? e.patientAge + 'y' : null, e.patientSex].filter(Boolean).join(' / ');
+    return `
+      <tr>
+        <td>${escapeHtml(e.date || '')}</td>
+        <td>${escapeHtml(e.callTime || '')}</td>
+        <td>${escapeHtml((e.doctor || '').replace(/^Dr /, ''))}</td>
+        <td>${escapeHtml(patient)}</td>
+        <td>${escapeHtml(e.location || '')}${e.wardDetails ? '<br><small>' + escapeHtml(e.wardDetails) + '</small>' : ''}</td>
+        <td>${escapeHtml(e.callType || '')}</td>
+        <td>${escapeHtml(act)}</td>
+        <td>${escapeHtml(e.urgency || '')}</td>
+        <td>${escapeHtml(e.timeSpent || '')}</td>
+        <td>${escapeHtml(e.outcome || '')}</td>
+      </tr>
+    `;
+  }).join('');
+}
+
+// CSV export for on-call
+function exportOnCallCsv() {
+  if (filteredOnCallEntries.length === 0) { showToast('No entries to export', true); return; }
+  const headers = ['Date','Time','Doctor','PatientInitials','PatientAge','PatientSex','Location','WardDetails','CallType','SpecificActivity','ActivityOther','Urgency','TimeOfDayBand','CalledBy','SeniorConsulted','TimeSpent','Outcome','Notes','CreatedAt'];
+  const rows = filteredOnCallEntries.map(e => [
+    e.date, e.callTime, e.doctor, e.patientInitials, e.patientAge, e.patientSex,
+    e.location, e.wardDetails, e.callType, e.specificActivity, e.activityOther,
+    e.urgency, e.timeOfDayBand, e.calledBy, e.seniorConsulted, e.timeSpent,
+    e.outcome, e.notes, e.createdAt
+  ]);
+  const esc = v => {
+    const s = v == null ? '' : String(v);
+    return /[",\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s;
+  };
+  const csv = [headers.join(','), ...rows.map(r => r.map(esc).join(','))].join('\n');
+  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  const stamp = new Date().toISOString().slice(0,10);
+  a.href = url; a.download = `kims_oncall_${stamp}.csv`;
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  showToast('CSV exported ✓');
+}
+
+// Handover PDF generator (8am→8am)
+function generateHandoverPDF() {
+  const dateStr = document.getElementById('oc_handoverDate').value;
+  if (!dateStr) { alert('Please pick a date for the handover'); return; }
+
+  // The window is: previous-day 8am to selected-day 8am
+  const endDate = new Date(dateStr + 'T08:00:00');
+  const startDate = new Date(endDate.getTime() - 24 * 60 * 60 * 1000);
+
+  // Filter entries that fall within the window
+  const inWindow = allOnCallEntries.filter(e => {
+    if (!e.date || !e.callTime) return false;
+    const entryDt = new Date(e.date + 'T' + e.callTime + ':00');
+    return entryDt >= startDate && entryDt < endDate;
+  }).sort((a, b) => {
+    const aDt = new Date(a.date + 'T' + a.callTime + ':00');
+    const bDt = new Date(b.date + 'T' + b.callTime + ':00');
+    return aDt - bDt;
+  });
+
+  // Summary
+  const total = inWindow.length;
+  const procCount = inWindow.filter(e => e.callType === 'Procedural').length;
+  const nonProcCount = inWindow.filter(e => e.callType === 'Non-procedural').length;
+  const totalMinutes = inWindow.reduce((s, e) => s + estimateMinutes(e.timeSpent), 0);
+  const completed = inWindow.filter(e => e.outcome === 'Completed').length;
+  const stabilised = inWindow.filter(e => e.outcome === 'Stabilised').length;
+  const escalated = inWindow.filter(e => e.outcome === 'Escalated').length;
+
+  const fmtDate = d => d.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
+  const fmtTime = d => d.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', hour12: false });
+
+  const rowsHtml = inWindow.map((e, i) => {
+    const act = e.specificActivity === 'Other' ? (e.activityOther || 'Other') : (e.specificActivity || '');
+    const patient = [e.patientInitials, e.patientAge ? e.patientAge + 'y' : null, e.patientSex].filter(Boolean).join('/');
+    return `
+      <tr>
+        <td>${i + 1}</td>
+        <td>${escapeHtml(e.callTime || '')}</td>
+        <td>${escapeHtml(e.location || '')}${e.wardDetails ? '<br><small>' + escapeHtml(e.wardDetails) + '</small>' : ''}</td>
+        <td>${escapeHtml(patient)}</td>
+        <td>${escapeHtml(act)}${e.callType === 'Procedural' ? ' <small>(P)</small>' : ' <small>(NP)</small>'}</td>
+        <td>${escapeHtml(e.urgency || '')}</td>
+        <td>${escapeHtml(e.timeSpent || '')}</td>
+        <td>${escapeHtml(e.doctor || '')}</td>
+        <td>${escapeHtml(e.outcome || '')}</td>
+        ${e.notes ? '<td>' + escapeHtml(e.notes) + '</td>' : '<td>—</td>'}
+      </tr>
+    `;
+  }).join('');
+
+  const html = `<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>On-Call Handover ${fmtDate(startDate)} → ${fmtDate(endDate)}</title>
+<style>
+  @page { size: A4; margin: 14mm; }
+  body { font-family: Arial, sans-serif; color: #0A2342; font-size: 11px; margin: 0; padding: 12px; }
+  .hdr-band { color: #00897B; font-weight: bold; letter-spacing: 4px; font-size: 10px; }
+  h1 { font-size: 20px; margin: 4px 0 2px; color: #0A2342; }
+  .sub { color: #5C6B80; font-size: 12px; margin-bottom: 14px; }
+  .stats { display: flex; gap: 16px; flex-wrap: wrap; background: #F5FBFA; border: 1px solid #00897B; border-radius: 6px; padding: 12px; margin-bottom: 18px; }
+  .stat { font-size: 11px; }
+  .stat-val { font-size: 16px; font-weight: bold; color: #00897B; }
+  table { width: 100%; border-collapse: collapse; font-size: 10px; }
+  th { background: #0A2342; color: white; padding: 6px 4px; text-align: left; font-weight: 600; }
+  td { padding: 5px 4px; border-bottom: 1px solid #E0E6ED; vertical-align: top; }
+  tr:nth-child(even) td { background: #F8FAFC; }
+  small { color: #8695A8; font-size: 9px; }
+  .signoff { margin-top: 28px; display: flex; justify-content: space-between; }
+  .sign-block { width: 45%; }
+  .sign-line { border-bottom: 1px solid #5C6B80; height: 30px; }
+  .sign-lbl { font-size: 10px; color: #5C6B80; margin-top: 4px; }
+  .footer { margin-top: 24px; text-align: center; padding: 8px; background: #FFEBEE; border: 1px solid #C62828; border-radius: 4px; color: #C62828; font-weight: bold; font-size: 11px; letter-spacing: 1px; }
+  .empty { text-align: center; padding: 40px; color: #8695A8; font-style: italic; }
+  @media print { body { padding: 0; } .stats { page-break-inside: avoid; } table { page-break-inside: auto; } tr { page-break-inside: avoid; } }
+</style>
+</head>
+<body>
+  <div class="hdr-band">KIMS HOSPITAL · MAHADEVAPURA · ANAESTHESIA DEPARTMENT</div>
+  <h1>On-Call Shift Handover</h1>
+  <div class="sub">
+    <strong>Period:</strong> ${fmtDate(startDate)} 08:00 → ${fmtDate(endDate)} 08:00 ·
+    <strong>Generated:</strong> ${fmtDate(new Date())} ${fmtTime(new Date())}
+  </div>
+
+  <div class="stats">
+    <div class="stat"><div class="stat-val">${total}</div>Total Calls</div>
+    <div class="stat"><div class="stat-val">${procCount}</div>Procedural</div>
+    <div class="stat"><div class="stat-val">${nonProcCount}</div>Non-procedural</div>
+    <div class="stat"><div class="stat-val">${(totalMinutes/60).toFixed(1)} hr</div>Estimated time</div>
+    <div class="stat"><div class="stat-val">${completed} / ${stabilised} / ${escalated}</div>Completed / Stabilised / Escalated</div>
+  </div>
+
+  ${inWindow.length === 0
+    ? '<div class="empty">No on-call entries logged in this 24-hour period.</div>'
+    : `<table>
+      <thead>
+        <tr><th>#</th><th>Time</th><th>Location</th><th>Patient</th><th>Activity</th><th>Urgency</th><th>Time spent</th><th>Doctor</th><th>Outcome</th><th>Notes</th></tr>
+      </thead>
+      <tbody>${rowsHtml}</tbody>
+    </table>`}
+
+  <div class="signoff">
+    <div class="sign-block">
+      <div class="sign-line"></div>
+      <div class="sign-lbl">Outgoing on-call doctor — Signature &amp; date</div>
+    </div>
+    <div class="sign-block">
+      <div class="sign-line"></div>
+      <div class="sign-lbl">Incoming on-call doctor — Signature &amp; date</div>
+    </div>
+  </div>
+
+  <div class="footer">FOR HANDOVER USE ONLY · SHRED AFTER USE</div>
+</body>
+</html>`;
+
+  const win = window.open('', '_blank');
+  win.document.write(html);
+  win.document.close();
+  win.focus();
+  // Auto-trigger print after content loads
+  setTimeout(() => win.print(), 500);
+}
+
+// --- Tab toggle in My Cases view ---
+function showMyTab(tab) {
+  if (tab === 'cases') {
+    document.getElementById('myCasesList').classList.remove('hidden');
+    document.getElementById('myOncallList').classList.add('hidden');
+    document.getElementById('myTab_cases').className = 'btn btn-primary';
+    document.getElementById('myTab_oncall').className = 'btn btn-ghost';
+  } else {
+    document.getElementById('myCasesList').classList.add('hidden');
+    document.getElementById('myOncallList').classList.remove('hidden');
+    document.getElementById('myTab_cases').className = 'btn btn-ghost';
+    document.getElementById('myTab_oncall').className = 'btn btn-primary';
+    renderMyOnCall();
+  }
+}
+
+// --- Second anaesthetist panel on OT dashboard ---
+function renderSecondAnaesthetistPanel() {
+  const tbody = document.querySelector('#secondAnaesthTable tbody');
+  if (!tbody) return;
+  const m = {};
+  filteredCases.forEach(c => {
+    const sa = c.secondAnaesthetist;
+    if (!sa) return;
+    if (!m[sa]) m[sa] = { count: 0, totalMin: 0 };
+    m[sa].count += 1;
+    m[sa].totalMin += (c.durationMin || 0);
+  });
+  const entries = Object.entries(m).sort((a,b) => b[1].count - a[1].count);
+  if (entries.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; padding:24px; color:var(--text-muted);">No second-anaesthetist data yet.</td></tr>';
+    return;
+  }
+  tbody.innerHTML = entries.map(([doctor, data]) => {
+    const hours = (data.totalMin / 60).toFixed(1);
+    const avg = (data.totalMin / data.count).toFixed(0);
+    return `
+      <tr>
+        <td>${escapeHtml(doctor)}</td>
+        <td>${data.count}</td>
+        <td>${hours} hr</td>
+        <td>${avg} min</td>
+      </tr>
+    `;
+  }).join('');
+}
+
+/* ============================================================
+   END v4 ON-CALL MODULE
+   ============================================================ */
+
+/* ============================================================
    MY CASES VIEW
    ============================================================ */
 function renderMyCases() {
@@ -2893,6 +4608,7 @@ function renderDashboard() {
   renderSummary();
   renderCharts();
   renderDataTable();
+  renderSecondAnaesthetistPanel(); // v4
 
   const now = new Date();
   document.getElementById('printMeta').textContent =
@@ -3553,6 +5269,8 @@ document.addEventListener('DOMContentLoaded', async () => {
   initAccordions();
   initToggleGroups();
   initDashboardFilters();
+  // v4: initialize on-call form
+  initOnCallForm();
 
   const us = document.querySelector('[data-group="bguidance"] [data-val="Ultrasound"]');
   if (us) us.classList.add('on');
@@ -3567,6 +5285,34 @@ document.addEventListener('DOMContentLoaded', async () => {
   document.getElementById('exportCsvBtn').addEventListener('click', exportCsv);
   document.getElementById('printBtn').addEventListener('click', printReport);
   document.getElementById('monthlyBtn').addEventListener('click', monthlyWorkloadReport);
+
+  // v4: on-call dashboard event handlers
+  const ocApply = document.getElementById('oc_applyFiltersBtn');
+  if (ocApply) ocApply.addEventListener('click', applyOnCallFilters);
+  const ocClear = document.getElementById('oc_clearFiltersBtn');
+  if (ocClear) ocClear.addEventListener('click', clearOnCallFilters);
+  const ocRefresh = document.getElementById('oc_refreshBtn');
+  if (ocRefresh) ocRefresh.addEventListener('click', async () => {
+    await loadAllOnCall();
+    applyOnCallFilters();
+    showToast('Refreshed from sheet ✓');
+  });
+  const ocExport = document.getElementById('oc_exportCsvBtn');
+  if (ocExport) ocExport.addEventListener('click', exportOnCallCsv);
+  const ocHandover = document.getElementById('oc_handoverBtn');
+  if (ocHandover) ocHandover.addEventListener('click', generateHandoverPDF);
+
+  // v4: filter bar toggle
+  const ocFilterHead = document.getElementById('oc_filterHeadBtn');
+  if (ocFilterHead) ocFilterHead.addEventListener('click', () => {
+    document.getElementById('oc_filterBar').classList.toggle('open');
+  });
+
+  // v4: My Cases tab toggle
+  const mtCases = document.getElementById('myTab_cases');
+  const mtOncall = document.getElementById('myTab_oncall');
+  if (mtCases) mtCases.addEventListener('click', () => showMyTab('cases'));
+  if (mtOncall) mtOncall.addEventListener('click', () => showMyTab('oncall'));
 
   document.getElementById('modalCloseBtn').addEventListener('click', () => {
     document.getElementById('caseModal').classList.remove('show');
