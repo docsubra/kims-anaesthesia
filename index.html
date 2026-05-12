@@ -1618,9 +1618,9 @@ table.data-table {
         </div>
       </div>
       <button class="nav-btn" data-view="entry">✎ <span class="lbl-long">OT Case</span></button>
-      <button class="nav-btn" data-view="oncall">☎ <span class="lbl-long">On-Call</span></button>
+      <button class="nav-btn" data-view="oncall">☎ <span class="lbl-long">Outside OT</span></button>
       <button class="nav-btn" data-view="mycases">☰ <span class="lbl-long">My Cases</span></button>
-      <button class="nav-btn hidden" id="navOncallDash" data-view="oncalldash">▤ <span class="lbl-long">On-Call Dash</span></button>
+      <button class="nav-btn hidden" id="navOncallDash" data-view="oncalldash">▤ <span class="lbl-long">Outside OT Dash</span></button>
       <button class="nav-btn hidden" id="navDashboard" data-view="dashboard">▦ <span class="lbl-long">OT Dash</span></button>
       <span class="nav-user">
         <span style="opacity:0.6;">👤</span>
@@ -2063,7 +2063,7 @@ table.data-table {
   <!-- ============ v4: ON-CALL ENTRY VIEW ============ -->
   <main class="page hidden" id="view-oncall">
     <div class="oc-welcome-banner">
-      <div class="oc-welcome-title">☎ On-Call / Out-of-OT Log</div>
+      <div class="oc-welcome-title">☎ Outside OT Activity Log</div>
       <div class="oc-welcome-sub">Recognising the work you do outside the operating theatre.</div>
       <div class="oc-welcome-time" id="oc_welcomeTime">Loading...</div>
     </div>
@@ -2266,15 +2266,15 @@ table.data-table {
           </div>
         </div>
 
-        <button type="submit" class="save-btn" id="oc_saveBtn">SAVE ON-CALL LOG</button>
+        <button type="submit" class="save-btn" id="oc_saveBtn">SAVE OUTSIDE OT LOG</button>
       </form>
     </div>
   </main>
 
   <!-- ============ v4: ON-CALL DASHBOARD VIEW (HOD only) ============ -->
   <main class="page hidden" id="view-oncalldash">
-    <h1 class="page-title">On-Call Dashboard</h1>
-    <p class="page-sub">Out-of-OT work across the department.</p>
+    <h1 class="page-title">Outside OT Dashboard</h1>
+    <p class="page-sub">Work done outside the operating theatre, across the department.</p>
 
     <div class="filter-bar open" id="oc_filterBar">
       <button type="button" class="filter-head" id="oc_filterHeadBtn">
@@ -2359,7 +2359,7 @@ table.data-table {
       <div class="chart-card"><h3>⑥ Time of Day Distribution</h3><div class="chart-wrap"><canvas id="ocCh6"></canvas></div></div>
       <div class="chart-card"><h3>⑦ Urgency Split</h3><div class="chart-wrap"><canvas id="ocCh7"></canvas></div></div>
       <div class="chart-card"><h3>⑧ Outcomes (Completed / Stabilised / Escalated)</h3><div class="chart-wrap"><canvas id="ocCh8"></canvas></div></div>
-      <div class="chart-card"><h3>⑨ Per-doctor On-Call Workload</h3><div class="chart-wrap"><canvas id="ocCh9"></canvas></div></div>
+      <div class="chart-card"><h3>⑨ Per-doctor Outside OT Workload</h3><div class="chart-wrap"><canvas id="ocCh9"></canvas></div></div>
       <div class="chart-card"><h3>⑩ Called By (Referring Department)</h3><div class="chart-wrap"><canvas id="ocCh10"></canvas></div></div>
     </div>
 
@@ -2380,7 +2380,7 @@ table.data-table {
     <!-- Data table -->
     <div class="table-card">
       <div class="table-head">
-        <h3>All On-Call Entries (<span id="oc_tableCount">0</span>)</h3>
+        <h3>All Outside OT Entries (<span id="oc_tableCount">0</span>)</h3>
         <div class="export-row">
           <button class="btn btn-ghost" id="oc_exportCsvBtn">↓ Export CSV</button>
         </div>
@@ -2401,13 +2401,13 @@ table.data-table {
   </main>
 
   <main class="page hidden" id="view-mycases">
-    <h1 class="page-title">My Cases &amp; On-Call Logs</h1>
+    <h1 class="page-title">My Cases &amp; Outside OT Logs</h1>
     <p class="page-sub">Your recent entries.</p>
 
     <!-- Tab toggle within My Cases view -->
     <div style="display:flex; gap:8px; margin-bottom:16px;">
       <button type="button" class="btn btn-primary" id="myTab_cases">OT Cases (<span id="myCaseCount">0</span>)</button>
-      <button type="button" class="btn btn-ghost" id="myTab_oncall">On-Call (<span id="myOncallCount">0</span>)</button>
+      <button type="button" class="btn btn-ghost" id="myTab_oncall">Outside OT (<span id="myOncallCount">0</span>)</button>
     </div>
 
     <div id="myCasesList"></div>
@@ -2729,7 +2729,7 @@ async function flushPendingQueue() {
     }
     localStorage.setItem('kims_oncall_pending', JSON.stringify(remaining));
     if (ocPending.length > remaining.length) {
-      showToast(`Synced ${ocPending.length - remaining.length} pending on-call entry(s) ✓`);
+      showToast(`Synced ${ocPending.length - remaining.length} pending Outside OT entry(s) ✓`);
     }
   }
 }
@@ -3710,7 +3710,7 @@ async function submitOnCall(e) {
     if (isConfigured() && connectionOk) {
       await apiAddOnCall(entry);
       allOnCallEntries.unshift(entry);
-      showToast('On-call log saved ✓');
+      showToast('Outside OT log saved ✓');
       saveBtn.classList.add('saved');
       setTimeout(() => saveBtn.classList.remove('saved'), 600);
     } else {
@@ -3732,7 +3732,7 @@ async function submitOnCall(e) {
     resetOnCallForm();
   } finally {
     saveBtn.disabled = false;
-    saveBtn.textContent = 'SAVE ON-CALL LOG';
+    saveBtn.textContent = 'SAVE OUTSIDE OT LOG';
   }
 }
 
@@ -3791,7 +3791,7 @@ function renderMyOnCall() {
   const mine = allOnCallEntries.filter(e => e.doctor === currentUser.name);
   document.getElementById('myOncallCount').textContent = mine.length;
   if (mine.length === 0) {
-    list.innerHTML = '<div style="text-align:center; padding:40px; color:var(--text-muted);">No on-call entries yet.</div>';
+    list.innerHTML = '<div style="text-align:center; padding:40px; color:var(--text-muted);">No Outside OT entries yet.</div>';
     return;
   }
   list.innerHTML = mine.map(e => `
@@ -4205,7 +4205,7 @@ function generateHandoverPDF() {
 <html>
 <head>
 <meta charset="utf-8">
-<title>On-Call Handover ${fmtDate(startDate)} → ${fmtDate(endDate)}</title>
+<title>Outside OT Shift Handover ${fmtDate(startDate)} → ${fmtDate(endDate)}</title>
 <style>
   @page { size: A4; margin: 14mm; }
   body { font-family: Arial, sans-serif; color: #0A2342; font-size: 11px; margin: 0; padding: 12px; }
@@ -4231,7 +4231,7 @@ function generateHandoverPDF() {
 </head>
 <body>
   <div class="hdr-band">KIMS HOSPITAL · MAHADEVAPURA · ANAESTHESIA DEPARTMENT</div>
-  <h1>On-Call Shift Handover</h1>
+  <h1>Outside OT Shift Handover</h1>
   <div class="sub">
     <strong>Period:</strong> ${fmtDate(startDate)} 08:00 → ${fmtDate(endDate)} 08:00 ·
     <strong>Generated:</strong> ${fmtDate(new Date())} ${fmtTime(new Date())}
@@ -4246,7 +4246,7 @@ function generateHandoverPDF() {
   </div>
 
   ${inWindow.length === 0
-    ? '<div class="empty">No on-call entries logged in this 24-hour period.</div>'
+    ? '<div class="empty">No Outside OT entries logged in this 24-hour period.</div>'
     : `<table>
       <thead>
         <tr><th>#</th><th>Time</th><th>Location</th><th>Patient</th><th>Activity</th><th>Urgency</th><th>Time spent</th><th>Doctor</th><th>Outcome</th><th>Notes</th></tr>
