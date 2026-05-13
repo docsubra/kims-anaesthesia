@@ -4625,7 +4625,7 @@ function renderMyOnCall() {
 }
 
 // --- On-Call Dashboard ---
-function renderOnCallDashboard() {
+async function renderOnCallDashboard() {
   // Populate doctor filter dropdown
   const doctorSel = document.getElementById('oc_flt_doctor');
   if (doctorSel.options.length <= 1) {
@@ -4639,6 +4639,23 @@ function renderOnCallDashboard() {
   if (!document.getElementById('oc_handoverDate').value) {
     document.getElementById('oc_handoverDate').value = new Date().toISOString().slice(0,10);
   }
+
+  // v4.4: ALWAYS force a fresh fetch when dashboard opens.
+  // Prior versions trusted localStorage cache which could be stale or empty
+  // from previous buggy versions of the app.
+  try {
+    if (!connectionOk) await checkConnection();
+    if (connectionOk) {
+      localStorage.removeItem('kims_oncall_cache');
+      await loadAllOnCall();
+      console.log('[Outside OT Dash] Loaded', allOnCallEntries.length, 'entries on dashboard open');
+    } else {
+      console.warn('[Outside OT Dash] Offline — using local cache only');
+    }
+  } catch (err) {
+    console.error('[Outside OT Dash] Fresh load failed:', err);
+  }
+
   if (typeof updateOcDashWelcomeStats === 'function') updateOcDashWelcomeStats(); // v4.2
   applyOnCallFilters();
 }
@@ -6099,10 +6116,18 @@ document.addEventListener('DOMContentLoaded', async () => {
       return;
     }
     try {
+      // v4.4: clear cache first to force fresh fetch, and report raw server count
+      localStorage.removeItem('kims_oncall_cache');
+      const before = allOnCallEntries.length;
+      const rawRemote = await apiListOnCall();
+      console.log('[Outside OT] Raw server response:', rawRemote);
+      console.log('[Outside OT] Raw server count:', rawRemote.length);
+      console.log('[Outside OT] First row sample:', rawRemote[0]);
+      console.log('[Outside OT] Last row sample:', rawRemote[rawRemote.length - 1]);
       await loadAllOnCall();
       applyOnCallFilters();
       if (typeof updateOcDashWelcomeStats === 'function') updateOcDashWelcomeStats();
-      showToast(`Refreshed ✓ (${allOnCallEntries.length} entries)`);
+      showToast(`Refreshed ✓ — sheet has ${rawRemote.length} entries, dashboard shows ${allOnCallEntries.length}`);
     } catch (err) {
       console.error('Refresh error:', err);
       showToast('Refresh failed: ' + err.message, true);
