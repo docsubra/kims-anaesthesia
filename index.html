@@ -3543,9 +3543,15 @@ function showApp() {
     document.getElementById('setupBanner').classList.remove('hidden');
   }
   setView('entry');
-  loadAllCases();
-  loadAllOnCall();  // v4
-  flushPendingQueue();
+  // v4.3: FIX — wait for connection check to complete, THEN load data.
+  // Previously these fired in parallel with checkConnection, so connectionOk was
+  // still false and the on-call data was never fetched from the server.
+  (async () => {
+    await checkConnection();
+    await loadAllCases();
+    await loadAllOnCall();
+    await flushPendingQueue();
+  })();
 }
 
 function login() {
@@ -4567,9 +4573,18 @@ async function loadAllOnCall() {
         if (!allOnCallEntries.some(x => x.id === p.id)) allOnCallEntries.push(p);
       });
       localStorage.setItem('kims_oncall_cache', JSON.stringify(allOnCallEntries));
+      console.log('[Outside OT] Loaded', allOnCallEntries.length, 'entries from sheet');
     } catch (err) {
-      console.warn('On-call load fallback to cache:', err);
+      console.warn('[Outside OT] Load fallback to cache:', err.message);
+      // v4.3: surface backend issues to the user via the connection status text
+      const status = document.getElementById('connStatus');
+      if (status && /Unknown action/i.test(err.message)) {
+        status.className = 'connection-status disconnected';
+        status.textContent = '⚠ Apps Script v4 not yet deployed — Outside OT will not sync';
+      }
     }
+  } else {
+    console.log('[Outside OT] Using cache only (configured:', isConfigured(), 'connected:', connectionOk, ')');
   }
   allOnCallEntries.sort((a,b) => {
     const dt = (b.date || '').localeCompare(a.date || '');
@@ -6073,9 +6088,25 @@ document.addEventListener('DOMContentLoaded', async () => {
   if (ocClear) ocClear.addEventListener('click', clearOnCallFilters);
   const ocRefresh = document.getElementById('oc_refreshBtn');
   if (ocRefresh) ocRefresh.addEventListener('click', async () => {
-    await loadAllOnCall();
-    applyOnCallFilters();
-    showToast('Refreshed from sheet ✓');
+    showToast('Refreshing from sheet...', false);
+    // v4.3: re-check connection first in case it was offline at login
+    try { await checkConnection(); } catch {}
+    if (!connectionOk) {
+      const reason = !isConfigured()
+        ? 'App not configured with Apps Script URL.'
+        : 'Cannot reach Google Sheets. Check that Apps Script v4 has been deployed.';
+      showToast('Refresh failed — ' + reason, true);
+      return;
+    }
+    try {
+      await loadAllOnCall();
+      applyOnCallFilters();
+      if (typeof updateOcDashWelcomeStats === 'function') updateOcDashWelcomeStats();
+      showToast(`Refreshed ✓ (${allOnCallEntries.length} entries)`);
+    } catch (err) {
+      console.error('Refresh error:', err);
+      showToast('Refresh failed: ' + err.message, true);
+    }
   });
   const ocExport = document.getElementById('oc_exportCsvBtn');
   if (ocExport) ocExport.addEventListener('click', exportOnCallCsv);
