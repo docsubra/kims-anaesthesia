@@ -2302,6 +2302,325 @@ table.data-table {
   box-shadow: 0 4px 10px rgba(230, 81, 0, 0.35);
 }
 
+/* ============================================================
+   v5 — KIDNEY TRANSPLANT MODULE STYLES
+   ============================================================ */
+
+/* Manual transplant checkbox in Section A */
+.kt-checkbox-field {
+  margin-top: 14px;
+  padding: 12px 14px;
+  background: linear-gradient(135deg, #FCE4EC 0%, #F8BBD0 100%);
+  border-left: 4px solid #AD1457;
+  border-radius: 8px;
+  transition: all 0.25s ease;
+}
+.kt-checkbox-field:has(input:checked) {
+  background: linear-gradient(135deg, #F8BBD0 0%, #F48FB1 100%);
+  box-shadow: 0 3px 10px rgba(173, 20, 87, 0.18);
+}
+.kt-checkbox-label {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  cursor: pointer;
+  user-select: none;
+}
+.kt-checkbox-label input[type="checkbox"] {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+.kt-checkbox-box {
+  flex-shrink: 0;
+  width: 22px;
+  height: 22px;
+  border: 2px solid #AD1457;
+  border-radius: 5px;
+  background: white;
+  position: relative;
+  transition: all 0.2s ease;
+  margin-top: 2px;
+}
+.kt-checkbox-label input[type="checkbox"]:checked + .kt-checkbox-box {
+  background: linear-gradient(135deg, #AD1457 0%, #880E4F 100%);
+  border-color: #880E4F;
+}
+.kt-checkbox-label input[type="checkbox"]:checked + .kt-checkbox-box::after {
+  content: '✓';
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 700;
+  font-size: 16px;
+}
+.kt-checkbox-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.4;
+}
+.kt-checkbox-text strong {
+  color: #880E4F;
+  font-size: 14px;
+  font-weight: 700;
+}
+.kt-checkbox-sub {
+  font-size: 12px;
+  color: #6A1B4A;
+  margin-top: 2px;
+  font-weight: 400;
+}
+
+/* Section F (transplant) accordion — pink/red theme */
+#view-entry .accordion[data-section="transplant"] .accordion-head {
+  background: linear-gradient(135deg, #FCE4EC 0%, #F8BBD0 100%);
+  border-left: 5px solid #AD1457;
+}
+#view-entry .accordion[data-section="transplant"].open .accordion-head {
+  background: linear-gradient(135deg, #AD1457 0%, #880E4F 100%);
+  color: white;
+}
+#view-entry .accordion[data-section="transplant"] .accordion-num {
+  background: #AD1457;
+  color: white;
+}
+#view-entry .accordion[data-section="transplant"] .accordion-body {
+  border-left-color: #AD1457;
+}
+#view-entry .accordion[data-section="transplant"] .accordion-mandatory {
+  background: rgba(173, 20, 87, 0.15);
+  color: #880E4F;
+}
+#view-entry .accordion[data-section="transplant"].open .accordion-mandatory {
+  background: rgba(255, 255, 255, 0.3);
+  color: white;
+}
+
+/* Subsection titles inside Section F */
+.kt-subsection-title {
+  margin: 22px 0 12px;
+  padding: 8px 12px;
+  background: linear-gradient(90deg, rgba(173, 20, 87, 0.12) 0%, transparent 100%);
+  border-left: 3px solid #AD1457;
+  color: #880E4F;
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 0.3px;
+  border-radius: 0 6px 6px 0;
+}
+.kt-subsection-title:first-child {
+  margin-top: 8px;
+}
+
+/* KT reference display banner inside Section F (after save) */
+.kt-ref-display {
+  margin-bottom: 18px;
+  padding: 16px 18px;
+  background: linear-gradient(135deg, #880E4F 0%, #AD1457 100%);
+  color: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(136, 14, 79, 0.3);
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.kt-ref-display::before {
+  content: '🫘';
+  position: absolute;
+  font-size: 60px;
+  right: -8px;
+  top: -12px;
+  opacity: 0.18;
+  transform: rotate(-12deg);
+}
+.kt-ref-label {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  opacity: 0.85;
+  margin-bottom: 4px;
+}
+.kt-ref-value {
+  font-size: 26px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.25);
+  margin-bottom: 6px;
+  font-family: 'SF Mono', Menlo, Consolas, monospace;
+}
+.kt-ref-hint {
+  font-size: 12px;
+  opacity: 0.9;
+  background: rgba(255,255,255,0.15);
+  padding: 4px 10px;
+  border-radius: 12px;
+  display: inline-block;
+  margin-top: 4px;
+}
+
+/* Transplant pills — pink/red theme when selected */
+#view-entry .pill-grid[data-group^="kt_"] .pill.on {
+  background: linear-gradient(135deg, #AD1457 0%, #880E4F 100%);
+  color: white;
+  border-color: #880E4F;
+  box-shadow: 0 3px 8px rgba(173, 20, 87, 0.3);
+}
+/* Donor type — distinct colour to highlight */
+#view-entry .pill-grid[data-group="kt_donorType"] .pill[data-val="Living related"].on {
+  background: linear-gradient(135deg, #43A047 0%, #2E7D32 100%);
+  border-color: #2E7D32;
+}
+#view-entry .pill-grid[data-group="kt_donorType"] .pill[data-val="ABO-incompatible"].on {
+  background: linear-gradient(135deg, #FB8C00 0%, #E65100 100%);
+  border-color: #E65100;
+}
+#view-entry .pill-grid[data-group="kt_donorType"] .pill[data-val="Deceased (DBD)"].on,
+#view-entry .pill-grid[data-group="kt_donorType"] .pill[data-val="Deceased (DCD)"].on {
+  background: linear-gradient(135deg, #5D4037 0%, #3E2723 100%);
+  border-color: #3E2723;
+}
+
+/* Reperfusion event — red gradient for the bad ones */
+#view-entry .pill-grid[data-group="kt_reperfusionEvent"] .pill[data-val="None"].on {
+  background: linear-gradient(135deg, #43A047 0%, #2E7D32 100%);
+  border-color: #2E7D32;
+}
+#view-entry .pill-grid[data-group="kt_reperfusionEvent"] .pill[data-val="Severe hypotension"].on,
+#view-entry .pill-grid[data-group="kt_reperfusionEvent"] .pill[data-val="Arrhythmia"].on,
+#view-entry .pill-grid[data-group="kt_reperfusionEvent"] .pill[data-val="Cardiac arrest"].on {
+  background: linear-gradient(135deg, #E53935 0%, #B71C1C 100%);
+  border-color: #B71C1C;
+  animation: gentle-pulse 2s ease-in-out infinite;
+}
+
+/* Section F slide-in animation when revealed */
+#ktSection:not(.hidden) {
+  animation: slideDown 0.4s ease;
+}
+
+/* KT reference badge for My Cases card */
+.kt-ref-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: linear-gradient(135deg, #AD1457 0%, #880E4F 100%);
+  color: white;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  font-family: 'SF Mono', Menlo, Consolas, monospace;
+  box-shadow: 0 2px 6px rgba(173, 20, 87, 0.25);
+}
+.kt-ref-badge::before {
+  content: '🫘';
+  font-size: 13px;
+}
+
+/* KT dashboard panel banner */
+.kt-programme-banner {
+  background: linear-gradient(135deg, #880E4F 0%, #AD1457 50%, #C2185B 100%);
+  color: white;
+  padding: 24px 28px;
+  border-radius: 14px;
+  margin: 24px 0 22px;
+  box-shadow: 0 6px 20px rgba(136, 14, 79, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+.kt-programme-banner::after {
+  content: '🫘';
+  position: absolute;
+  font-size: 130px;
+  right: -10px;
+  top: -32px;
+  opacity: 0.13;
+  transform: rotate(-12deg);
+}
+.kt-programme-title {
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 4px;
+  letter-spacing: -0.3px;
+}
+.kt-programme-sub {
+  font-size: 14px;
+  opacity: 0.95;
+  margin-bottom: 16px;
+}
+.kt-programme-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 12px;
+}
+.kt-prog-stat {
+  background: rgba(255,255,255,0.15);
+  backdrop-filter: blur(8px);
+  padding: 12px 14px;
+  border-radius: 10px;
+  text-align: center;
+  border: 1px solid rgba(255,255,255,0.18);
+}
+.kt-prog-stat.success { background: rgba(67, 160, 71, 0.35); border-color: rgba(102, 187, 106, 0.5); }
+.kt-prog-stat.warning { background: rgba(251, 140, 0, 0.35); border-color: rgba(255, 167, 38, 0.5); }
+.kt-prog-stat.danger { background: rgba(229, 57, 53, 0.35); border-color: rgba(239, 83, 80, 0.5); }
+.kt-prog-stat-val {
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: -0.3px;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.18);
+}
+.kt-prog-stat-lbl {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  opacity: 0.9;
+  margin-top: 4px;
+}
+
+/* KT charts use pink accent border */
+#ktDashboardPanel .chart-card::before {
+  background: linear-gradient(90deg, #AD1457, #C2185B) !important;
+}
+
+/* Pending follow-up table — accent action button */
+#ktPendingTable .btn-followup {
+  background: linear-gradient(135deg, #AD1457 0%, #880E4F 100%);
+  color: white;
+  border: none;
+  padding: 5px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  letter-spacing: 0.3px;
+  transition: all 0.2s ease;
+}
+#ktPendingTable .btn-followup:hover {
+  background: linear-gradient(135deg, #880E4F 0%, #4A0033 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 3px 8px rgba(173, 20, 87, 0.4);
+}
+
+/* Outcome chip styling in tables */
+.kt-outcome-chip {
+  display: inline-block;
+  padding: 3px 9px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+}
+.kt-outcome-immediate { background: #E8F5E9; color: #2E7D32; }
+.kt-outcome-slow { background: #FFF8E1; color: #F57F17; }
+.kt-outcome-dgf { background: #FFEBEE; color: #C62828; }
+.kt-outcome-unknown { background: #F5F5F5; color: #757575; }
+
 </style>
 </head>
 <body>
@@ -2341,6 +2660,7 @@ table.data-table {
       <button class="nav-btn" data-view="entry">✎ <span class="lbl-long">OT Case</span></button>
       <button class="nav-btn" data-view="oncall">☎ <span class="lbl-long">Outside OT</span></button>
       <button class="nav-btn" data-view="mycases">☰ <span class="lbl-long">My Cases</span></button>
+      <button class="nav-btn hidden" id="navFollowup" data-view="followup">🫘 <span class="lbl-long">Follow-up</span></button>
       <button class="nav-btn hidden" id="navOncallDash" data-view="oncalldash">▤ <span class="lbl-long">Outside OT Dash</span></button>
       <button class="nav-btn hidden" id="navDashboard" data-view="dashboard">▦ <span class="lbl-long">OT Dash</span></button>
       <span class="nav-user">
@@ -2478,6 +2798,18 @@ table.data-table {
             <div class="field">
               <label class="field-label">Procedure <span class="opt">(optional)</span></label>
               <input type="text" class="input" id="f_procedure" placeholder="e.g. Lap cholecystectomy" maxlength="120" />
+            </div>
+
+            <!-- v5: Kidney Transplant manual override checkbox -->
+            <div class="field kt-checkbox-field">
+              <label class="kt-checkbox-label">
+                <input type="checkbox" id="f_isKidneyTransplant" />
+                <span class="kt-checkbox-box"></span>
+                <span class="kt-checkbox-text">
+                  <strong>🫘 This is a kidney transplant case</strong>
+                  <span class="kt-checkbox-sub">Auto-detected from Urology + "transplant" in procedure. Tick manually if needed.</span>
+                </span>
+              </label>
             </div>
 
             <!-- v3: Patient came from -->
@@ -2776,6 +3108,160 @@ table.data-table {
           <div class="accordion-body">
             <textarea class="textarea" id="f_notes" maxlength="500" placeholder="Any additional clinical notes..."></textarea>
             <div class="char-count"><span id="charCount">0</span> / 500</div>
+          </div>
+        </div>
+
+        <!-- ============ v5: SECTION F — TRANSPLANT DETAILS ============ -->
+        <div class="accordion hidden" data-section="transplant" id="ktSection">
+          <button type="button" class="accordion-head">
+            <span class="accordion-title">
+              <span class="accordion-num">F</span> <span class="ot-section-icon">🫘</span>Kidney Transplant Details
+              <span class="accordion-mandatory">TRANSPLANT</span>
+            </span>
+            <span class="chevron">▶</span>
+          </button>
+          <div class="accordion-body">
+
+            <!-- KT reference display (shown after assignment) -->
+            <div class="kt-ref-display hidden" id="ktRefDisplay">
+              <div class="kt-ref-label">Assigned KT reference:</div>
+              <div class="kt-ref-value" id="ktRefValue">KT-2026-NNN</div>
+              <div class="kt-ref-hint">📌 Write this on the bedside chart for follow-up tracking.</div>
+            </div>
+
+            <!-- F1: DONOR & RECIPIENT -->
+            <div class="kt-subsection-title">F1 · Donor & Recipient Setup</div>
+
+            <div class="field">
+              <label class="field-label">Donor type <span class="req">*</span></label>
+              <div class="pill-grid" data-group="kt_donorType">
+                <button type="button" class="pill small" data-val="Living related">Living related</button>
+                <button type="button" class="pill small" data-val="Living unrelated">Living unrelated</button>
+                <button type="button" class="pill small" data-val="ABO-incompatible">ABO-incompatible</button>
+                <button type="button" class="pill small" data-val="Deceased (DBD)">Deceased (DBD)</button>
+                <button type="button" class="pill small" data-val="Deceased (DCD)">Deceased (DCD)</button>
+              </div>
+            </div>
+
+            <div class="field">
+              <label class="field-label">Cold ischaemia time (minutes) <span class="opt">(deceased donors)</span></label>
+              <input type="number" class="input" id="kt_coldIschaemiaMin" min="0" max="3000" placeholder="e.g. 240" />
+            </div>
+
+            <div class="field">
+              <label class="field-label">Cause of ESRD <span class="opt">(optional)</span></label>
+              <select class="input" id="kt_causeOfESRD">
+                <option value="">-- Select --</option>
+              </select>
+            </div>
+
+            <div class="row-2">
+              <div class="field">
+                <label class="field-label">Dialysis modality</label>
+                <select class="input" id="kt_dialysisModality">
+                  <option value="">-- Select --</option>
+                </select>
+              </div>
+              <div class="field">
+                <label class="field-label">Last dialysis</label>
+                <select class="input" id="kt_lastDialysis">
+                  <option value="">-- Select --</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="row-2">
+              <div class="field">
+                <label class="field-label">Pre-op Hb (g/dL) <span class="opt">(optional)</span></label>
+                <input type="number" step="0.1" class="input" id="kt_preOpHb" min="0" max="20" placeholder="e.g. 9.8" />
+              </div>
+              <div class="field">
+                <label class="field-label">Pre-op K⁺ (mmol/L) <span class="opt">(optional)</span></label>
+                <input type="number" step="0.1" class="input" id="kt_preOpK" min="0" max="10" placeholder="e.g. 4.8" />
+              </div>
+            </div>
+
+            <!-- F2: ANAESTHETIC TECHNIQUE -->
+            <div class="kt-subsection-title">F2 · Anaesthetic Technique</div>
+
+            <div class="field">
+              <label class="field-label">Induction agent</label>
+              <div class="pill-grid" data-group="kt_inductionAgent">
+                <button type="button" class="pill small" data-val="Propofol">Propofol</button>
+                <button type="button" class="pill small" data-val="Etomidate">Etomidate</button>
+                <button type="button" class="pill small" data-val="Thiopentone">Thiopentone</button>
+                <button type="button" class="pill small" data-val="Ketamine">Ketamine</button>
+                <button type="button" class="pill small" data-val="Combined">Combined</button>
+              </div>
+            </div>
+
+            <div class="field">
+              <label class="field-label">Muscle relaxant</label>
+              <select class="input" id="kt_muscleRelaxant">
+                <option value="">-- Select --</option>
+              </select>
+            </div>
+
+            <div class="row-2">
+              <div class="field">
+                <label class="field-label">Reversal agent</label>
+                <div class="pill-grid" data-group="kt_reversalAgent">
+                  <button type="button" class="pill small" data-val="Neostigmine">Neostigmine</button>
+                  <button type="button" class="pill small" data-val="Sugammadex">Sugammadex</button>
+                  <button type="button" class="pill small" data-val="Not needed">Not needed</button>
+                </div>
+              </div>
+              <div class="field">
+                <label class="field-label">Opioid strategy</label>
+                <select class="input" id="kt_opioidStrategy">
+                  <option value="">-- Select --</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="field">
+              <label class="field-label">Intra-op diuretic</label>
+              <div class="pill-grid" data-group="kt_intraOpDiuretic">
+                <button type="button" class="pill small" data-val="None">None</button>
+                <button type="button" class="pill small" data-val="Mannitol">Mannitol</button>
+                <button type="button" class="pill small" data-val="Furosemide">Furosemide</button>
+                <button type="button" class="pill small" data-val="Both (Mannitol + Furosemide)">Both</button>
+              </div>
+            </div>
+
+            <!-- F3: REPERFUSION EVENTS -->
+            <div class="kt-subsection-title">F3 · Reperfusion Events</div>
+
+            <div class="field">
+              <label class="field-label">MAP at clamp release</label>
+              <div class="pill-grid" data-group="kt_mapAtReperfusion">
+                <button type="button" class="pill small" data-val="< 70 mmHg">&lt; 70 mmHg</button>
+                <button type="button" class="pill small" data-val="70–90 mmHg">70–90 mmHg</button>
+                <button type="button" class="pill small" data-val="> 90 mmHg">&gt; 90 mmHg</button>
+              </div>
+            </div>
+
+            <div class="field">
+              <label class="field-label">Reperfusion event</label>
+              <div class="pill-grid" data-group="kt_reperfusionEvent">
+                <button type="button" class="pill small" data-val="None">None</button>
+                <button type="button" class="pill small" data-val="Mild hypotension">Mild hypotension</button>
+                <button type="button" class="pill small" data-val="Severe hypotension">Severe hypotension</button>
+                <button type="button" class="pill small" data-val="Arrhythmia">Arrhythmia</button>
+                <button type="button" class="pill small" data-val="Cardiac arrest">Cardiac arrest</button>
+              </div>
+            </div>
+
+            <div class="field">
+              <label class="field-label">Vasopressor used <span class="opt">(select all that apply)</span></label>
+              <div class="chk-grid" id="kt-vasopressors-grid"></div>
+            </div>
+
+            <div class="field">
+              <label class="field-label">Immunosuppression induction (intra-op) <span class="opt">(select all that apply)</span></label>
+              <div class="chk-grid" id="kt-immuno-grid"></div>
+            </div>
+
           </div>
         </div>
 
@@ -3148,6 +3634,132 @@ table.data-table {
     <div id="myOncallList" class="hidden"></div>
   </main>
 
+  <!-- ============ v5: TRANSPLANT FOLLOW-UP VIEW ============ -->
+  <main class="page hidden" id="view-followup">
+    <div class="dash-welcome-banner" style="background: linear-gradient(135deg, #880E4F 0%, #AD1457 50%, #C2185B 100%); box-shadow: 0 6px 20px rgba(136, 14, 79, 0.3);">
+      <div class="dash-welcome-title">🫘 Transplant Follow-up</div>
+      <div class="dash-welcome-sub">Daily post-op data for kidney transplant recipients. Any doctor can enter.</div>
+      <div class="dash-welcome-stats">
+        <span class="dash-welcome-stat"><strong id="fws_kt_count">0</strong> transplant cases</span>
+        <span class="dash-welcome-stat"><strong id="fws_followup_count">0</strong> follow-up entries</span>
+        <span class="dash-welcome-stat"><strong id="fws_pending">0</strong> pending today</span>
+      </div>
+    </div>
+
+    <div class="form-wrapper">
+      <form id="followupForm" autocomplete="off">
+
+        <!-- KT case picker -->
+        <div class="accordion open" data-fu-section="case">
+          <button type="button" class="accordion-head">
+            <span class="accordion-title">
+              <span class="accordion-num">1</span> <span class="ot-section-icon">🫘</span>Select Transplant Case
+              <span class="accordion-mandatory">REQUIRED</span>
+            </span>
+            <span class="chevron">▶</span>
+          </button>
+          <div class="accordion-body">
+            <div class="field">
+              <label class="field-label">Transplant case <span class="req">*</span></label>
+              <select class="input" id="fu_ktRef" required>
+                <option value="">-- Select KT case --</option>
+              </select>
+              <div id="fu_caseInfo" style="margin-top:10px; padding:10px 12px; background:#FCE4EC; border-left:3px solid #AD1457; border-radius:6px; font-size:13px; color:#880E4F; display:none;"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Date & post-op day -->
+        <div class="accordion" data-fu-section="date">
+          <button type="button" class="accordion-head">
+            <span class="accordion-title">
+              <span class="accordion-num">2</span> <span class="ot-section-icon">📅</span>When
+              <span class="accordion-mandatory">REQUIRED</span>
+            </span>
+            <span class="chevron">▶</span>
+          </button>
+          <div class="accordion-body">
+            <div class="row-2">
+              <div class="field">
+                <label class="field-label">Follow-up date <span class="req">*</span></label>
+                <input type="date" class="input" id="fu_date" required />
+              </div>
+              <div class="field">
+                <label class="field-label">Post-op day <span class="opt">(auto-calculated)</span></label>
+                <input type="text" class="input" id="fu_postOpDay" readonly style="background:#F5F5F5; font-weight:700; color:#880E4F;" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Clinical data -->
+        <div class="accordion" data-fu-section="data">
+          <button type="button" class="accordion-head">
+            <span class="accordion-title">
+              <span class="accordion-num">3</span> <span class="ot-section-icon">📊</span>Clinical Data
+              <span class="accordion-mandatory">REQUIRED</span>
+            </span>
+            <span class="chevron">▶</span>
+          </button>
+          <div class="accordion-body">
+            <div class="row-2">
+              <div class="field">
+                <label class="field-label">Urine output (last 24h, mL) <span class="req">*</span></label>
+                <input type="number" class="input" id="fu_urineOutput24h" min="0" max="20000" placeholder="e.g. 2400" />
+              </div>
+              <div class="field">
+                <label class="field-label">Serum creatinine (mg/dL) <span class="req">*</span></label>
+                <input type="number" step="0.01" class="input" id="fu_creatinine" min="0" max="20" placeholder="e.g. 1.4" />
+              </div>
+            </div>
+
+            <div class="field">
+              <label class="field-label">Dialysis required since last entry? <span class="req">*</span></label>
+              <div class="pill-grid" data-group="fu_dialysisRequired">
+                <button type="button" class="pill" data-val="No">No</button>
+                <button type="button" class="pill" data-val="Yes">Yes — dialysis given</button>
+              </div>
+            </div>
+
+            <div class="field">
+              <label class="field-label">ICU status <span class="req">*</span></label>
+              <div class="pill-grid" data-group="fu_icuStatus">
+                <button type="button" class="pill" data-val="Still in ICU">Still in ICU</button>
+                <button type="button" class="pill" data-val="Stepped down to ward">Stepped down to ward</button>
+                <button type="button" class="pill" data-val="Discharged">Discharged home</button>
+              </div>
+            </div>
+
+            <div class="field">
+              <label class="field-label">Complications today <span class="opt">(select all that apply)</span></label>
+              <div class="chk-grid" id="fu-complications-grid"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Notes -->
+        <div class="accordion" data-fu-section="notes">
+          <button type="button" class="accordion-head">
+            <span class="accordion-title">
+              <span class="accordion-num optional">4</span> <span class="ot-section-icon">📝</span>Notes
+              <span class="accordion-optional">OPTIONAL</span>
+            </span>
+            <span class="chevron">▶</span>
+          </button>
+          <div class="accordion-body">
+            <textarea class="textarea" id="fu_notes" maxlength="500" placeholder="Any additional clinical notes for this day..."></textarea>
+            <div class="char-count"><span id="fu_charCount">0</span> / 500</div>
+          </div>
+        </div>
+
+        <button type="submit" class="save-btn" id="fu_saveBtn">SAVE FOLLOW-UP</button>
+      </form>
+    </div>
+
+    <!-- Recent follow-ups for selected case -->
+    <div id="fu_recentList" style="margin-top:24px;"></div>
+  </main>
+
   <main class="page hidden" id="view-dashboard">
     <div class="print-header">
       <h1>KIMS Hospital, Mahadevapura — Anaesthesia Department Report</h1>
@@ -3279,6 +3891,104 @@ table.data-table {
       </div>
     </div>
 
+    <!-- ============ v5: KIDNEY TRANSPLANT PROGRAMME PANEL ============ -->
+    <div id="ktDashboardPanel" class="hidden">
+
+      <div class="kt-programme-banner">
+        <div class="kt-programme-title">🫘 Kidney Transplant Programme</div>
+        <div class="kt-programme-sub">Anaesthesia-led transplant outcomes and early graft function tracking.</div>
+        <div class="kt-programme-stats">
+          <div class="kt-prog-stat">
+            <div class="kt-prog-stat-val" id="ktStat_total">0</div>
+            <div class="kt-prog-stat-lbl">Total transplants</div>
+          </div>
+          <div class="kt-prog-stat">
+            <div class="kt-prog-stat-val" id="ktStat_month">0</div>
+            <div class="kt-prog-stat-lbl">This month</div>
+          </div>
+          <div class="kt-prog-stat">
+            <div class="kt-prog-stat-val" id="ktStat_year">0</div>
+            <div class="kt-prog-stat-lbl">This year</div>
+          </div>
+          <div class="kt-prog-stat success">
+            <div class="kt-prog-stat-val" id="ktStat_imm">—</div>
+            <div class="kt-prog-stat-lbl">Immediate function</div>
+          </div>
+          <div class="kt-prog-stat warning">
+            <div class="kt-prog-stat-val" id="ktStat_dgf">—</div>
+            <div class="kt-prog-stat-lbl">DGF rate</div>
+          </div>
+          <div class="kt-prog-stat danger">
+            <div class="kt-prog-stat-val" id="ktStat_reperf">0</div>
+            <div class="kt-prog-stat-lbl">Reperfusion events</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- KT charts -->
+      <div class="chart-grid">
+        <div class="chart-card"><h3>🫘① Transplants per Month</h3><div class="chart-wrap"><canvas id="ktCh1"></canvas></div></div>
+        <div class="chart-card"><h3>🫘② Donor Type Distribution</h3><div class="chart-wrap"><canvas id="ktCh2"></canvas></div></div>
+        <div class="chart-card"><h3>🫘③ Cold Ischaemia Time (minutes)</h3><div class="chart-wrap"><canvas id="ktCh3"></canvas></div></div>
+        <div class="chart-card"><h3>🫘④ Cause of ESRD</h3><div class="chart-wrap"><canvas id="ktCh4"></canvas></div></div>
+        <div class="chart-card"><h3>🫘⑤ Reperfusion Events</h3><div class="chart-wrap"><canvas id="ktCh5"></canvas></div></div>
+        <div class="chart-card"><h3>🫘⑥ Per-anaesthetist Transplant Count</h3><div class="chart-wrap"><canvas id="ktCh6"></canvas></div></div>
+        <div class="chart-card"><h3>🫘⑦ Graft Function Outcomes</h3><div class="chart-wrap"><canvas id="ktCh7"></canvas></div></div>
+        <div class="chart-card"><h3>🫘⑧ Creatinine Trends (first 7 days)</h3><div class="chart-wrap"><canvas id="ktCh8"></canvas></div></div>
+      </div>
+
+      <!-- Pending follow-up table -->
+      <div class="table-card">
+        <div class="table-head">
+          <h3>⏰ Pending Follow-up (within first 7 days)</h3>
+        </div>
+        <div style="padding: 14px 16px; font-size: 13px; color: var(--text-muted);">
+          Transplant cases that have not yet received today's follow-up entry. Tap "Enter" to log Day data quickly.
+        </div>
+        <div class="table-wrap">
+          <table class="data-table" id="ktPendingTable">
+            <thead>
+              <tr>
+                <th>KT Ref</th>
+                <th>Surgery Date</th>
+                <th>Donor type</th>
+                <th>Anaesthetist</th>
+                <th>Post-op Day (today)</th>
+                <th>Last follow-up</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- All transplants table -->
+      <div class="table-card">
+        <div class="table-head">
+          <h3>📋 All Kidney Transplants</h3>
+        </div>
+        <div class="table-wrap">
+          <table class="data-table" id="ktAllTable">
+            <thead>
+              <tr>
+                <th>KT Ref</th>
+                <th>Date</th>
+                <th>Anaesthetist</th>
+                <th>Donor type</th>
+                <th>CIT (min)</th>
+                <th>Reperfusion</th>
+                <th>Follow-ups</th>
+                <th>Outcome</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+
     <div class="table-card">
       <div class="table-head">
         <h3>All Cases (<span id="tableCount">0</span>)</h3>
@@ -3373,6 +4083,52 @@ const CSE_TECHNIQUES = ['Needle-through-needle','Separate (two-space)'];
 const MAC_TYPES = ['Monitoring only','Sedation given'];
 const MAC_SEDATION_LEVELS = ['Mild','Moderate','Deep'];
 const SURGICAL_SPECIALTIES = ['General Surgery','Orthopaedics','Gynaecology','Obstetrics','Urology','ENT','Ophthalmology','Neurosurgery','Cardiothoracic','Vascular Surgery','Plastics/Burns','Paediatric Surgery','Dental/Maxillofacial','Trauma/Emergency','Onco Surgery'];
+
+// === v5: Kidney Transplant reference data ===
+const KT_DONOR_TYPES = [
+  'Living related',
+  'Living unrelated',
+  'ABO-incompatible',
+  'Deceased (DBD)',
+  'Deceased (DCD)'
+];
+const KT_ESRD_CAUSES = [
+  'Diabetic nephropathy',
+  'Hypertensive nephrosclerosis',
+  'Chronic glomerulonephritis',
+  'ADPKD (polycystic)',
+  'Obstructive uropathy',
+  'Reflux nephropathy',
+  'Lupus nephritis',
+  'IgA nephropathy',
+  'Unknown',
+  'Other'
+];
+const KT_DIALYSIS_MODALITY = ['Haemodialysis (HD)','Peritoneal dialysis (PD)','Pre-emptive (no prior dialysis)','Failed previous transplant'];
+const KT_LAST_DIALYSIS = ['< 24 hours','24–48 hours','> 48 hours','Pre-emptive (N/A)'];
+const KT_INDUCTION_AGENTS = ['Propofol','Etomidate','Thiopentone','Ketamine','Combined'];
+const KT_MUSCLE_RELAXANTS = ['Cisatracurium','Atracurium','Rocuronium','Vecuronium','Succinylcholine (induction only)'];
+const KT_REVERSAL_AGENTS = ['Neostigmine','Sugammadex','Not needed'];
+const KT_OPIOID_STRATEGIES = ['Fentanyl','Morphine','Remifentanil','Opioid-sparing technique','Combined'];
+const KT_DIURETICS = ['None','Mannitol','Furosemide','Both (Mannitol + Furosemide)'];
+const KT_MAP_REPERFUSION = ['< 70 mmHg','70–90 mmHg','> 90 mmHg'];
+const KT_REPERFUSION_EVENTS = ['None','Mild hypotension','Severe hypotension','Arrhythmia','Cardiac arrest'];
+const KT_VASOPRESSORS = ['None','Phenylephrine','Noradrenaline','Vasopressin','Dopamine','Adrenaline'];
+const KT_IMMUNO_INDUCTION = ['Basiliximab','ATG','Methylprednisolone','Rituximab','Tacrolimus (oral)','MMF','None given intra-op'];
+
+// === v5: Follow-up complications ===
+const FU_COMPLICATIONS = [
+  'None',
+  'Bleeding',
+  'Infection (surgical site / urinary / line)',
+  'Rejection suspected',
+  'Acute tubular necrosis (ATN)',
+  'Vascular complication',
+  'Urological complication',
+  'Cardiovascular event',
+  'Respiratory event',
+  'Other'
+];
 
 // === NEW v4 — On-Call / Out-of-OT reference data ===
 const ONCALL_LOCATIONS = ['Ward','ER','Labour Room','Cath Lab','Endoscopy/Bronchoscopy','Radiology','ICU','Other'];
@@ -3473,6 +4229,18 @@ async function flushPendingQueue() {
       showToast(`Synced ${ocPending.length - remaining.length} pending Outside OT entry(s) ✓`);
     }
   }
+  // v5: flush follow-up pending queue
+  const fuPending = JSON.parse(localStorage.getItem('kims_followup_pending') || '[]');
+  if (fuPending.length > 0) {
+    const remaining = [];
+    for (const e of fuPending) {
+      try { await apiAddFollowup(e); } catch { remaining.push(e); }
+    }
+    localStorage.setItem('kims_followup_pending', JSON.stringify(remaining));
+    if (fuPending.length > remaining.length) {
+      showToast(`Synced ${fuPending.length - remaining.length} pending follow-up entry(s) ✓`);
+    }
+  }
 }
 
 /* ============================================================
@@ -3484,6 +4252,8 @@ let filteredCases = [];
 // v4: on-call state
 let allOnCallEntries = [];
 let filteredOnCallEntries = [];
+// v5: follow-up state
+let allFollowupEntries = [];
 const charts = {};
 let connectionOk = false;
 
@@ -3544,14 +4314,22 @@ function showApp() {
   }
   setView('entry');
   // v4.3: FIX — wait for connection check to complete, THEN load data.
-  // Previously these fired in parallel with checkConnection, so connectionOk was
-  // still false and the on-call data was never fetched from the server.
   (async () => {
     await checkConnection();
     await loadAllCases();
     await loadAllOnCall();
+    await loadAllFollowup();  // v5
+    updateFollowupNavVisibility();  // v5: show Follow-up tab if there are KT cases
     await flushPendingQueue();
   })();
+}
+
+// v5: Show Follow-up nav button only when at least one KT case exists
+function updateFollowupNavVisibility() {
+  const btn = document.getElementById('navFollowup');
+  if (!btn) return;
+  const ktCount = getAllKtCases().length;
+  btn.classList.toggle('hidden', ktCount === 0);
 }
 
 function login() {
@@ -3582,11 +4360,13 @@ function setView(view) {
   document.getElementById('view-entry').classList.toggle('hidden', view !== 'entry');
   document.getElementById('view-oncall').classList.toggle('hidden', view !== 'oncall');
   document.getElementById('view-mycases').classList.toggle('hidden', view !== 'mycases');
+  document.getElementById('view-followup').classList.toggle('hidden', view !== 'followup');
   document.getElementById('view-dashboard').classList.toggle('hidden', view !== 'dashboard');
   document.getElementById('view-oncalldash').classList.toggle('hidden', view !== 'oncalldash');
   if (view === 'entry' && typeof updateOtWelcomeBanner === 'function') updateOtWelcomeBanner();
   if (view === 'oncall' && typeof updateOnCallWelcomeBanner === 'function') updateOnCallWelcomeBanner();
   if (view === 'mycases') renderMyCases();
+  if (view === 'followup') renderFollowupView();
   if (view === 'dashboard') renderDashboard();
   if (view === 'oncalldash') renderOnCallDashboard();
   window.scrollTo({ top: 0, behavior: 'instant' });
@@ -3928,6 +4708,119 @@ function initForm() {
   document.getElementById('f_notes').addEventListener('input', e => {
     document.getElementById('charCount').textContent = e.target.value.length;
   });
+
+  // v5: Initialize Kidney Transplant module
+  initKidneyTransplantModule();
+}
+
+/* ============================================================
+   v5 — KIDNEY TRANSPLANT MODULE
+   ============================================================ */
+
+function initKidneyTransplantModule() {
+  // Populate KT dropdowns
+  populateSelect('kt_causeOfESRD', KT_ESRD_CAUSES);
+  populateSelect('kt_dialysisModality', KT_DIALYSIS_MODALITY);
+  populateSelect('kt_lastDialysis', KT_LAST_DIALYSIS);
+  populateSelect('kt_muscleRelaxant', KT_MUSCLE_RELAXANTS);
+  populateSelect('kt_opioidStrategy', KT_OPIOID_STRATEGIES);
+
+  // Build KT checkbox groups (vasopressors, immunosuppression)
+  buildCheckGroup('kt-vasopressors-grid', KT_VASOPRESSORS, 'kt_vaso');
+  buildCheckGroup('kt-immuno-grid', KT_IMMUNO_INDUCTION, 'kt_immuno');
+
+  // Manual checkbox handler — show/hide Section F + assign KT ref
+  const ktCheck = document.getElementById('f_isKidneyTransplant');
+  if (ktCheck) {
+    ktCheck.addEventListener('change', async () => {
+      const ktSection = document.getElementById('ktSection');
+      if (ktCheck.checked) {
+        ktSection.classList.remove('hidden');
+        ktSection.classList.add('open');
+        await assignKtReference();
+      } else {
+        ktSection.classList.add('hidden');
+        ktSection.classList.remove('open');
+        clearKtReference();
+      }
+    });
+  }
+
+  // Auto-detect: Urology specialty AND "transplant" in procedure → tick checkbox
+  const specialtySel = document.getElementById('f_specialty');
+  const procedureInput = document.getElementById('f_procedure');
+
+  function checkAutoTransplant() {
+    if (!specialtySel || !procedureInput) return;
+    const specialty = specialtySel.value || '';
+    const procedure = (procedureInput.value || '').toLowerCase();
+    const looksLikeTransplant = (specialty === 'Urology' && /transplant/i.test(procedure));
+    if (looksLikeTransplant && !ktCheck.checked) {
+      ktCheck.checked = true;
+      ktCheck.dispatchEvent(new Event('change'));
+    }
+  }
+  if (specialtySel) specialtySel.addEventListener('change', checkAutoTransplant);
+  if (procedureInput) procedureInput.addEventListener('input', () => {
+    // debounce a little
+    clearTimeout(window._ktAutoTimer);
+    window._ktAutoTimer = setTimeout(checkAutoTransplant, 400);
+  });
+}
+
+function populateSelect(id, items) {
+  const sel = document.getElementById(id);
+  if (!sel) return;
+  // Clear existing options except the first placeholder
+  while (sel.options.length > 1) sel.remove(1);
+  items.forEach(item => {
+    const o = document.createElement('option');
+    o.value = item; o.textContent = item;
+    sel.appendChild(o);
+  });
+}
+
+// Fetch next KT ref from server and display it
+async function assignKtReference() {
+  const display = document.getElementById('ktRefDisplay');
+  const valueEl = document.getElementById('ktRefValue');
+  if (!display || !valueEl) return;
+
+  if (!isConfigured() || !connectionOk) {
+    // Offline fallback: temporary placeholder
+    const localFallback = 'KT-' + new Date().getFullYear() + '-PENDING';
+    valueEl.textContent = localFallback;
+    display.classList.remove('hidden');
+    return;
+  }
+
+  valueEl.textContent = 'Assigning...';
+  display.classList.remove('hidden');
+  try {
+    const res = await fetch(API_URL, {
+      method: 'POST',
+      mode: 'cors',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify({ action: 'getNextKtRef' })
+    });
+    const data = await res.json();
+    if (data.ok && data.ktRef) {
+      valueEl.textContent = data.ktRef;
+    } else {
+      valueEl.textContent = 'KT-' + new Date().getFullYear() + '-PENDING';
+      console.warn('[KT] Could not get ref:', data.error);
+    }
+  } catch (err) {
+    console.warn('[KT] getNextKtRef error:', err);
+    valueEl.textContent = 'KT-' + new Date().getFullYear() + '-PENDING';
+  }
+}
+
+function clearKtReference() {
+  const display = document.getElementById('ktRefDisplay');
+  const valueEl = document.getElementById('ktRefValue');
+  if (display) display.classList.add('hidden');
+  if (valueEl) valueEl.textContent = 'KT-2026-NNN';
 }
 
 function initAccordions() {
@@ -4075,6 +4968,45 @@ async function submitCase(e) {
     }
   }
 
+  // v5: Kidney Transplant fields
+  const isKidneyTransplant = document.getElementById('f_isKidneyTransplant').checked;
+  let ktRef = '', donorType = '', coldIschaemiaMin = null, causeOfESRD = '',
+      dialysisModality = '', lastDialysis = '', preOpHb = null, preOpK = null,
+      inductionAgent = '', muscleRelaxant = '', reversalAgent = '',
+      opioidStrategy = '', intraOpDiuretic = '', mapAtReperfusion = '',
+      reperfusionEvent = '', vasopressorUsed = [], immunoInduction = [];
+
+  if (isKidneyTransplant) {
+    ktRef = (document.getElementById('ktRefValue').textContent || '').trim();
+    donorType = getGroupValue('kt_donorType') || '';
+    const cit = document.getElementById('kt_coldIschaemiaMin').value;
+    coldIschaemiaMin = cit ? parseInt(cit, 10) : null;
+    causeOfESRD = document.getElementById('kt_causeOfESRD').value || '';
+    dialysisModality = document.getElementById('kt_dialysisModality').value || '';
+    lastDialysis = document.getElementById('kt_lastDialysis').value || '';
+    const hb = document.getElementById('kt_preOpHb').value;
+    preOpHb = hb ? parseFloat(hb) : null;
+    const k = document.getElementById('kt_preOpK').value;
+    preOpK = k ? parseFloat(k) : null;
+    inductionAgent = getGroupValue('kt_inductionAgent') || '';
+    muscleRelaxant = document.getElementById('kt_muscleRelaxant').value || '';
+    reversalAgent = getGroupValue('kt_reversalAgent') || '';
+    opioidStrategy = document.getElementById('kt_opioidStrategy').value || '';
+    intraOpDiuretic = getGroupValue('kt_intraOpDiuretic') || '';
+    mapAtReperfusion = getGroupValue('kt_mapAtReperfusion') || '';
+    reperfusionEvent = getGroupValue('kt_reperfusionEvent') || '';
+    vasopressorUsed = Array.from(document.querySelectorAll('[data-cat="kt_vaso"]:checked')).map(c => c.value);
+    immunoInduction = Array.from(document.querySelectorAll('[data-cat="kt_immuno"]:checked')).map(c => c.value);
+
+    // Soft validation: warn if Donor type not selected
+    if (!donorType) {
+      showToast('Please select Donor type in the Transplant section', true);
+      const ktSec = document.getElementById('ktSection');
+      if (ktSec && !ktSec.classList.contains('open')) ktSec.classList.add('open');
+      return;
+    }
+  }
+
   const id = 'c_' + Date.now() + '_' + Math.random().toString(36).slice(2,8);
   const record = {
     id, date, doctor: currentUser.name, specialty, location,
@@ -4088,6 +5020,12 @@ async function submitCase(e) {
     surgicalApproach, secondAnaesthetist, patientFrom,
     spinalDetails, epiduralDetails, cseDetails, macDetails,
     specialAnalgesia, catheters, monitoring,
+    // v5 transplant fields
+    isKidneyTransplant, ktRef, donorType, coldIschaemiaMin,
+    causeOfESRD, dialysisModality, lastDialysis, preOpHb, preOpK,
+    inductionAgent, muscleRelaxant, reversalAgent, opioidStrategy,
+    intraOpDiuretic, mapAtReperfusion, reperfusionEvent,
+    vasopressorUsed, immunoInduction,
     createdAt: new Date().toISOString()
   };
 
@@ -4099,7 +5037,11 @@ async function submitCase(e) {
     if (isConfigured()) {
       await saveCaseToSheet(record);
       setSyncDot('ok');
-      showToast('Case saved to Google Sheets ✓');
+      if (isKidneyTransplant && ktRef) {
+        showToast(`🫘 Transplant case saved · ${ktRef} — write this on the bedside chart`, false);
+      } else {
+        showToast('Case saved to Google Sheets ✓');
+      }
       // v4.2: visual feedback
       const sb = document.getElementById('saveBtn');
       if (sb) { sb.classList.add('saved'); setTimeout(() => sb.classList.remove('saved'), 600); }
@@ -4111,6 +5053,8 @@ async function submitCase(e) {
     cache.push(record);
     setLocalCache(cache);
     allCases.push(record);
+    // v5: update Follow-up nav visibility if a transplant case was saved
+    if (isKidneyTransplant) updateFollowupNavVisibility();
     resetForm();
   } catch (err) {
     console.error(err);
@@ -4165,6 +5109,23 @@ function resetForm() {
   if (specOther) { specOther.value = ''; specOther.classList.add('hidden'); }
   document.getElementById('noCompBtn').classList.add('on');
   document.getElementById('charCount').textContent = '0';
+
+  // v5: reset Kidney Transplant module
+  const ktCheck = document.getElementById('f_isKidneyTransplant');
+  if (ktCheck) ktCheck.checked = false;
+  const ktSection = document.getElementById('ktSection');
+  if (ktSection) { ktSection.classList.add('hidden'); ktSection.classList.remove('open'); }
+  ['kt_donorType','kt_inductionAgent','kt_reversalAgent','kt_intraOpDiuretic',
+   'kt_mapAtReperfusion','kt_reperfusionEvent'].forEach(clearGroup);
+  ['kt_coldIschaemiaMin','kt_preOpHb','kt_preOpK'].forEach(id => {
+    const el = document.getElementById(id); if (el) el.value = '';
+  });
+  ['kt_causeOfESRD','kt_dialysisModality','kt_lastDialysis','kt_muscleRelaxant','kt_opioidStrategy'].forEach(id => {
+    const el = document.getElementById(id); if (el) el.value = '';
+  });
+  document.querySelectorAll('[data-cat="kt_vaso"]:checked, [data-cat="kt_immuno"]:checked').forEach(c => c.checked = false);
+  clearKtReference();
+
   document.querySelectorAll('.accordion').forEach(a => a.classList.remove('open'));
   document.querySelector('[data-section="basics"]').classList.add('open');
 }
@@ -5151,7 +6112,700 @@ function renderSecondAnaesthetistPanel() {
 }
 
 /* ============================================================
-   END v4 ON-CALL MODULE
+   v5 — KIDNEY TRANSPLANT DASHBOARD PANEL (HOD only)
+   ============================================================ */
+
+function renderKtDashboardPanel() {
+  const panel = document.getElementById('ktDashboardPanel');
+  if (!panel) return;
+
+  const ktCases = getAllKtCases();
+  if (ktCases.length === 0) {
+    panel.classList.add('hidden');
+    return;
+  }
+  panel.classList.remove('hidden');
+
+  // Filter to those within current dashboard filter range
+  const ktInScope = filteredCases.filter(c => c.isKidneyTransplant === true || c.isKidneyTransplant === 'true');
+
+  // Summary stats (use all KT cases for header)
+  const now = new Date();
+  const curMonth = now.toISOString().slice(0,7);
+  const curYear = String(now.getFullYear());
+
+  const monthCount = ktCases.filter(c => (c.date || '').startsWith(curMonth)).length;
+  const yearCount = ktCases.filter(c => (c.date || '').startsWith(curYear)).length;
+  const reperfusionEventCount = ktCases.filter(c =>
+    c.reperfusionEvent && c.reperfusionEvent !== 'None' && c.reperfusionEvent !== ''
+  ).length;
+
+  document.getElementById('ktStat_total').textContent = ktCases.length;
+  document.getElementById('ktStat_month').textContent = monthCount;
+  document.getElementById('ktStat_year').textContent = yearCount;
+  document.getElementById('ktStat_reperf').textContent = reperfusionEventCount;
+
+  // Compute outcome rates from follow-up data
+  const outcomes = ktCases.map(c => classifyKtOutcome(c));
+  const immediateCount = outcomes.filter(o => o === 'immediate').length;
+  const dgfCount = outcomes.filter(o => o === 'dgf').length;
+  const classifiedCount = outcomes.filter(o => o !== 'unknown').length;
+
+  document.getElementById('ktStat_imm').textContent = classifiedCount > 0
+    ? Math.round(immediateCount / classifiedCount * 100) + '%'
+    : '—';
+  document.getElementById('ktStat_dgf').textContent = classifiedCount > 0
+    ? Math.round(dgfCount / classifiedCount * 100) + '%'
+    : '—';
+
+  // Render all 8 KT charts
+  renderKtCharts(ktInScope.length > 0 ? ktInScope : ktCases);
+
+  // Render pending follow-up table
+  renderKtPendingTable(ktCases);
+
+  // Render all transplants table
+  renderKtAllTable(ktCases);
+}
+
+// Classify graft function based on intraop + follow-up data
+function classifyKtOutcome(c) {
+  if (!c.ktRef) return 'unknown';
+  // Get follow-up entries for this case
+  const fu = allFollowupEntries.filter(f => f.ktRef === c.ktRef)
+    .sort((a,b) => (a.date || '').localeCompare(b.date || ''));
+  if (fu.length === 0) return 'unknown';
+
+  // DGF = any dialysis required within first 7 days
+  const dgfFu = fu.find(f => {
+    const day = computePostOpDay(c.date, f.date);
+    return day != null && day <= 7 && f.dialysisRequired === 'Yes';
+  });
+  if (dgfFu) return 'dgf';
+
+  // Day 1 follow-up creatinine
+  const day1 = fu.find(f => computePostOpDay(c.date, f.date) === 1);
+  if (day1 && day1.creatinine != null) {
+    // If we have pre-op creatinine (not captured currently), would compare
+    // For now: heuristic — Day 1 creatinine < 3.0 mg/dL with no dialysis = likely immediate function
+    if (Number(day1.creatinine) < 3.0) return 'immediate';
+    return 'slow';
+  }
+
+  // If we have Day 1+ data but no dialysis and falling creatinine — immediate
+  if (fu.length >= 2) {
+    const first = Number(fu[0].creatinine);
+    const last = Number(fu[fu.length - 1].creatinine);
+    if (!isNaN(first) && !isNaN(last) && last < first * 0.7) return 'immediate';
+    if (!isNaN(first) && !isNaN(last) && last < first) return 'slow';
+  }
+
+  return 'unknown';
+}
+
+function outcomeLabel(o) {
+  switch (o) {
+    case 'immediate': return '<span class="kt-outcome-chip kt-outcome-immediate">Immediate function</span>';
+    case 'slow': return '<span class="kt-outcome-chip kt-outcome-slow">Slow graft function</span>';
+    case 'dgf': return '<span class="kt-outcome-chip kt-outcome-dgf">DGF</span>';
+    default: return '<span class="kt-outcome-chip kt-outcome-unknown">Pending follow-up</span>';
+  }
+}
+
+function renderKtCharts(ktCases) {
+  // Destroy any existing KT charts
+  Object.keys(charts).filter(k => k.startsWith('ktCh')).forEach(k => {
+    if (charts[k]) { charts[k].destroy(); delete charts[k]; }
+  });
+
+  renderKtCh1(ktCases);
+  renderKtCh2(ktCases);
+  renderKtCh3(ktCases);
+  renderKtCh4(ktCases);
+  renderKtCh5(ktCases);
+  renderKtCh6(ktCases);
+  renderKtCh7(ktCases);
+  renderKtCh8(ktCases);
+}
+
+// 🫘① Transplants per Month (last 12)
+function renderKtCh1(ktCases) {
+  const canvas = document.getElementById('ktCh1');
+  if (!canvas) return;
+  const months = lastNMonths(12);
+  const counts = months.map(m =>
+    ktCases.filter(c => String(c.date || '').startsWith(m.key)).length
+  );
+  charts.ktCh1 = new Chart(canvas, {
+    type: 'line',
+    data: {
+      labels: months.map(m => m.label),
+      datasets: [{
+        label: 'Transplants',
+        data: counts,
+        borderColor: '#AD1457',
+        backgroundColor: 'rgba(173, 20, 87, 0.15)',
+        fill: true, tension: 0.3,
+        pointBackgroundColor: '#AD1457', pointRadius: 4
+      }]
+    },
+    options: { ...CHART_DEFAULTS,
+      plugins: { ...CHART_DEFAULTS.plugins, legend: { display: false } },
+      scales: { y: { beginAtZero: true, ticks: { precision: 0 } } } }
+  });
+}
+
+// 🫘② Donor type
+function renderKtCh2(ktCases) {
+  const canvas = document.getElementById('ktCh2');
+  if (!canvas) return;
+  const counts = {};
+  ktCases.forEach(c => {
+    if (c.donorType) counts[c.donorType] = (counts[c.donorType] || 0) + 1;
+  });
+  const labels = Object.keys(counts);
+  const data = labels.map(l => counts[l]);
+  if (data.length === 0) { drawEmptyChartMessage(canvas, 'No data yet'); return; }
+  charts.ktCh2 = new Chart(canvas, {
+    type: 'doughnut',
+    data: {
+      labels,
+      datasets: [{
+        data,
+        backgroundColor: ['#43A047','#FB8C00','#AD1457','#5D4037','#3E2723','#7B1FA2']
+      }]
+    },
+    options: { ...CHART_DEFAULTS }
+  });
+}
+
+// 🫘③ Cold ischaemia time histogram
+function renderKtCh3(ktCases) {
+  const canvas = document.getElementById('ktCh3');
+  if (!canvas) return;
+  // Bins: 0-30, 30-60, 60-120, 120-240, 240-480, 480+
+  const bins = [
+    { label: '< 30', from: 0, to: 30 },
+    { label: '30–60', from: 30, to: 60 },
+    { label: '1–2 hr', from: 60, to: 120 },
+    { label: '2–4 hr', from: 120, to: 240 },
+    { label: '4–8 hr', from: 240, to: 480 },
+    { label: '> 8 hr', from: 480, to: Infinity }
+  ];
+  const counts = bins.map(b => ktCases.filter(c => {
+    const cit = Number(c.coldIschaemiaMin);
+    return !isNaN(cit) && cit > 0 && cit >= b.from && cit < b.to;
+  }).length);
+  if (counts.every(v => v === 0)) { drawEmptyChartMessage(canvas, 'No CIT data yet'); return; }
+  charts.ktCh3 = new Chart(canvas, {
+    type: 'bar',
+    data: {
+      labels: bins.map(b => b.label),
+      datasets: [{ data: counts, backgroundColor: '#AD1457', borderRadius: 3 }]
+    },
+    options: { ...CHART_DEFAULTS,
+      plugins: { ...CHART_DEFAULTS.plugins, legend: { display: false } },
+      scales: { y: { beginAtZero: true, ticks: { precision: 0 } } } }
+  });
+}
+
+// 🫘④ Cause of ESRD
+function renderKtCh4(ktCases) {
+  const canvas = document.getElementById('ktCh4');
+  if (!canvas) return;
+  const counts = {};
+  ktCases.forEach(c => {
+    if (c.causeOfESRD) counts[c.causeOfESRD] = (counts[c.causeOfESRD] || 0) + 1;
+  });
+  const entries = Object.entries(counts).sort((a,b) => b[1] - a[1]);
+  if (entries.length === 0) { drawEmptyChartMessage(canvas, 'No data yet'); return; }
+  charts.ktCh4 = new Chart(canvas, {
+    type: 'bar',
+    data: {
+      labels: entries.map(e => e[0]),
+      datasets: [{ data: entries.map(e => e[1]), backgroundColor: '#7B1FA2', borderRadius: 3 }]
+    },
+    options: { ...CHART_DEFAULTS, indexAxis: 'y',
+      plugins: { ...CHART_DEFAULTS.plugins, legend: { display: false } },
+      scales: { x: { beginAtZero: true, ticks: { precision: 0 } } } }
+  });
+}
+
+// 🫘⑤ Reperfusion events
+function renderKtCh5(ktCases) {
+  const canvas = document.getElementById('ktCh5');
+  if (!canvas) return;
+  const order = ['None','Mild hypotension','Severe hypotension','Arrhythmia','Cardiac arrest'];
+  const colours = ['#43A047','#FFA000','#E64A19','#C62828','#4A148C'];
+  const counts = order.map(o => ktCases.filter(c => c.reperfusionEvent === o).length);
+  if (counts.every(v => v === 0)) { drawEmptyChartMessage(canvas, 'No data yet'); return; }
+  charts.ktCh5 = new Chart(canvas, {
+    type: 'bar',
+    data: { labels: order, datasets: [{ data: counts, backgroundColor: colours, borderRadius: 3 }] },
+    options: { ...CHART_DEFAULTS,
+      plugins: { ...CHART_DEFAULTS.plugins, legend: { display: false } },
+      scales: { y: { beginAtZero: true, ticks: { precision: 0 } } } }
+  });
+}
+
+// 🫘⑥ Per-anaesthetist count
+function renderKtCh6(ktCases) {
+  const canvas = document.getElementById('ktCh6');
+  if (!canvas) return;
+  const counts = {};
+  ktCases.forEach(c => {
+    if (c.doctor) counts[c.doctor] = (counts[c.doctor] || 0) + 1;
+  });
+  const entries = Object.entries(counts).sort((a,b) => b[1] - a[1]);
+  if (entries.length === 0) { drawEmptyChartMessage(canvas, 'No data yet'); return; }
+  charts.ktCh6 = new Chart(canvas, {
+    type: 'bar',
+    data: {
+      labels: entries.map(e => e[0].replace(/^Dr /, '')),
+      datasets: [{ data: entries.map(e => e[1]), backgroundColor: '#AD1457', borderRadius: 3 }]
+    },
+    options: { ...CHART_DEFAULTS, indexAxis: 'y',
+      plugins: { ...CHART_DEFAULTS.plugins, legend: { display: false } },
+      scales: { x: { beginAtZero: true, ticks: { precision: 0 } } } }
+  });
+}
+
+// 🫘⑦ Outcome breakdown
+function renderKtCh7(ktCases) {
+  const canvas = document.getElementById('ktCh7');
+  if (!canvas) return;
+  const counts = { immediate: 0, slow: 0, dgf: 0, unknown: 0 };
+  ktCases.forEach(c => { counts[classifyKtOutcome(c)]++; });
+  const total = counts.immediate + counts.slow + counts.dgf + counts.unknown;
+  if (total === 0) { drawEmptyChartMessage(canvas, 'No data yet'); return; }
+  charts.ktCh7 = new Chart(canvas, {
+    type: 'doughnut',
+    data: {
+      labels: ['Immediate function','Slow graft function','DGF','Pending follow-up'],
+      datasets: [{
+        data: [counts.immediate, counts.slow, counts.dgf, counts.unknown],
+        backgroundColor: ['#2E7D32','#F57F17','#C62828','#9E9E9E']
+      }]
+    },
+    options: { ...CHART_DEFAULTS }
+  });
+}
+
+// 🫘⑧ Creatinine trends across first 7 days (line per case)
+function renderKtCh8(ktCases) {
+  const canvas = document.getElementById('ktCh8');
+  if (!canvas) return;
+  // Build per-case trend datasets — only those with at least 1 follow-up
+  const datasets = [];
+  const colourPool = ['#AD1457','#1565C0','#00897B','#7B1FA2','#F57C00','#43A047','#5D4037','#E91E63','#3F51B5','#00838F'];
+  let colourIdx = 0;
+  ktCases.forEach(c => {
+    if (!c.ktRef) return;
+    const fu = allFollowupEntries.filter(f => f.ktRef === c.ktRef)
+      .map(f => ({ day: computePostOpDay(c.date, f.date), cr: Number(f.creatinine) }))
+      .filter(p => p.day != null && p.day >= 0 && p.day <= 7 && !isNaN(p.cr))
+      .sort((a,b) => a.day - b.day);
+    if (fu.length === 0) return;
+    // Build series of {x, y}
+    const series = fu.map(p => ({ x: p.day, y: p.cr }));
+    datasets.push({
+      label: c.ktRef,
+      data: series,
+      borderColor: colourPool[colourIdx % colourPool.length],
+      backgroundColor: colourPool[colourIdx % colourPool.length] + '40',
+      tension: 0.25,
+      pointRadius: 4,
+      showLine: true
+    });
+    colourIdx++;
+  });
+  if (datasets.length === 0) { drawEmptyChartMessage(canvas, 'No follow-up data yet'); return; }
+  charts.ktCh8 = new Chart(canvas, {
+    type: 'scatter',
+    data: { datasets },
+    options: { ...CHART_DEFAULTS,
+      plugins: { ...CHART_DEFAULTS.plugins, legend: { display: datasets.length <= 8 } },
+      scales: {
+        x: { title: { display: true, text: 'Post-op day' }, min: 0, max: 7, ticks: { stepSize: 1 } },
+        y: { title: { display: true, text: 'Creatinine (mg/dL)' }, beginAtZero: true }
+      }
+    }
+  });
+}
+
+// Pending follow-up table
+function renderKtPendingTable(ktCases) {
+  const tbody = document.querySelector('#ktPendingTable tbody');
+  if (!tbody) return;
+  const today = new Date().toISOString().slice(0,10);
+  const pending = ktCases
+    .filter(c => {
+      if (!c.date || !c.ktRef) return false;
+      const day = computePostOpDay(c.date, today);
+      if (day == null || day < 0 || day > 7) return false;
+      // No follow-up entered today
+      return !allFollowupEntries.some(e => e.ktRef === c.ktRef && e.date === today);
+    })
+    .map(c => {
+      const day = computePostOpDay(c.date, today);
+      const fuEntries = allFollowupEntries.filter(e => e.ktRef === c.ktRef);
+      const lastFu = fuEntries.length
+        ? fuEntries.sort((a,b) => (b.date || '').localeCompare(a.date || ''))[0]
+        : null;
+      return { c, day, lastFu };
+    })
+    .sort((a, b) => a.day - b.day);
+
+  if (pending.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; padding:24px; color:var(--text-muted);">✓ No pending follow-ups — all transplants up to date.</td></tr>';
+    return;
+  }
+
+  tbody.innerHTML = pending.map(p => `
+    <tr>
+      <td><span class="kt-ref-badge">${escapeHtml(p.c.ktRef)}</span></td>
+      <td>${formatDate(p.c.date)}</td>
+      <td>${escapeHtml(p.c.donorType || '')}</td>
+      <td>${escapeHtml((p.c.doctor || '').replace(/^Dr /, 'Dr '))}</td>
+      <td><strong style="color:#880E4F;">Day ${p.day}</strong></td>
+      <td>${p.lastFu ? formatDate(p.lastFu.date) + ' (Day ' + (p.lastFu.postOpDay != null ? p.lastFu.postOpDay : '?') + ')' : '<em style="color:var(--text-muted);">Never</em>'}</td>
+      <td><button class="btn-followup" data-kt="${escapeAttr(p.c.ktRef)}">Enter →</button></td>
+    </tr>
+  `).join('');
+
+  // Wire up "Enter" buttons — navigate to Follow-up view with case pre-selected
+  tbody.querySelectorAll('.btn-followup').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const ktRef = btn.getAttribute('data-kt');
+      setView('followup');
+      // Pre-select the case
+      setTimeout(() => {
+        const sel = document.getElementById('fu_ktRef');
+        if (sel) {
+          sel.value = ktRef;
+          sel.dispatchEvent(new Event('change'));
+        }
+      }, 100);
+    });
+  });
+}
+
+// All transplants table
+function renderKtAllTable(ktCases) {
+  const tbody = document.querySelector('#ktAllTable tbody');
+  if (!tbody) return;
+  const sorted = ktCases.slice().sort((a,b) => (b.date || '').localeCompare(a.date || ''));
+  if (sorted.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="8" style="text-align:center; padding:24px; color:var(--text-muted);">No transplant cases yet.</td></tr>';
+    return;
+  }
+  tbody.innerHTML = sorted.map(c => {
+    const fuCount = allFollowupEntries.filter(e => e.ktRef === c.ktRef).length;
+    const outcome = classifyKtOutcome(c);
+    return `
+      <tr>
+        <td>${c.ktRef ? '<span class="kt-ref-badge">' + escapeHtml(c.ktRef) + '</span>' : '<em style="color:var(--text-muted);">—</em>'}</td>
+        <td>${formatDate(c.date)}</td>
+        <td>${escapeHtml((c.doctor || '').replace(/^Dr /, 'Dr '))}</td>
+        <td>${escapeHtml(c.donorType || '')}</td>
+        <td>${c.coldIschaemiaMin || '—'}</td>
+        <td>${escapeHtml(c.reperfusionEvent || '')}</td>
+        <td>${fuCount}</td>
+        <td>${outcomeLabel(outcome)}</td>
+      </tr>
+    `;
+  }).join('');
+}
+
+/* ============================================================
+   END v5 KT DASHBOARD PANEL
+   ============================================================ */
+
+/* ============================================================
+   v5 — TRANSPLANT FOLLOW-UP MODULE
+   ============================================================ */
+
+// API helpers
+async function apiAddFollowup(entry) {
+  const res = await fetch(API_URL, {
+    method: 'POST', mode: 'cors',
+    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+    body: JSON.stringify({ action: 'addFollowup', entry })
+  });
+  const data = await res.json();
+  if (!data.ok) throw new Error(data.error || 'Server error');
+  return data.result;
+}
+
+async function apiListFollowup() {
+  const res = await fetch(API_URL, {
+    method: 'POST', mode: 'cors',
+    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+    body: JSON.stringify({ action: 'listFollowup' })
+  });
+  const data = await res.json();
+  if (!data.ok) throw new Error(data.error || 'Server error');
+  return data.entries || [];
+}
+
+async function loadAllFollowup() {
+  const cached = localStorage.getItem('kims_followup_cache');
+  if (cached) {
+    try { allFollowupEntries = JSON.parse(cached); } catch { allFollowupEntries = []; }
+  }
+  if (isConfigured() && connectionOk) {
+    try {
+      const remote = await apiListFollowup();
+      allFollowupEntries = remote;
+      localStorage.setItem('kims_followup_cache', JSON.stringify(allFollowupEntries));
+      console.log('[Follow-up] Loaded', allFollowupEntries.length, 'entries');
+    } catch (err) {
+      console.warn('[Follow-up] Load failed, using cache:', err.message);
+    }
+  }
+}
+
+// Get all KT cases from allCases
+function getAllKtCases() {
+  return allCases.filter(c => c.isKidneyTransplant === true || c.isKidneyTransplant === 'true');
+}
+
+// Compute post-op day from KT case date and follow-up date
+function computePostOpDay(ktCaseDate, followupDate) {
+  if (!ktCaseDate || !followupDate) return null;
+  const a = new Date(ktCaseDate + 'T00:00:00');
+  const b = new Date(followupDate + 'T00:00:00');
+  const diffMs = b - a;
+  const diffDays = Math.round(diffMs / (1000 * 60 * 60 * 24));
+  return diffDays;
+}
+
+// Initialize the follow-up form
+function initFollowupForm() {
+  // Default date = today
+  document.getElementById('fu_date').value = new Date().toISOString().slice(0,10);
+
+  // Build complications checkboxes
+  buildCheckGroup('fu-complications-grid', FU_COMPLICATIONS, 'fu_comp');
+
+  // Wire date → post-op day auto-calc
+  const dateInput = document.getElementById('fu_date');
+  const ktRefSel = document.getElementById('fu_ktRef');
+  dateInput.addEventListener('change', updatePostOpDay);
+  ktRefSel.addEventListener('change', () => {
+    updatePostOpDay();
+    showCaseInfo();
+    renderRecentFollowups();
+  });
+
+  // Notes char count
+  document.getElementById('fu_notes').addEventListener('input', e => {
+    document.getElementById('fu_charCount').textContent = e.target.value.length;
+  });
+
+  // Form submit
+  document.getElementById('followupForm').addEventListener('submit', submitFollowup);
+}
+
+function updatePostOpDay() {
+  const ktRef = document.getElementById('fu_ktRef').value;
+  const fuDate = document.getElementById('fu_date').value;
+  const postOpDayEl = document.getElementById('fu_postOpDay');
+  if (!ktRef || !fuDate) { postOpDayEl.value = ''; return; }
+  const ktCase = allCases.find(c => c.ktRef === ktRef);
+  if (!ktCase || !ktCase.date) { postOpDayEl.value = '?'; return; }
+  const day = computePostOpDay(ktCase.date, fuDate);
+  postOpDayEl.value = day == null ? '?' : ('Day ' + day);
+}
+
+function showCaseInfo() {
+  const ktRef = document.getElementById('fu_ktRef').value;
+  const info = document.getElementById('fu_caseInfo');
+  if (!ktRef) { info.style.display = 'none'; return; }
+  const ktCase = allCases.find(c => c.ktRef === ktRef);
+  if (!ktCase) { info.style.display = 'none'; return; }
+  const parts = [];
+  parts.push(`<strong>${escapeHtml(ktRef)}</strong>`);
+  if (ktCase.date) parts.push(formatDate(ktCase.date));
+  if (ktCase.doctor) parts.push(escapeHtml(ktCase.doctor));
+  if (ktCase.donorType) parts.push(escapeHtml(ktCase.donorType));
+  info.innerHTML = parts.join(' · ');
+  info.style.display = 'block';
+}
+
+// Populate the KT case dropdown — sorted with most recent first
+function populateKtCaseDropdown() {
+  const sel = document.getElementById('fu_ktRef');
+  if (!sel) return;
+  const ktCases = getAllKtCases().slice().sort((a, b) => (b.date || '').localeCompare(a.date || ''));
+  // Clear existing options except placeholder
+  while (sel.options.length > 1) sel.remove(1);
+  ktCases.forEach(c => {
+    if (!c.ktRef) return;
+    const o = document.createElement('option');
+    o.value = c.ktRef;
+    o.textContent = `${c.ktRef} · ${formatDate(c.date)} · ${(c.doctor || '').replace(/^Dr /, 'Dr ')} · ${c.donorType || ''}`;
+    sel.appendChild(o);
+  });
+}
+
+// Render recent follow-up entries for the selected case
+function renderRecentFollowups() {
+  const list = document.getElementById('fu_recentList');
+  if (!list) return;
+  const ktRef = document.getElementById('fu_ktRef').value;
+  if (!ktRef) { list.innerHTML = ''; return; }
+  const entries = allFollowupEntries
+    .filter(e => e.ktRef === ktRef)
+    .sort((a, b) => (b.date || '').localeCompare(a.date || ''));
+  if (entries.length === 0) {
+    list.innerHTML = `<div style="text-align:center; padding:24px; color:#5C6B80; background:#FCE4EC; border-radius:10px; border-left:4px solid #AD1457;">
+      <strong style="color:#880E4F;">No follow-up entries yet for ${escapeHtml(ktRef)}.</strong><br>
+      <span style="font-size:13px;">Be the first to log this patient's day data.</span>
+    </div>`;
+    return;
+  }
+  const html = entries.map(e => {
+    const comps = Array.isArray(e.complications) ? e.complications : [];
+    return `<div class="case-card" style="border-left:4px solid #AD1457;">
+      <div class="case-card-top">
+        <div class="case-date">${formatDate(e.date || '')} · <strong style="color:#880E4F;">${e.postOpDay != null ? 'Day ' + e.postOpDay : ''}</strong></div>
+        <div class="case-badges">
+          <span class="badge ${e.icuStatus === 'Discharged' ? 'badge-elective' : ''}" style="background:${e.icuStatus === 'Still in ICU' ? '#FFEBEE' : '#E8F5E9'};color:${e.icuStatus === 'Still in ICU' ? '#C62828' : '#2E7D32'};">${escapeHtml(e.icuStatus || '')}</span>
+        </div>
+      </div>
+      <div class="case-meta">
+        <span>💧 UO: <b>${e.urineOutput24h || '?'} mL</b></span>
+        <span>🧪 Cr: <b>${e.creatinine || '?'} mg/dL</b></span>
+        <span>${e.dialysisRequired === 'Yes' ? '⚠ Dialysis given' : '✓ No dialysis'}</span>
+        <span>📝 ${escapeHtml(e.doctor || '')}</span>
+      </div>
+      ${comps.length && !(comps.length === 1 && comps[0] === 'None') ? `<div style="padding:8px 14px; font-size:12px; color:#C62828;">⚠ ${comps.map(escapeHtml).join(', ')}</div>` : ''}
+      ${e.notes ? `<div style="padding:8px 14px; font-size:13px; color:var(--text-muted); border-top:1px solid #F0F0F0;">${escapeHtml(e.notes)}</div>` : ''}
+    </div>`;
+  }).join('');
+  list.innerHTML = `<h3 style="color:#880E4F; margin-bottom:12px;">📋 Follow-up history (${entries.length} entries)</h3>${html}`;
+}
+
+async function submitFollowup(e) {
+  e.preventDefault();
+  if (!currentUser) { alert('Please log in first'); return; }
+
+  const ktRef = document.getElementById('fu_ktRef').value;
+  const date = document.getElementById('fu_date').value;
+  const uo = document.getElementById('fu_urineOutput24h').value;
+  const cr = document.getElementById('fu_creatinine').value;
+  const dialysis = getGroupValue('fu_dialysisRequired');
+  const icuStatus = getGroupValue('fu_icuStatus');
+
+  const missing = [];
+  if (!ktRef) missing.push('Transplant case');
+  if (!date) missing.push('Follow-up date');
+  if (!uo) missing.push('Urine output');
+  if (!cr) missing.push('Creatinine');
+  if (!dialysis) missing.push('Dialysis required');
+  if (!icuStatus) missing.push('ICU status');
+  if (missing.length) {
+    showToast('Missing: ' + missing.join(', '), true);
+    return;
+  }
+
+  const ktCase = allCases.find(c => c.ktRef === ktRef);
+  const postOpDay = ktCase ? computePostOpDay(ktCase.date, date) : null;
+  const complications = Array.from(document.querySelectorAll('[data-cat="fu_comp"]:checked')).map(c => c.value);
+
+  const entry = {
+    id: 'fu_' + Date.now() + '_' + Math.random().toString(36).slice(2,8),
+    createdAt: new Date().toISOString(),
+    ktRef, date,
+    postOpDay,
+    doctor: currentUser.name,
+    urineOutput24h: parseInt(uo, 10),
+    creatinine: parseFloat(cr),
+    dialysisRequired: dialysis,
+    icuStatus,
+    complications,
+    notes: document.getElementById('fu_notes').value.trim()
+  };
+
+  const saveBtn = document.getElementById('fu_saveBtn');
+  saveBtn.disabled = true;
+  saveBtn.textContent = 'Saving...';
+
+  try {
+    if (isConfigured() && connectionOk) {
+      await apiAddFollowup(entry);
+      allFollowupEntries.push(entry);
+      localStorage.setItem('kims_followup_cache', JSON.stringify(allFollowupEntries));
+      showToast(`Follow-up saved ✓ ${ktRef} Day ${postOpDay}`);
+    } else {
+      // Queue locally
+      const pending = JSON.parse(localStorage.getItem('kims_followup_pending') || '[]');
+      pending.push(entry);
+      localStorage.setItem('kims_followup_pending', JSON.stringify(pending));
+      allFollowupEntries.push(entry);
+      showToast('Saved locally (will sync later)', false);
+    }
+    resetFollowupForm();
+    renderRecentFollowups();
+  } catch (err) {
+    console.error('[Follow-up] Save failed:', err);
+    const pending = JSON.parse(localStorage.getItem('kims_followup_pending') || '[]');
+    pending.push(entry);
+    localStorage.setItem('kims_followup_pending', JSON.stringify(pending));
+    allFollowupEntries.push(entry);
+    showToast('Saved locally (server unreachable)', false);
+    resetFollowupForm();
+    renderRecentFollowups();
+  } finally {
+    saveBtn.disabled = false;
+    saveBtn.textContent = 'SAVE FOLLOW-UP';
+  }
+}
+
+function resetFollowupForm() {
+  document.getElementById('followupForm').reset();
+  document.getElementById('fu_date').value = new Date().toISOString().slice(0,10);
+  document.getElementById('fu_postOpDay').value = '';
+  document.getElementById('fu_caseInfo').style.display = 'none';
+  ['fu_dialysisRequired','fu_icuStatus'].forEach(clearGroup);
+  document.querySelectorAll('[data-cat="fu_comp"]:checked').forEach(c => c.checked = false);
+  document.getElementById('fu_charCount').textContent = '0';
+}
+
+// Render the Follow-up view when navigated to
+async function renderFollowupView() {
+  // Refresh data
+  if (connectionOk) {
+    try {
+      await loadAllFollowup();
+    } catch (err) {
+      console.warn('[Follow-up] Refresh failed:', err);
+    }
+  }
+  populateKtCaseDropdown();
+  updateFollowupStats();
+  renderRecentFollowups();
+}
+
+function updateFollowupStats() {
+  const ktCases = getAllKtCases();
+  document.getElementById('fws_kt_count').textContent = ktCases.length;
+  document.getElementById('fws_followup_count').textContent = allFollowupEntries.length;
+  // Pending today: KT cases within first 7 days that have no follow-up entry today
+  const today = new Date().toISOString().slice(0,10);
+  const pendingCount = ktCases.filter(c => {
+    if (!c.date || !c.ktRef) return false;
+    const day = computePostOpDay(c.date, today);
+    if (day == null || day < 0 || day > 7) return false;
+    const hasEntryToday = allFollowupEntries.some(e => e.ktRef === c.ktRef && e.date === today);
+    return !hasEntryToday;
+  }).length;
+  document.getElementById('fws_pending').textContent = pendingCount;
+}
+
+/* ============================================================
+   END v5 TRANSPLANT FOLLOW-UP MODULE
    ============================================================ */
 
 /* ============================================================
@@ -5173,10 +6827,12 @@ function renderMyCases() {
 
   list.innerHTML = mine.map(c => {
     const hasComp = c.complications && c.complications.length > 0;
-    return `<div class="case-card" data-id="${escapeAttr(c.id)}">
+    const isKT = c.isKidneyTransplant === true || c.isKidneyTransplant === 'true';
+    return `<div class="case-card${isKT ? ' kt-case' : ''}" data-id="${escapeAttr(c.id)}">
       <div class="case-card-top">
         <div class="case-date">${formatDate(c.date)}</div>
         <div class="case-badges">
+          ${isKT && c.ktRef ? `<span class="kt-ref-badge">${escapeHtml(c.ktRef)}</span>` : ''}
           <span class="badge badge-teal">${escapeHtml(c.anaesthesiaType || '')}</span>
           <span class="badge ${c.electiveEmergency === 'Emergency' ? 'badge-emergency' : 'badge-elective'}">${escapeHtml(c.electiveEmergency)}</span>
           ${hasComp ? `<span class="badge badge-complications">⚠ ${c.complications.length} comp</span>` : ''}
@@ -5261,6 +6917,28 @@ function renderCaseDetailHtml(c) {
   if (c.otherSpecial && c.otherSpecial.length) rows.push(['Other special', chipHtml(c.otherSpecial)]);
   if (c.complications && c.complications.length) rows.push(['Complications', chipHtml(c.complications, 'var(--danger-bg)', 'var(--danger)')]);
   if (c.notes) rows.push(['Notes', escapeHtml(c.notes)]);
+
+  // v5: Kidney Transplant details
+  const isKT = c.isKidneyTransplant === true || c.isKidneyTransplant === 'true';
+  if (isKT) {
+    if (c.ktRef) rows.push(['🫘 Transplant Ref', `<span class="kt-ref-badge">${escapeHtml(c.ktRef)}</span>`]);
+    if (c.donorType) rows.push(['Donor type', escapeHtml(c.donorType)]);
+    if (c.coldIschaemiaMin) rows.push(['Cold ischaemia', escapeHtml(c.coldIschaemiaMin) + ' min']);
+    if (c.causeOfESRD) rows.push(['Cause of ESRD', escapeHtml(c.causeOfESRD)]);
+    if (c.dialysisModality) rows.push(['Dialysis modality', escapeHtml(c.dialysisModality)]);
+    if (c.lastDialysis) rows.push(['Last dialysis', escapeHtml(c.lastDialysis)]);
+    if (c.preOpHb) rows.push(['Pre-op Hb', escapeHtml(c.preOpHb) + ' g/dL']);
+    if (c.preOpK) rows.push(['Pre-op K+', escapeHtml(c.preOpK) + ' mmol/L']);
+    if (c.inductionAgent) rows.push(['Induction', escapeHtml(c.inductionAgent)]);
+    if (c.muscleRelaxant) rows.push(['Muscle relaxant', escapeHtml(c.muscleRelaxant)]);
+    if (c.reversalAgent) rows.push(['Reversal', escapeHtml(c.reversalAgent)]);
+    if (c.opioidStrategy) rows.push(['Opioid strategy', escapeHtml(c.opioidStrategy)]);
+    if (c.intraOpDiuretic) rows.push(['Intra-op diuretic', escapeHtml(c.intraOpDiuretic)]);
+    if (c.mapAtReperfusion) rows.push(['MAP at reperfusion', escapeHtml(c.mapAtReperfusion)]);
+    if (c.reperfusionEvent) rows.push(['Reperfusion event', escapeHtml(c.reperfusionEvent)]);
+    if (c.vasopressorUsed && c.vasopressorUsed.length) rows.push(['Vasopressor used', chipHtml(c.vasopressorUsed)]);
+    if (c.immunoInduction && c.immunoInduction.length) rows.push(['Immunosuppression', chipHtml(c.immunoInduction, '#FCE4EC', '#880E4F')]);
+  }
 
   if (!rows.length) return '<div style="color:var(--text-muted);font-size:13px;">No additional details recorded.</div>';
   return rows.map(r => `<div class="detail-row"><div class="k">${r[0]}</div><div class="v">${r[1]}</div></div>`).join('');
@@ -5420,6 +7098,7 @@ function renderDashboard() {
   renderCharts();
   renderDataTable();
   renderSecondAnaesthetistPanel(); // v4
+  renderKtDashboardPanel(); // v5
   if (typeof updateDashWelcomeStats === 'function') updateDashWelcomeStats(); // v4.2
 
   const now = new Date();
@@ -6083,6 +7762,8 @@ document.addEventListener('DOMContentLoaded', async () => {
   initDashboardFilters();
   // v4: initialize on-call form
   initOnCallForm();
+  // v5: initialize follow-up form
+  initFollowupForm();
 
   const us = document.querySelector('[data-group="bguidance"] [data-val="Ultrasound"]');
   if (us) us.classList.add('on');
