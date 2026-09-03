@@ -2521,6 +2521,81 @@ table.data-table {
   font-size: 13px;
 }
 
+/* v6: Block region labels */
+.block-region-label {
+  font-size: 11px;
+  color: var(--text-muted);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  margin: 14px 0 6px;
+  padding-left: 8px;
+  border-left: 3px solid var(--accent);
+}
+.block-region-label:first-of-type {
+  margin-top: 8px;
+}
+
+/* v6: Chk subgroup title (for hypotension causes) */
+.chk-subgroup-title {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin: 12px 0 6px;
+}
+
+/* v6: Critical incident panels */
+.incident-panel {
+  margin-top: 20px;
+  padding: 16px 18px;
+  background: linear-gradient(135deg, #FFF8E1 0%, #FFECB3 100%);
+  border-left: 5px solid #FB8C00;
+  border-radius: 10px;
+  animation: slideDown 0.35s ease;
+  box-shadow: 0 3px 10px rgba(251, 140, 0, 0.15);
+}
+.incident-panel.critical {
+  background: linear-gradient(135deg, #FFEBEE 0%, #FFCDD2 100%);
+  border-left-color: #C62828;
+  box-shadow: 0 3px 12px rgba(198, 40, 40, 0.2);
+}
+.incident-panel-head {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(0,0,0,0.1);
+}
+.incident-icon {
+  font-size: 28px;
+  line-height: 1;
+  flex-shrink: 0;
+}
+.incident-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #E65100;
+  line-height: 1.3;
+}
+.incident-panel.critical .incident-title {
+  color: #B71C1C;
+}
+.incident-sub {
+  font-size: 12px;
+  color: #6A6A6A;
+  margin-top: 3px;
+  line-height: 1.4;
+}
+.incident-panel.critical .incident-sub {
+  color: #7B1F1F;
+}
+.incident-panel .field-label {
+  color: #333;
+}
+
 /* KT dashboard panel banner */
 .kt-programme-banner {
   background: linear-gradient(135deg, #880E4F 0%, #AD1457 50%, #C2185B 100%);
@@ -3032,17 +3107,31 @@ table.data-table {
 
             <div class="chk-group">
               <div class="chk-group-title">Regional / Blocks</div>
-              <div style="font-size:11px;color:var(--text-muted);font-weight:600;margin:8px 0 6px;">Upper Limb</div>
+              <div style="font-size:11px;color:var(--text-muted);font-style:italic;margin-bottom:8px;">All blocks are shown for every case, grouped by anatomical region.</div>
+
+              <div class="block-region-label">Neuraxial (peripheral)</div>
+              <div class="chk-grid" id="grp-blocks-neuraxial"></div>
+              <div style="font-size:11px;color:var(--text-muted);font-style:italic;margin:4px 0 8px;">Spinal, Epidural, and CSE are captured in Section D above.</div>
+
+              <div class="block-region-label">Upper Limb</div>
               <div class="chk-grid" id="grp-blocks-ul"></div>
-              <div style="font-size:11px;color:var(--text-muted);font-weight:600;margin:12px 0 6px;">Lower Limb</div>
+
+              <div class="block-region-label">Lower Limb</div>
               <div class="chk-grid" id="grp-blocks-ll"></div>
-              <div style="font-size:11px;color:var(--text-muted);font-weight:600;margin:12px 0 6px;">Trunk</div>
+
+              <div class="block-region-label">Trunk / Fascial Plane</div>
               <div class="chk-grid" id="grp-blocks-trunk"></div>
-              <div style="font-size:11px;color:var(--text-muted);font-weight:600;margin:12px 0 6px;">Head / Neck</div>
+
+              <div class="block-region-label">Head / Neck</div>
               <div class="chk-grid" id="grp-blocks-hn"></div>
+
+              <div class="block-region-label">Paediatric-specific</div>
+              <div class="chk-grid" id="grp-blocks-paeds"></div>
+
               <!-- v3: Ophthalmic blocks group hidden (kept structurally for fallback) -->
               <div class="chk-grid hidden" id="grp-blocks-eye"></div>
-              <div style="font-size:11px;color:var(--text-muted);font-weight:600;margin:12px 0 6px;">Other Blocks</div>
+
+              <div class="block-region-label">Other Blocks</div>
               <div class="chk-grid" id="grp-blocks-other"></div>
 
               <div class="block-guidance hidden" id="blockGuidance">
@@ -3082,18 +3171,167 @@ table.data-table {
         <div class="accordion" data-section="complications">
           <button type="button" class="accordion-head">
             <span class="accordion-title">
-              <span class="accordion-num optional">D</span> <span class="ot-section-icon">⚠</span>Complications
+              <span class="accordion-num optional">D</span> <span class="ot-section-icon">⚠</span>Complications & Critical Incidents
               <span class="accordion-optional">OPTIONAL</span>
             </span>
             <span class="chevron">▶</span>
           </button>
           <div class="accordion-body">
             <button type="button" class="none-btn on" id="noCompBtn">✓ No complications</button>
-            <div class="chk-grid" id="grp-complications"></div>
+
+            <!-- v6: Anaesthesia-related complications -->
+            <div class="chk-group" style="margin-top:14px;">
+              <div class="chk-group-title" style="color:#1565C0;">💉 Anaesthesia-related</div>
+              <div class="chk-grid" id="grp-comp-anaes"></div>
+            </div>
+
+            <!-- v6: Surgical complications -->
+            <div class="chk-group" style="margin-top:14px;">
+              <div class="chk-group-title" style="color:#6A1B9A;">🔪 Surgical</div>
+              <div class="chk-grid" id="grp-comp-surg"></div>
+            </div>
+
             <div class="field" style="margin-top:12px;">
               <label class="field-label">Other complication <span class="opt">(specify)</span></label>
               <input type="text" class="input" id="f_comp_other" placeholder="Describe..." maxlength="200" />
             </div>
+
+            <!-- v6: HYPOTENSION WORKUP (auto-shows when Hypotension ticked in anaes) -->
+            <div class="incident-panel hidden" id="hypoWorkupPanel">
+              <div class="incident-panel-head">
+                <span class="incident-icon">📉</span>
+                <div>
+                  <div class="incident-title">Hypotension workup</div>
+                  <div class="incident-sub">Optional for mild events. <strong>Required for Moderate or Severe.</strong></div>
+                </div>
+              </div>
+
+              <div class="field">
+                <label class="field-label">Severity <span id="hypoSeverityReq" class="req hidden">*</span></label>
+                <div class="pill-grid" data-group="hypoSeverity">
+                  <button type="button" class="pill small" data-val="Mild">Mild</button>
+                  <button type="button" class="pill small" data-val="Moderate">Moderate</button>
+                  <button type="button" class="pill small" data-val="Severe">Severe</button>
+                </div>
+                <div style="font-size:11px;color:var(--text-muted);margin-top:4px;">
+                  Mild: fluids/single bolus · Moderate: infusion or transfusion · Severe: CPR/ICU/prolongation
+                </div>
+              </div>
+
+              <div class="field">
+                <label class="field-label">Possible cause <span class="opt">(select all that apply)</span></label>
+                <div class="chk-group">
+                  <div class="chk-subgroup-title">Surgery-related</div>
+                  <div class="chk-grid" id="grp-hypo-surgical"></div>
+                </div>
+                <div class="chk-group">
+                  <div class="chk-subgroup-title">Blood loss / hypovolaemia</div>
+                  <div class="chk-grid" id="grp-hypo-blood"></div>
+                </div>
+                <div class="chk-group">
+                  <div class="chk-subgroup-title">Cardiovascular</div>
+                  <div class="chk-grid" id="grp-hypo-cardio"></div>
+                </div>
+                <div class="chk-group">
+                  <div class="chk-subgroup-title">Anaesthetic technique</div>
+                  <div class="chk-grid" id="grp-hypo-tech"></div>
+                </div>
+                <div class="chk-group">
+                  <div class="chk-subgroup-title">Drug reaction</div>
+                  <div class="chk-grid" id="grp-hypo-drug"></div>
+                </div>
+                <div class="chk-group">
+                  <div class="chk-subgroup-title">Other</div>
+                  <div class="chk-grid" id="grp-hypo-other"></div>
+                </div>
+              </div>
+
+              <div class="field">
+                <label class="field-label">Resolution</label>
+                <div class="pill-grid" data-group="hypoResolution">
+                  <button type="button" class="pill small" data-val="Resolved by end of case">Resolved by end</button>
+                  <button type="button" class="pill small" data-val="Not resolved">Not resolved</button>
+                  <button type="button" class="pill small" data-val="Ongoing at ICU handover">Ongoing at handover</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- v6: DIFFICULT AIRWAY workup (auto-shows when ticked in anaes) -->
+            <div class="incident-panel critical hidden" id="daWorkupPanel">
+              <div class="incident-panel-head">
+                <span class="incident-icon">🫁</span>
+                <div>
+                  <div class="incident-title">Unanticipated Difficult Airway</div>
+                  <div class="incident-sub"><strong>Mandatory documentation.</strong> Case will not save without this.</div>
+                </div>
+              </div>
+
+              <div class="field">
+                <label class="field-label">What happened <span class="req">*</span></label>
+                <div class="chk-grid" id="grp-da-types"></div>
+              </div>
+
+              <div class="field">
+                <label class="field-label">Attempts / device escalation <span class="req">*</span></label>
+                <textarea class="textarea" id="f_da_narrative" maxlength="500" rows="3" placeholder="e.g. 3 attempts with Mac 4, moved to VL (McGrath), LMA rescue attempt failed, called ENT for FONA..."></textarea>
+              </div>
+
+              <div class="field">
+                <label class="field-label">Documentation follow-through <span class="opt">(tick as completed)</span></label>
+                <div class="chk-grid" id="grp-da-followthrough"></div>
+              </div>
+            </div>
+
+            <!-- v6: DRUG ERROR workup (new tickbox in anaes list) -->
+            <div class="incident-panel critical hidden" id="drugErrorPanel">
+              <div class="incident-panel-head">
+                <span class="incident-icon">💊</span>
+                <div>
+                  <div class="incident-title">Drug Error</div>
+                  <div class="incident-sub"><strong>Mandatory documentation.</strong> Case will not save without this.</div>
+                </div>
+              </div>
+
+              <div class="row-2">
+                <div class="field">
+                  <label class="field-label">Type <span class="req">*</span></label>
+                  <select class="input" id="f_de_type" required>
+                    <option value="">-- Select --</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label class="field-label">Drug class <span class="req">*</span></label>
+                  <select class="input" id="f_de_class" required>
+                    <option value="">-- Select --</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="field">
+                <label class="field-label">Harm <span class="req">*</span></label>
+                <div class="pill-grid" data-group="deHarm">
+                  <button type="button" class="pill small" data-val="No harm">No harm</button>
+                  <button type="button" class="pill small" data-val="Temporary harm">Temporary harm</button>
+                  <button type="button" class="pill small" data-val="Prolonged monitoring required">Prolonged monitoring</button>
+                  <button type="button" class="pill small" data-val="Serious harm">Serious harm</button>
+                </div>
+              </div>
+
+              <div class="field">
+                <label class="field-label">Reported to hospital incident system? <span class="req">*</span></label>
+                <div class="pill-grid" data-group="deReported">
+                  <button type="button" class="pill small" data-val="Yes">Yes</button>
+                  <button type="button" class="pill small" data-val="No">No</button>
+                  <button type="button" class="pill small" data-val="Pending">Pending</button>
+                </div>
+              </div>
+
+              <div class="field">
+                <label class="field-label">Narrative <span class="req">*</span></label>
+                <textarea class="textarea" id="f_de_narrative" maxlength="500" rows="3" placeholder="What happened, how it was noticed, corrective action taken..."></textarea>
+              </div>
+            </div>
+
           </div>
         </div>
 
@@ -4042,7 +4280,7 @@ const DOCTORS = [
   { name: 'Dr Subramanyam Mahankali', role: 'HOD' },
   { name: 'Dr Amjad Maniar' },
   { name: 'Dr Manjunath M' },
-  { name: 'Dr Satyanarayana J' },
+  { name: 'Dr Sathyanarayan J' },
   { name: 'Dr Karthik B' },
   { name: 'Dr Divya BS' },
   { name: 'Dr Prarthana M Raj' },
@@ -4053,18 +4291,102 @@ const DOCTORS = [
   { name: 'Dr Arbina Shaikh' }
 ];
 
+// v6.1: Defensive name normalisation for legacy misspellings.
+// This is a safety net — if any old case in the sheet was saved with a
+// non-canonical spelling, roll it up to the current preferred spelling
+// so dashboards, filters, and per-anaesthetist counts don't split the same
+// person into "two anaesthetists". Add new mappings here as needed.
+const DOCTOR_NAME_ALIASES = {
+  'Dr Satyanarayana J': 'Dr Sathyanarayan J',
+  'Dr Sathyanarayana J': 'Dr Sathyanarayan J',
+  'Dr Satyanarayan J': 'Dr Sathyanarayan J'
+};
+
+function normaliseDoctorName(name) {
+  if (!name) return name;
+  const trimmed = String(name).trim();
+  return DOCTOR_NAME_ALIASES[trimmed] || trimmed;
+}
+
 const AIRWAY = ['Video Laryngoscopy','McCoy Laryngoscope blade','Fibreoptic Bronchoscope (awake)','Fibreoptic Bronchoscope (asleep)','Difficult Airway (unanticipated)','Surgical Airway','Rapid Sequence Induction (RSI)'];
 const OLV = ['Double-Lumen ETT (left)','Double-Lumen ETT (right)','Bronchial Blocker','One-lung ventilation (other)'];
-const BLOCKS_UL = ['Interscalene','Supraclavicular','Costoclavicular','Infraclavicular','Axillary','Peripheral nerve block (forearm/hand)'];
-const BLOCKS_LL = ['Femoral/Adductor canal','Sciatic/Popliteal','Fascia Iliaca','PENG','Lumbar plexus','Sacral plexus','iPACK','Ankle block'];
-const BLOCKS_TRUNK = ['TAP block','ESPB','PECS I/II','Pecto-intercostal','External oblique intercostal','Paravertebral','Quadratus Lumborum (QL)','Rectus Sheath'];
+// v6: Anatomical block groupings — all groups visible for all specialties
+const BLOCKS_NEURAXIAL = ['Caudal']; // Note: Spinal/Epidural/CSE captured separately in Section D
+const BLOCKS_UL = ['Interscalene','Supraclavicular','Costoclavicular','Infraclavicular','Axillary','Radial Trinity (median+radial+ulnar)','Peripheral nerve block (forearm/hand)'];
+const BLOCKS_LL = ['Femoral/Adductor canal','Sciatic/Popliteal','Fascia Iliaca','PENG','Lumbar plexus','Sacral plexus','iPACK','LFCN (Lateral Femoral Cutaneous Nerve)','Obturator','Ankle block'];
+const BLOCKS_TRUNK = ['TAP block','ESPB','SAP (Serratus Anterior Plane)','PECS I/II','Pecto-intercostal','External oblique intercostal','Paravertebral','Quadratus Lumborum (QL)','Rectus Sheath','Clavipectoral'];
 const BLOCKS_HN = ['Scalp block','Cervical plexus'];
+const BLOCKS_PAEDS = ['Penile block'];
 const BLOCKS_EYE = []; // v3: Ophthalmic blocks removed
 const BLOCKS_OTHER = ['BIER block','Wound infiltration (surgeon)'];
 const LINES = ['Arterial line — Radial','Arterial line — Femoral/other','CVC — Internal Jugular','CVC — Subclavian','CVC — Femoral','PICC','Introducer/Cordis sheath','Pulmonary Artery Catheter (PAC/Swan-Ganz)','Pacing wire','Intraosseous (IO) access'];
 const MONITORING = ['Intraoperative TOE/TEE','BIS','Entropy','EEG monitoring','SSEP/MEP neuromonitoring','NIRS / Cerebral oximetry','Continuous Cardiac Output (PiCCO/LiDCO/FloTrac)','Train-of-Four (TOF)'];
 const OTHER_SPECIAL = ['Cell salvage (intraop)','Deliberate hypotension','Awake craniotomy','Total IV Anaesthesia (TIVA)','High-frequency jet ventilation','Prone positioning (planned)'];
+// v6: Legacy flat list — kept for backward compatibility with pre-v6 cases
 const COMPLICATIONS = ['Hypotension','Hypertension','Bradycardia','Arrhythmia','Desaturation','Bronchospasm','Laryngospasm','Unanticipated difficult intubation','Failed intubation','Failed spinal','Failed epidural','Accidental dural puncture','High/total spinal','Failed block','Change of anaesthesia plan','LAST (local anaesthetic toxicity)','Severe PONV','Awareness under GA','Anaphylaxis','Haemorrhage/coagulopathy','Cardiac arrest','Death on table','Line complication (pneumothorax/haematoma/arterial puncture)','Nerve injury (suspected)'];
+
+// v6: Categorised complications — Anaesthesia-related
+// Note: Three triggers below open dedicated workup panels: 'Hypotension', 'Unanticipated Difficult Airway', 'Drug Error'
+const COMPLICATIONS_ANAES = [
+  'Hypotension',                                    // → hypoWorkupPanel
+  'Hypertension',
+  'Bradycardia',
+  'Arrhythmia',
+  'Desaturation',
+  'Bronchospasm',
+  'Laryngospasm',
+  'Aspiration',
+  'Unanticipated Difficult Airway',                 // → daWorkupPanel (mandatory)
+  'Drug Error',                                      // → drugErrorPanel (mandatory)
+  'Failed spinal',
+  'Failed epidural',
+  'Accidental dural puncture',
+  'Post-dural puncture headache (PDPH)',
+  'High/total spinal',
+  'Failed block',
+  'Change of anaesthesia plan',
+  'LAST (local anaesthetic toxicity)',
+  'Severe PONV',
+  'Awareness under GA',
+  'Anaphylaxis',
+  'Line complication (pneumothorax/haematoma/arterial puncture)',
+  'Nerve injury (block-related)',
+  'Cardiac arrest',
+  'Death on table'
+];
+
+// v6: Categorised complications — Surgical
+const COMPLICATIONS_SURG = [
+  'Haemorrhage/coagulopathy',
+  'Vascular injury',
+  'Bowel injury',
+  'Ureteric injury',
+  'Nerve injury (surgical)',
+  'Prolonged surgery (>2x expected)',
+  'Conversion to open',
+  'Surgical site issue (bleeding/swab count)',
+  'Positioning injury',
+  'Other surgical event'
+];
+
+// v6: Hypotension workup constants
+const HYPO_CAUSES_SURGICAL = ['Surgical manipulation / traction reflex','Position change (prone/lateral/Trendelenburg)','Reperfusion (transplant / vascular clamp release)','Pneumoperitoneum effects'];
+const HYPO_CAUSES_BLOOD = ['Acute blood loss','Pre-existing hypovolaemia / dehydration','Third-space losses'];
+const HYPO_CAUSES_CARDIO = ['Poor pre-existing cardiovascular reserve','Cardiac event (arrhythmia / ischaemia / failure)','Sepsis / vasoplegia'];
+const HYPO_CAUSES_TECH = ['Neuraxial block (spinal/epidural sympathectomy)','Deep GA / propofol induction','Volatile-induced vasodilation'];
+const HYPO_CAUSES_DRUG = ['Anaphylaxis suspected','Unintended drug effect'];
+const HYPO_CAUSES_OTHER = ['Other / Unknown'];
+const HYPO_SEVERITIES = ['Mild — brief, responded to fluids or single bolus','Moderate — required vasopressor infusion or transfusion','Severe — required CPR, ICU escalation, or unplanned prolongation'];
+const HYPO_RESOLUTIONS = ['Resolved by end of case','Not resolved','Ongoing at ICU handover'];
+
+// v6: Difficult Airway workup constants
+const DA_TYPES = ['Difficult mask ventilation','Difficult intubation','CICO (Can\'t Intubate Can\'t Oxygenate)','Multiple attempts required','Emergency front-of-neck access'];
+const DA_FOLLOW_THROUGH = ['DAS/ASA algorithm followed','Patient counselled post-op','Difficult Airway Alert added to records'];
+
+// v6: Drug Error workup constants
+const DE_TYPES = ['Wrong drug','Wrong dose','Wrong route','Wrong patient','Omission','Near-miss (caught before administration)'];
+const DE_CLASSES = ['Opioid','Neuromuscular blocker','Vasoactive','Antibiotic','Local anaesthetic','Induction agent','Reversal agent','Other'];
+const DE_HARM = ['No harm','Temporary harm','Prolonged monitoring required','Serious harm'];
 
 // NEW v2 — block detail pick lists
 const LA_DRUGS = ['Ropivacaine','Bupivacaine (plain)','Bupivacaine (heavy)'];
@@ -4193,7 +4515,15 @@ async function saveCaseToSheet(c) {
    LOCAL CACHE & PENDING QUEUE
    ============================================================ */
 function getLocalCache() {
-  try { return JSON.parse(localStorage.getItem(LOCAL_KEY) || '[]'); } catch { return []; }
+  try {
+    const cached = JSON.parse(localStorage.getItem(LOCAL_KEY) || '[]');
+    // v6.1: apply doctor name normalisation to cached entries too
+    return cached.map(c => ({
+      ...c,
+      doctor: typeof normaliseDoctorName === 'function' ? normaliseDoctorName(c.doctor) : c.doctor,
+      secondAnaesthetist: typeof normaliseDoctorName === 'function' ? normaliseDoctorName(c.secondAnaesthetist) : c.secondAnaesthetist
+    }));
+  } catch { return []; }
 }
 function setLocalCache(arr) {
   try { localStorage.setItem(LOCAL_KEY, JSON.stringify(arr)); } catch {}
@@ -4595,11 +4925,13 @@ function initForm() {
   buildCheckGroup('grp-olv', OLV, 'olv');
   // v3: special analgesia checklist
   buildCheckGroup('grp-special-analgesia', SPECIAL_ANALGESIA, 'specialAnalgesia');
-  // v2: blocks use expandable detail panels
+  // v2/v6: blocks use expandable detail panels — all groups visible for all specialties
+  buildBlockGroup('grp-blocks-neuraxial', BLOCKS_NEURAXIAL); // v6
   buildBlockGroup('grp-blocks-ul', BLOCKS_UL);
   buildBlockGroup('grp-blocks-ll', BLOCKS_LL);
   buildBlockGroup('grp-blocks-trunk', BLOCKS_TRUNK);
   buildBlockGroup('grp-blocks-hn', BLOCKS_HN);
+  buildBlockGroup('grp-blocks-paeds', BLOCKS_PAEDS); // v6
   buildBlockGroup('grp-blocks-eye', BLOCKS_EYE); // empty in v3
   buildBlockGroup('grp-blocks-other', BLOCKS_OTHER);
   initBlockInteractions();
@@ -4610,7 +4942,31 @@ function initForm() {
   buildCheckGroup('grp-lines', LINES, 'lines');
   buildCheckGroup('grp-monitoring', MONITORING, 'monitoring');
   buildCheckGroup('grp-other', OTHER_SPECIAL, 'other');
-  buildCheckGroup('grp-complications', COMPLICATIONS, 'comp');
+  // v6: Two categorised complications lists (replaces flat list)
+  buildCheckGroup('grp-comp-anaes', COMPLICATIONS_ANAES, 'comp_a');
+  buildCheckGroup('grp-comp-surg', COMPLICATIONS_SURG, 'comp_s');
+  // Legacy grp-complications may still exist in older cached DOM; guard
+  const legacyComp = document.getElementById('grp-complications');
+  if (legacyComp) buildCheckGroup('grp-complications', COMPLICATIONS, 'comp');
+
+  // v6: Hypotension workup sub-groups
+  buildCheckGroup('grp-hypo-surgical', HYPO_CAUSES_SURGICAL, 'hypo_c');
+  buildCheckGroup('grp-hypo-blood', HYPO_CAUSES_BLOOD, 'hypo_c');
+  buildCheckGroup('grp-hypo-cardio', HYPO_CAUSES_CARDIO, 'hypo_c');
+  buildCheckGroup('grp-hypo-tech', HYPO_CAUSES_TECH, 'hypo_c');
+  buildCheckGroup('grp-hypo-drug', HYPO_CAUSES_DRUG, 'hypo_c');
+  buildCheckGroup('grp-hypo-other', HYPO_CAUSES_OTHER, 'hypo_c');
+
+  // v6: Difficult airway sub-groups
+  buildCheckGroup('grp-da-types', DA_TYPES, 'da_t');
+  buildCheckGroup('grp-da-followthrough', DA_FOLLOW_THROUGH, 'da_ft');
+
+  // v6: Drug Error dropdowns
+  populateSelect('f_de_type', DE_TYPES);
+  populateSelect('f_de_class', DE_CLASSES);
+
+  // v6: Wire critical incident triggers
+  initCriticalIncidentTriggers();
 
   // v3: populate Second Anaesthetist dropdown
   const secondSel = document.getElementById('f_second_anaesth');
@@ -4686,22 +5042,28 @@ function initForm() {
     if (!isSurgical) clearGroup('approach');
   });
 
-  document.querySelectorAll('[data-cat="comp"]').forEach(cb => {
+  // v6: Watch categorised complications (comp_a + comp_s) to sync the No-Comp button
+  const anyCompChecked = () =>
+    document.querySelectorAll('[data-cat="comp_a"]:checked, [data-cat="comp_s"]:checked').length > 0
+    || document.getElementById('f_comp_other').value.trim().length > 0;
+
+  document.querySelectorAll('[data-cat="comp_a"], [data-cat="comp_s"]').forEach(cb => {
     cb.addEventListener('change', () => {
-      const anyChecked = document.querySelectorAll('[data-cat="comp"]:checked').length > 0
-        || document.getElementById('f_comp_other').value.trim().length > 0;
-      document.getElementById('noCompBtn').classList.toggle('on', !anyChecked);
+      document.getElementById('noCompBtn').classList.toggle('on', !anyCompChecked());
     });
   });
   document.getElementById('f_comp_other').addEventListener('input', () => {
-    const anyChecked = document.querySelectorAll('[data-cat="comp"]:checked').length > 0
-      || document.getElementById('f_comp_other').value.trim().length > 0;
-    document.getElementById('noCompBtn').classList.toggle('on', !anyChecked);
+    document.getElementById('noCompBtn').classList.toggle('on', !anyCompChecked());
   });
 
   document.getElementById('noCompBtn').addEventListener('click', () => {
-    document.querySelectorAll('[data-cat="comp"]:checked').forEach(cb => cb.checked = false);
+    document.querySelectorAll('[data-cat="comp_a"]:checked, [data-cat="comp_s"]:checked').forEach(cb => cb.checked = false);
     document.getElementById('f_comp_other').value = '';
+    // v6: also close incident panels
+    ['hypoWorkupPanel','daWorkupPanel','drugErrorPanel'].forEach(id => {
+      const p = document.getElementById(id); if (p) p.classList.add('hidden');
+    });
+    clearHypoFields(); clearDaFields(); clearDeFields();
     document.getElementById('noCompBtn').classList.add('on');
   });
 
@@ -4716,6 +5078,77 @@ function initForm() {
 /* ============================================================
    v5 — KIDNEY TRANSPLANT MODULE
    ============================================================ */
+
+/* ============================================================
+   v6 — CRITICAL INCIDENT TRIGGERS
+   Wire up hypotension / difficult airway / drug error panels
+   ============================================================ */
+function initCriticalIncidentTriggers() {
+  // Watch for changes on anaes complications checkboxes
+  const anaesGrid = document.getElementById('grp-comp-anaes');
+  if (!anaesGrid) return;
+
+  anaesGrid.addEventListener('change', updateCriticalIncidentPanels);
+
+  // Watch hypotension severity for mandatory prompt
+  const hypoSeverityGrid = document.querySelector('[data-group="hypoSeverity"]');
+  if (hypoSeverityGrid) {
+    hypoSeverityGrid.addEventListener('click', () => {
+      // Small timeout to let the .on class update
+      setTimeout(updateHypoSeverityMandatoryFlag, 50);
+    });
+  }
+}
+
+function updateCriticalIncidentPanels() {
+  const anaesChecked = Array.from(document.querySelectorAll('[data-cat="comp_a"]:checked'))
+    .map(c => c.value);
+
+  const hypoTicked = anaesChecked.includes('Hypotension');
+  const daTicked = anaesChecked.includes('Unanticipated Difficult Airway');
+  const deTicked = anaesChecked.includes('Drug Error');
+
+  const hypoPanel = document.getElementById('hypoWorkupPanel');
+  const daPanel = document.getElementById('daWorkupPanel');
+  const dePanel = document.getElementById('drugErrorPanel');
+
+  if (hypoPanel) hypoPanel.classList.toggle('hidden', !hypoTicked);
+  if (daPanel) daPanel.classList.toggle('hidden', !daTicked);
+  if (dePanel) dePanel.classList.toggle('hidden', !deTicked);
+
+  // If hypotension unchecked, clear its fields
+  if (!hypoTicked) clearHypoFields();
+  if (!daTicked) clearDaFields();
+  if (!deTicked) clearDeFields();
+}
+
+function updateHypoSeverityMandatoryFlag() {
+  const severity = getGroupValue('hypoSeverity');
+  const reqMarker = document.getElementById('hypoSeverityReq');
+  if (!reqMarker) return;
+  // Show the mandatory asterisk on the severity label whenever any severity is picked
+  // (visual reminder that Mod/Severe make the cause + resolution mandatory)
+  reqMarker.classList.toggle('hidden', !severity);
+}
+
+function clearHypoFields() {
+  clearGroup('hypoSeverity');
+  clearGroup('hypoResolution');
+  document.querySelectorAll('[data-cat="hypo_c"]:checked').forEach(c => c.checked = false);
+}
+
+function clearDaFields() {
+  document.querySelectorAll('[data-cat="da_t"]:checked, [data-cat="da_ft"]:checked').forEach(c => c.checked = false);
+  const n = document.getElementById('f_da_narrative'); if (n) n.value = '';
+}
+
+function clearDeFields() {
+  ['f_de_type','f_de_class','f_de_narrative'].forEach(id => {
+    const el = document.getElementById(id); if (el) el.value = '';
+  });
+  clearGroup('deHarm');
+  clearGroup('deReported');
+}
 
 function initKidneyTransplantModule() {
   // Populate KT dropdowns
@@ -4906,9 +5339,79 @@ async function submitCase(e) {
   // v3: monitoring split out separately
   const monitoring = Array.from(document.querySelectorAll('[data-cat="monitoring"]:checked')).map(c => c.value);
   const otherSpecial = Array.from(document.querySelectorAll('[data-cat="other"]:checked')).map(c => c.value);
-  const complications = Array.from(document.querySelectorAll('[data-cat="comp"]:checked')).map(c => c.value);
+  // v6: Categorised complications
+  const anaesComplications = Array.from(document.querySelectorAll('[data-cat="comp_a"]:checked')).map(c => c.value);
+  const surgicalComplications = Array.from(document.querySelectorAll('[data-cat="comp_s"]:checked')).map(c => c.value);
   const compOther = document.getElementById('f_comp_other').value.trim();
-  if (compOther) complications.push('Other: ' + compOther);
+  // Legacy 'complications' array = merged view for backward compat with dashboards
+  const complications = [...anaesComplications, ...surgicalComplications];
+  if (compOther) {
+    complications.push('Other: ' + compOther);
+    surgicalComplications.push('Other: ' + compOther);
+  }
+
+  // v6: Hypotension workup
+  const hypoTriggered = anaesComplications.includes('Hypotension');
+  let hypotensionCause = [], hypotensionSeverity = '', hypotensionResolution = '';
+  if (hypoTriggered) {
+    hypotensionCause = Array.from(document.querySelectorAll('[data-cat="hypo_c"]:checked')).map(c => c.value);
+    hypotensionSeverity = getGroupValue('hypoSeverity') || '';
+    hypotensionResolution = getGroupValue('hypoResolution') || '';
+    // Mandatory if Moderate or Severe
+    if ((hypotensionSeverity === 'Moderate' || hypotensionSeverity === 'Severe')) {
+      const missing = [];
+      if (hypotensionCause.length === 0) missing.push('possible cause');
+      if (!hypotensionResolution) missing.push('resolution');
+      if (missing.length) {
+        showToast(`Moderate/Severe hypotension requires: ${missing.join(', ')}`, true);
+        document.getElementById('hypoWorkupPanel').scrollIntoView({ behavior: 'smooth', block: 'center' });
+        return;
+      }
+    }
+  }
+
+  // v6: Difficult Airway workup (mandatory when ticked)
+  const daTriggered = anaesComplications.includes('Unanticipated Difficult Airway');
+  let daOccurred = false, daType = [], daNarrative = '', daFollowThrough = [];
+  if (daTriggered) {
+    daOccurred = true;
+    daType = Array.from(document.querySelectorAll('[data-cat="da_t"]:checked')).map(c => c.value);
+    daNarrative = document.getElementById('f_da_narrative').value.trim();
+    daFollowThrough = Array.from(document.querySelectorAll('[data-cat="da_ft"]:checked')).map(c => c.value);
+    const missing = [];
+    if (daType.length === 0) missing.push('what happened');
+    if (!daNarrative) missing.push('attempts / device narrative');
+    if (missing.length) {
+      showToast(`Difficult Airway documentation required: ${missing.join(', ')}`, true);
+      document.getElementById('daWorkupPanel').scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return;
+    }
+  }
+
+  // v6: Drug Error workup (mandatory when ticked)
+  const deTriggered = anaesComplications.includes('Drug Error');
+  let drugErrorOccurred = false, drugErrorType = '', drugErrorClass = '',
+      drugErrorHarm = '', drugErrorReported = '', drugErrorNarrative = '';
+  if (deTriggered) {
+    drugErrorOccurred = true;
+    drugErrorType = document.getElementById('f_de_type').value || '';
+    drugErrorClass = document.getElementById('f_de_class').value || '';
+    drugErrorHarm = getGroupValue('deHarm') || '';
+    drugErrorReported = getGroupValue('deReported') || '';
+    drugErrorNarrative = document.getElementById('f_de_narrative').value.trim();
+    const missing = [];
+    if (!drugErrorType) missing.push('type');
+    if (!drugErrorClass) missing.push('drug class');
+    if (!drugErrorHarm) missing.push('harm');
+    if (!drugErrorReported) missing.push('reported status');
+    if (!drugErrorNarrative) missing.push('narrative');
+    if (missing.length) {
+      showToast(`Drug Error documentation required: ${missing.join(', ')}`, true);
+      document.getElementById('drugErrorPanel').scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return;
+    }
+  }
+
   const notes = document.getElementById('f_notes').value.trim();
 
   // NEW v2: GA technique + sedation depth (sedationDepth deprecated in v3 but field kept for compatibility)
@@ -5026,6 +5529,12 @@ async function submitCase(e) {
     inductionAgent, muscleRelaxant, reversalAgent, opioidStrategy,
     intraOpDiuretic, mapAtReperfusion, reperfusionEvent,
     vasopressorUsed, immunoInduction,
+    // v6 categorised complications + critical incidents
+    anaesComplications, surgicalComplications,
+    hypotensionCause, hypotensionSeverity, hypotensionResolution,
+    daOccurred, daType, daNarrative, daFollowThrough,
+    drugErrorOccurred, drugErrorType, drugErrorClass,
+    drugErrorHarm, drugErrorReported, drugErrorNarrative,
     createdAt: new Date().toISOString()
   };
 
@@ -5110,6 +5619,15 @@ function resetForm() {
   document.getElementById('noCompBtn').classList.add('on');
   document.getElementById('charCount').textContent = '0';
 
+  // v6: reset categorised complications + incident panels
+  document.querySelectorAll('[data-cat="comp_a"]:checked, [data-cat="comp_s"]:checked').forEach(cb => cb.checked = false);
+  const compOther = document.getElementById('f_comp_other');
+  if (compOther) compOther.value = '';
+  ['hypoWorkupPanel','daWorkupPanel','drugErrorPanel'].forEach(id => {
+    const p = document.getElementById(id); if (p) p.classList.add('hidden');
+  });
+  clearHypoFields(); clearDaFields(); clearDeFields();
+
   // v5: reset Kidney Transplant module
   const ktCheck = document.getElementById('f_isKidneyTransplant');
   if (ktCheck) ktCheck.checked = false;
@@ -5166,6 +5684,9 @@ async function loadAllCases() {
         };
         return {
           ...c,
+          // v6.1: normalise legacy doctor spellings (safety net for pre-fix data)
+          doctor: normaliseDoctorName(c.doctor),
+          secondAnaesthetist: normaliseDoctorName(c.secondAnaesthetist) || '',
           addons: Array.isArray(c.addons) ? c.addons : [],
           airway: Array.isArray(c.airway) ? c.airway : [],
           olv: Array.isArray(c.olv) ? c.olv : [],
@@ -5178,7 +5699,6 @@ async function loadAllCases() {
           sedationDepth: c.sedationDepth || '',
           // v3 fields
           surgicalApproach: c.surgicalApproach || '',
-          secondAnaesthetist: c.secondAnaesthetist || '',
           patientFrom: c.patientFrom || '',
           spinalDetails: parseJson(c.spinalDetails),
           epiduralDetails: parseJson(c.epiduralDetails),
@@ -5527,6 +6047,9 @@ async function loadAllOnCall() {
       const remote = await apiListOnCall();
       allOnCallEntries = remote.map(e => ({
         ...e,
+        // v6.1: normalise legacy doctor spellings
+        doctor: normaliseDoctorName(e.doctor),
+        seniorConsulted: normaliseDoctorName(e.seniorConsulted),
         patientAge: e.patientAge === '' || e.patientAge == null ? null : Number(e.patientAge)
       }));
       // Merge pending that haven't synced
@@ -6556,7 +7079,11 @@ async function loadAllFollowup() {
   if (isConfigured() && connectionOk) {
     try {
       const remote = await apiListFollowup();
-      allFollowupEntries = remote;
+      // v6.1: normalise legacy doctor spellings
+      allFollowupEntries = remote.map(e => ({
+        ...e,
+        doctor: normaliseDoctorName(e.doctor)
+      }));
       localStorage.setItem('kims_followup_cache', JSON.stringify(allFollowupEntries));
       console.log('[Follow-up] Loaded', allFollowupEntries.length, 'entries');
     } catch (err) {
@@ -6915,7 +7442,49 @@ function renderCaseDetailHtml(c) {
   if (c.lines && c.lines.length) rows.push(['Invasive Lines', chipHtml(c.lines)]);
   if (c.monitoring && c.monitoring.length) rows.push(['Monitoring', chipHtml(c.monitoring)]);
   if (c.otherSpecial && c.otherSpecial.length) rows.push(['Other special', chipHtml(c.otherSpecial)]);
-  if (c.complications && c.complications.length) rows.push(['Complications', chipHtml(c.complications, 'var(--danger-bg)', 'var(--danger)')]);
+  // v6: Categorised complications (fall back to legacy flat 'complications' for old cases)
+  const hasCategorised = (c.anaesComplications && c.anaesComplications.length)
+                      || (c.surgicalComplications && c.surgicalComplications.length);
+  if (hasCategorised) {
+    if (c.anaesComplications && c.anaesComplications.length) {
+      rows.push(['💉 Anaes complications', chipHtml(c.anaesComplications, '#E3F2FD', '#1565C0')]);
+    }
+    if (c.surgicalComplications && c.surgicalComplications.length) {
+      rows.push(['🔪 Surgical complications', chipHtml(c.surgicalComplications, '#F3E5F5', '#6A1B9A')]);
+    }
+  } else if (c.complications && c.complications.length) {
+    // Legacy pre-v6 cases
+    rows.push(['Complications', chipHtml(c.complications, 'var(--danger-bg)', 'var(--danger)')]);
+  }
+
+  // v6: Hypotension workup detail
+  if (c.hypotensionSeverity || (c.hypotensionCause && c.hypotensionCause.length)) {
+    if (c.hypotensionSeverity) rows.push(['📉 Hypotension severity',
+      `<span class="kt-outcome-chip ${c.hypotensionSeverity === 'Severe' ? 'kt-outcome-dgf' : (c.hypotensionSeverity === 'Moderate' ? 'kt-outcome-slow' : 'kt-outcome-immediate')}">${escapeHtml(c.hypotensionSeverity)}</span>`]);
+    if (c.hypotensionCause && c.hypotensionCause.length) rows.push(['Hypotension cause(s)', chipHtml(c.hypotensionCause, '#FFF3E0', '#E65100')]);
+    if (c.hypotensionResolution) rows.push(['Resolution', escapeHtml(c.hypotensionResolution)]);
+  }
+
+  // v6: Difficult Airway detail
+  const daFlag = c.daOccurred === true || c.daOccurred === 'true';
+  if (daFlag) {
+    rows.push(['🫁 Difficult Airway', '<strong style="color:#C62828;">Documented incident</strong>']);
+    if (c.daType && c.daType.length) rows.push(['What happened', chipHtml(c.daType, '#FFCDD2', '#B71C1C')]);
+    if (c.daNarrative) rows.push(['Narrative', escapeHtml(c.daNarrative)]);
+    if (c.daFollowThrough && c.daFollowThrough.length) rows.push(['Follow-through', chipHtml(c.daFollowThrough, '#E8F5E9', '#2E7D32')]);
+  }
+
+  // v6: Drug Error detail
+  const deFlag = c.drugErrorOccurred === true || c.drugErrorOccurred === 'true';
+  if (deFlag) {
+    rows.push(['💊 Drug Error', '<strong style="color:#C62828;">Documented incident</strong>']);
+    if (c.drugErrorType) rows.push(['Type', escapeHtml(c.drugErrorType)]);
+    if (c.drugErrorClass) rows.push(['Drug class', escapeHtml(c.drugErrorClass)]);
+    if (c.drugErrorHarm) rows.push(['Harm', escapeHtml(c.drugErrorHarm)]);
+    if (c.drugErrorReported) rows.push(['Reported to incident system', escapeHtml(c.drugErrorReported)]);
+    if (c.drugErrorNarrative) rows.push(['Narrative', escapeHtml(c.drugErrorNarrative)]);
+  }
+
   if (c.notes) rows.push(['Notes', escapeHtml(c.notes)]);
 
   // v5: Kidney Transplant details
@@ -7099,6 +7668,7 @@ function renderDashboard() {
   renderDataTable();
   renderSecondAnaesthetistPanel(); // v4
   renderKtDashboardPanel(); // v5
+  renderV6DashboardPanel(); // v6: critical incidents + blocks + hypotension patterns
   if (typeof updateDashWelcomeStats === 'function') updateDashWelcomeStats(); // v4.2
 
   const now = new Date();
