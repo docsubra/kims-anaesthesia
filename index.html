@@ -7661,19 +7661,33 @@ function applyFilters() {
 }
 
 function renderDashboard() {
-  refreshSpecialtyFilter();
-  applyFilters();
-  renderSummary();
-  renderCharts();
-  renderDataTable();
-  renderSecondAnaesthetistPanel(); // v4
-  renderKtDashboardPanel(); // v5
-  renderV6DashboardPanel(); // v6: critical incidents + blocks + hypotension patterns
-  if (typeof updateDashWelcomeStats === 'function') updateDashWelcomeStats(); // v4.2
+  // v6.2: each panel renders in isolation. Previously a single failing panel
+  // aborted the whole function, silently leaving later panels (welcome stats,
+  // print meta) unrendered with no visible error.
+  const step = (label, fn) => {
+    try { fn(); }
+    catch (err) { console.error('[Dashboard] ' + label + ' failed:', err); }
+  };
+
+  step('specialty filter',          () => refreshSpecialtyFilter());
+  step('apply filters',             () => applyFilters());
+  step('summary cards',             () => renderSummary());
+  step('charts',                    () => renderCharts());
+  step('data table',                () => renderDataTable());
+  step('second anaesthetist panel', () => renderSecondAnaesthetistPanel());
+  step('transplant panel',          () => renderKtDashboardPanel());
+  // v6 critical-incident panel is not built yet; call it only if it exists.
+  if (typeof renderV6DashboardPanel === 'function') {
+    step('critical incidents panel', () => renderV6DashboardPanel());
+  }
+  step('welcome stats',             () => updateDashWelcomeStats());
 
   const now = new Date();
-  document.getElementById('printMeta').textContent =
-    `Generated ${now.toLocaleString('en-GB')} · ${filteredCases.length} cases in view`;
+  const meta = document.getElementById('printMeta');
+  if (meta) {
+    meta.textContent =
+      `Generated ${now.toLocaleString('en-GB')} · ${filteredCases.length} cases in view`;
+  }
 }
 
 function renderSummary() {
