@@ -5903,10 +5903,50 @@ function updateDashWelcomeStats() {
   if (!totalEl) return;
   const thisMonth = new Date().toISOString().slice(0,7);
   const monthCount = allCases.filter(c => (c.date || '').startsWith(thisMonth)).length;
-  const doctors = new Set(allCases.map(c => c.doctor).filter(Boolean));
+
+  // v6.2: count distinct anaesthetists AFTER normalisation, and surface any
+  // name that is not on the current roster. Previously an unrecognised
+  // spelling silently inflated the headcount with no way to find it.
+  const counts = countCasesByDoctor(allCases, 'doctor');
+  reportOffRosterNames(counts, 'OT cases');
+
   totalEl.textContent = allCases.length;
   document.getElementById('dws_month').textContent = monthCount;
-  document.getElementById('dws_doctors').textContent = doctors.size;
+  document.getElementById('dws_doctors').textContent = counts.size;
+}
+
+/* v6.2: shared helpers for doctor-name integrity ------------------------- */
+
+function countCasesByDoctor(rows, field) {
+  const counts = new Map();
+  (rows || []).forEach(r => {
+    const n = normaliseDoctorName(r[field]);
+    if (!n) return;
+    counts.set(n, (counts.get(n) || 0) + 1);
+  });
+  return counts;
+}
+
+function reportOffRosterNames(counts, label) {
+  const roster = new Set(DOCTORS.map(d => d.name));
+  const offRoster = [...counts.keys()].filter(n => !roster.has(n));
+  if (!offRoster.length) return;
+  console.warn(
+    `[Registry] ${label}: ${offRoster.length} name(s) not on the current roster — ` +
+    offRoster.map(n => `"${n}" (${counts.get(n)} entr${counts.get(n) === 1 ? 'y' : 'ies'})`).join(', ') +
+    '. Fix by adding a mapping to DOCTOR_NAME_ALIASES, or add the person to DOCTORS.'
+  );
+}
+
+/** Console helper: listDoctors() prints every name with its case count. */
+function listDoctors() {
+  const roster = new Set(DOCTORS.map(d => d.name));
+  const counts = countCasesByDoctor(allCases, 'doctor');
+  const rows = [...counts.entries()]
+    .sort((a, b) => b[1] - a[1])
+    .map(([name, cases]) => ({ name, cases, onRoster: roster.has(name) ? 'yes' : 'NO' }));
+  console.table(rows);
+  return rows;
 }
 
 // v4.2: Update Outside OT dashboard welcome stats
@@ -5915,10 +5955,12 @@ function updateOcDashWelcomeStats() {
   if (!totalEl) return;
   const thisMonth = new Date().toISOString().slice(0,7);
   const monthCount = allOnCallEntries.filter(e => (e.date || '').startsWith(thisMonth)).length;
-  const doctors = new Set(allOnCallEntries.map(e => e.doctor).filter(Boolean));
+  // v6.2: normalise here too, so Outside OT and OT dashboards agree on headcount.
+  const counts = countCasesByDoctor(allOnCallEntries, 'doctor');
+  reportOffRosterNames(counts, 'Outside OT entries');
   totalEl.textContent = allOnCallEntries.length;
   document.getElementById('ocws_month').textContent = monthCount;
-  document.getElementById('ocws_doctors').textContent = doctors.size;
+  document.getElementById('ocws_doctors').textContent = counts.size;
 }
 
 // --- Submit on-call entry ---
