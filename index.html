@@ -2765,7 +2765,7 @@ table.data-table {
     </div>
 
     <div class="form-wrapper">
-      <form id="caseForm" autocomplete="off">
+      <form id="caseForm" autocomplete="off" novalidate>
 
         <div class="accordion open" data-section="basics">
           <button type="button" class="accordion-head">
@@ -3295,13 +3295,13 @@ table.data-table {
               <div class="row-2">
                 <div class="field">
                   <label class="field-label">Type <span class="req">*</span></label>
-                  <select class="input" id="f_de_type" required>
+                  <select class="input" id="f_de_type" data-required="drugError">
                     <option value="">-- Select --</option>
                   </select>
                 </div>
                 <div class="field">
                   <label class="field-label">Drug class <span class="req">*</span></label>
-                  <select class="input" id="f_de_class" required>
+                  <select class="input" id="f_de_class" data-required="drugError">
                     <option value="">-- Select --</option>
                   </select>
                 </div>
