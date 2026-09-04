@@ -2623,6 +2623,71 @@ table.data-table {
   color: #333;
 }
 
+/* v7: Quality Indicators dashboard panel */
+.quality-banner {
+  background: linear-gradient(135deg, #1B5E20 0%, #2E7D32 50%, #43A047 100%);
+  color: white;
+  padding: 24px 28px;
+  border-radius: 14px;
+  margin: 24px 0 22px;
+  box-shadow: 0 6px 20px rgba(27, 94, 32, 0.28);
+  position: relative;
+  overflow: hidden;
+}
+.quality-banner::after {
+  content: '\1F3AF';
+  position: absolute;
+  font-size: 130px;
+  right: -10px;
+  top: -32px;
+  opacity: 0.12;
+  transform: rotate(-12deg);
+}
+.quality-banner-title {
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 4px;
+  letter-spacing: -0.3px;
+}
+.quality-banner-sub {
+  font-size: 14px;
+  opacity: 0.95;
+  margin-bottom: 16px;
+}
+.quality-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 12px;
+}
+.q-stat {
+  background: rgba(255,255,255,0.15);
+  backdrop-filter: blur(8px);
+  padding: 12px 14px;
+  border-radius: 10px;
+  text-align: center;
+  border: 1px solid rgba(255,255,255,0.18);
+}
+.q-stat-good { background: rgba(255,255,255,0.26); border-color: rgba(255,255,255,0.35); }
+.q-stat-wide { grid-column: span 2; }
+.q-stat-val {
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: -0.3px;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.18);
+}
+.q-stat-text { font-size: 14px; font-weight: 700; line-height: 1.3; }
+.q-stat-lbl {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  opacity: 0.9;
+  margin-top: 4px;
+}
+#qualityPanel .chart-card::before {
+  background: linear-gradient(90deg, #2E7D32, #66BB6A) !important;
+}
+@media (max-width: 560px) { .q-stat-wide { grid-column: span 1; } }
+
 /* KT dashboard panel banner */
 .kt-programme-banner {
   background: linear-gradient(135deg, #880E4F 0%, #AD1457 50%, #C2185B 100%);
@@ -3542,8 +3607,8 @@ table.data-table {
           <div class="accordion-body">
             <div class="qi-intro">
               Departmental quality markers, not judgements &mdash; a flagged case is a learning case, not a bad one.
-              Complications and critical incidents are logged in <strong>Section D</strong>; these are the
-              additional markers tracked for the monthly review.
+              Failed techniques and changes of plan are logged <strong>here</strong>, not in Section D.
+              Section D is for complications and critical incidents.
             </div>
             <div class="chk-grid" id="grp-quality"></div>
 
@@ -4158,7 +4223,6 @@ table.data-table {
       <div class="chart-card"><h3>⑱ Spinal Needle Type</h3><div class="chart-wrap"><canvas id="ch18"></canvas></div></div>
       <div class="chart-card"><h3>⑲ Catheters per Month</h3><div class="chart-wrap"><canvas id="ch19"></canvas></div></div>
       <div class="chart-card"><h3>⑳ Patient Origin (Ward / ICU)</h3><div class="chart-wrap"><canvas id="ch20"></canvas></div></div>
-      <div class="chart-card"><h3>㉑ Quality Indicators</h3><div class="chart-wrap"><canvas id="ch21"></canvas></div></div>
     </div>
 
     <!-- v4: Second Anaesthetist panel -->
@@ -4181,6 +4245,58 @@ table.data-table {
           </thead>
           <tbody></tbody>
         </table>
+      </div>
+    </div>
+
+    <!-- ============ v7: QUALITY INDICATORS PANEL ============ -->
+    <div id="qualityPanel">
+      <div class="quality-banner">
+        <div class="quality-banner-title">🎯 Quality Indicators</div>
+        <div class="quality-banner-sub">Departmental quality markers — for learning and monthly review, not for ranking individuals.</div>
+        <div class="quality-stats">
+          <div class="q-stat q-stat-good">
+            <div class="q-stat-val" id="qStat_clean">—</div>
+            <div class="q-stat-lbl">Cases with no flags</div>
+          </div>
+          <div class="q-stat">
+            <div class="q-stat-val" id="qStat_flagged">0</div>
+            <div class="q-stat-lbl">Flagged cases</div>
+          </div>
+          <div class="q-stat">
+            <div class="q-stat-val" id="qStat_count">0</div>
+            <div class="q-stat-lbl">Indicators logged</div>
+          </div>
+          <div class="q-stat q-stat-wide">
+            <div class="q-stat-val q-stat-text" id="qStat_top">—</div>
+            <div class="q-stat-lbl">Most frequent</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="chart-grid">
+        <div class="chart-card"><h3>🎯① Indicator Frequency</h3><div class="chart-wrap"><canvas id="qCh1"></canvas></div></div>
+        <div class="chart-card"><h3>🎯② Flagged Case Rate by Month</h3><div class="chart-wrap"><canvas id="qCh2"></canvas></div></div>
+        <div class="chart-card"><h3>🎯③ Flagged Rate by Anaesthetist</h3><div class="chart-wrap"><canvas id="qCh3"></canvas></div></div>
+      </div>
+
+      <div class="table-card">
+        <div class="table-head">
+          <h3>📋 Flagged Cases (<span id="qTableCount">0</span>)</h3>
+        </div>
+        <div style="padding: 14px 16px; font-size: 13px; color: var(--text-muted);">
+          Every case carrying a quality indicator in the current filter. Tap a row for full case details.
+          Useful as the starting list for the monthly departmental review.
+        </div>
+        <div class="table-wrap">
+          <table class="data-table" id="qualityTable">
+            <thead>
+              <tr>
+                <th>Date</th><th>Anaesthetist</th><th>Specialty</th><th>Procedure</th><th>Indicators</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
       </div>
     </div>
 
@@ -4393,13 +4509,9 @@ const COMPLICATIONS_ANAES = [
   'Aspiration',
   'Unanticipated Difficult Airway',                 // → daWorkupPanel (mandatory)
   'Drug Error',                                      // → drugErrorPanel (mandatory)
-  'Failed spinal',
-  'Failed epidural',
   'Accidental dural puncture',
   'Post-dural puncture headache (PDPH)',
   'High/total spinal',
-  'Failed block',
-  'Change of anaesthesia plan',
   'LAST (local anaesthetic toxicity)',
   'Severe PONV',
   'Awareness under GA',
@@ -4424,30 +4536,40 @@ const COMPLICATIONS_SURG = [
   'Other surgical event'
 ];
 
-// === v7: QUALITY INDICATORS ===
-// Only markers NOT already captured in Section D. The remaining seven
-// (change of plan, failed spinal/epidural/block, awareness, difficult airway,
-// drug error) live in COMPLICATIONS_ANAES — do not duplicate them here, or
-// the dashboard would report two different counts for the same event.
+// === v7: QUALITY INDICATORS (Section G) ===
+// Technique-quality and process markers. As of v7 the four "failed technique"
+// items and change-of-plan were MOVED here out of COMPLICATIONS_ANAES, so
+// Section D holds true complications only. Each event has exactly one home —
+// never list an item in both, or the dashboard reports two different counts.
 const QUALITY_INDICATORS = [
+  'Failed spinal',
+  'Failed epidural',
+  'Failed peripheral nerve block',
+  'Change of anaesthesia plan',
+  'Unplanned conversion to GA',
   'Unanticipated ICU admission',
   'Unplanned reintubation',
   'Delayed emergence',
-  'Unplanned hypothermia (<36°C in PACU)',
   'Case cancelled after entering theatre'
 ];
 
-// Indicators already captured in Section D — pulled into the quality chart
-// so the dashboard shows all twelve from one source of truth each.
+// Still captured in Section D (dedicated incident panels) but shown alongside
+// the quality set in chart ㉑ so the full picture appears in one place.
 const QI_FROM_COMPLICATIONS = [
-  'Change of anaesthesia plan',
-  'Failed spinal',
-  'Failed epidural',
-  'Failed block',
   'Awareness under GA',
   'Unanticipated Difficult Airway',
   'Drug Error'
 ];
+
+// v7: pre-v7 cases logged these under complications. Mapped to their current
+// Section G labels so historic data still counts in chart ㉑ and is not
+// double-counted against the Section D list.
+const QI_LEGACY_MAP = {
+  'Failed spinal': 'Failed spinal',
+  'Failed epidural': 'Failed epidural',
+  'Failed block': 'Failed peripheral nerve block',
+  'Change of anaesthesia plan': 'Change of anaesthesia plan'
+};
 
 // v6: Hypotension workup constants
 const HYPO_CAUSES_SURGICAL = ['Surgical manipulation / traction reflex','Position change (prone/lateral/Trendelenburg)','Reperfusion (transplant / vascular clamp release)','Pneumoperitoneum effects'];
@@ -5425,7 +5547,13 @@ async function submitCase(e) {
   const anaesComplications = Array.from(document.querySelectorAll('[data-cat="comp_a"]:checked')).map(c => c.value);
   const surgicalComplications = Array.from(document.querySelectorAll('[data-cat="comp_s"]:checked')).map(c => c.value);
   const compOther = document.getElementById('f_comp_other').value.trim();
-  // Legacy 'complications' array = merged view for backward compat with dashboards
+  // v7: quality indicators (Section G)
+  const qualityFlags = Array.from(document.querySelectorAll('[data-cat="qi"]:checked')).map(c => c.value);
+  const reflectiveNote = document.getElementById('f_reflectiveNote').value.trim();
+
+  // Legacy 'complications' array = merged view for backward compat with dashboards.
+  // v7: Section G markers are NOT merged in here — they are quality markers, not
+  // complications, and including them would inflate the complication rate.
   const complications = [...anaesComplications, ...surgicalComplications];
   if (compOther) {
     complications.push('Other: ' + compOther);
@@ -5495,10 +5623,6 @@ async function submitCase(e) {
   }
 
   const notes = document.getElementById('f_notes').value.trim();
-
-  // v7: quality indicators
-  const qualityFlags = Array.from(document.querySelectorAll('[data-cat="qi"]:checked')).map(c => c.value);
-  const reflectiveNote = document.getElementById('f_reflectiveNote').value.trim();
 
   // NEW v2: GA technique + sedation depth (sedationDepth deprecated in v3 but field kept for compatibility)
   const gaTechnique = atype === 'GA' ? getGroupValue('gatech') : null;
@@ -7822,6 +7946,7 @@ function renderDashboard() {
   step('charts',                    () => renderCharts());
   step('data table',                () => renderDataTable());
   step('second anaesthetist panel', () => renderSecondAnaesthetistPanel());
+  step('quality panel',             () => renderQualityPanel());
   step('transplant panel',          () => renderKtDashboardPanel());
   // v6 critical-incident panel is not built yet; call it only if it exists.
   if (typeof renderV6DashboardPanel === 'function') {
@@ -7881,8 +8006,6 @@ function renderCharts() {
   renderCh13(); renderCh14(); renderCh15();
   // v3 charts
   renderCh16(); renderCh17(); renderCh18(); renderCh19(); renderCh20();
-  // v7 chart
-  renderCh21();
 }
 
 function lastNMonths(n) {
@@ -8267,30 +8390,154 @@ function renderCh20() {
   });
 }
 
-// v7: Quality indicators — combines Section G flags with the equivalent
-// markers already captured in Section D, so each event is counted once.
-function renderCh21() {
-  const canvas = document.getElementById('ch21');
-  if (!canvas) return;
+/* ============================================================
+   v7 — QUALITY INDICATORS DASHBOARD PANEL
+   ============================================================ */
+
+// Build the combined indicator tally for one case.
+// Returns an array of unique indicator names for that case, drawing from
+// Section G (qualityFlags), the three Section D incident markers, and the
+// legacy pre-v7 complications spellings. De-duplicated per case so a marker
+// recorded in two places is still only counted once.
+function qiForCase(c) {
+  const seen = {};
+  const out = [];
+  const add = k => { if (k && !seen[k]) { seen[k] = 1; out.push(k); } };
+
+  (c.qualityFlags || []).forEach(add);
+
+  const comps = (c.anaesComplications && c.anaesComplications.length)
+              ? c.anaesComplications : (c.complications || []);
+  comps.forEach(k => {
+    if (QI_FROM_COMPLICATIONS.indexOf(k) !== -1) { add(k); return; }
+    const mapped = QI_LEGACY_MAP[k];
+    if (mapped) add(mapped);
+  });
+  return out;
+}
+
+function renderQualityPanel() {
+  const panel = document.getElementById('qualityPanel');
+  if (!panel) return;
+
+  const total = filteredCases.length;
+  const perCase = filteredCases.map(qiForCase);
+  const flagged = perCase.filter(a => a.length > 0).length;
+  const totalFlags = perCase.reduce((sum, a) => sum + a.length, 0);
+  const cleanPct = total > 0 ? ((total - flagged) / total * 100).toFixed(1) : '\u2014';
+
+  // Frequency tally
   const m = {};
-  filteredCases.forEach(c => {
-    (c.qualityFlags || []).forEach(k => { m[k] = (m[k] || 0) + 1; });
-    const comps = (c.anaesComplications && c.anaesComplications.length)
-                ? c.anaesComplications : (c.complications || []);
-    comps.forEach(k => {
-      if (QI_FROM_COMPLICATIONS.indexOf(k) !== -1) m[k] = (m[k] || 0) + 1;
+  perCase.forEach(a => a.forEach(k => { m[k] = (m[k] || 0) + 1; }));
+  const entries = Object.entries(m).sort((a, b) => b[1] - a[1]);
+
+  document.getElementById('qStat_clean').textContent  = total > 0 ? cleanPct + '%' : '\u2014';
+  document.getElementById('qStat_flagged').textContent = total > 0 ? (flagged + ' / ' + total) : '0';
+  document.getElementById('qStat_count').textContent  = totalFlags;
+  document.getElementById('qStat_top').textContent    = entries.length ? entries[0][0] : '\u2014';
+
+  // Destroy existing quality charts before redraw
+  Object.keys(charts).filter(k => k.indexOf('qCh') === 0).forEach(k => {
+    if (charts[k]) { charts[k].destroy(); delete charts[k]; }
+  });
+
+  // ① Indicator frequency
+  const cv1 = document.getElementById('qCh1');
+  if (cv1) {
+    if (entries.length === 0) {
+      drawEmptyChartMessage(cv1, 'No quality indicators logged yet');
+    } else {
+      charts.qCh1 = new Chart(cv1, {
+        type: 'bar',
+        data: { labels: entries.map(e => e[0]),
+          datasets: [{ label: 'Cases', data: entries.map(e => e[1]),
+            backgroundColor: '#2E7D32', borderRadius: 3 }] },
+        options: { ...CHART_DEFAULTS, indexAxis: 'y',
+          plugins: { ...CHART_DEFAULTS.plugins, legend: { display: false } },
+          scales: { x: { beginAtZero: true, ticks: { precision: 0 } } } }
+      });
+    }
+  }
+
+  // ② Flagged-case rate by month
+  const cv2 = document.getElementById('qCh2');
+  if (cv2) {
+    const months = lastNMonths(12);
+    const rates = months.map(mo => {
+      const inMonth = filteredCases.filter(c => String(c.date || '').startsWith(mo.key));
+      if (!inMonth.length) return null;
+      const f = inMonth.filter(c => qiForCase(c).length > 0).length;
+      return +(f / inMonth.length * 100).toFixed(1);
     });
-  });
-  const entries = Object.entries(m).sort((a,b) => b[1] - a[1]);
-  if (entries.length === 0) { drawEmptyChartMessage(canvas, 'No quality indicators logged yet'); return; }
-  charts.ch21 = new Chart(canvas, {
-    type: 'bar',
-    data: { labels: entries.map(e => e[0]),
-      datasets: [{ label: 'Cases', data: entries.map(e => e[1]), backgroundColor: '#2E7D32', borderRadius: 3 }] },
-    options: { ...CHART_DEFAULTS, indexAxis: 'y',
-      plugins: { ...CHART_DEFAULTS.plugins, legend: { display: false } },
-      scales: { x: { beginAtZero: true, ticks: { precision: 0 } } } }
-  });
+    charts.qCh2 = new Chart(cv2, {
+      type: 'line',
+      data: { labels: months.map(mo => mo.label),
+        datasets: [{ label: 'Flagged cases (%)', data: rates,
+          borderColor: '#2E7D32', backgroundColor: 'rgba(46,125,50,0.14)',
+          fill: true, tension: 0.3, spanGaps: true,
+          pointBackgroundColor: '#2E7D32', pointRadius: 4 }] },
+      options: { ...CHART_DEFAULTS,
+        plugins: { ...CHART_DEFAULTS.plugins, legend: { display: false } },
+        scales: { y: { beginAtZero: true, title: { display: true, text: '% of cases' } } } }
+    });
+  }
+
+  // ③ Per-anaesthetist flagged rate
+  const cv3 = document.getElementById('qCh3');
+  if (cv3) {
+    const byDoc = {};
+    filteredCases.forEach(c => {
+      const d = c.doctor || '\u2014';
+      if (!byDoc[d]) byDoc[d] = { cases: 0, flagged: 0 };
+      byDoc[d].cases++;
+      if (qiForCase(c).length > 0) byDoc[d].flagged++;
+    });
+    const rows = Object.entries(byDoc)
+      .filter(e => e[1].cases >= 5)   // suppress tiny denominators — noise, not signal
+      .map(e => [e[0].replace(/^Dr /, ''), +(e[1].flagged / e[1].cases * 100).toFixed(1), e[1].cases])
+      .sort((a, b) => b[1] - a[1]);
+    if (rows.length === 0) {
+      drawEmptyChartMessage(cv3, 'Needs at least 5 cases per anaesthetist');
+    } else {
+      charts.qCh3 = new Chart(cv3, {
+        type: 'bar',
+        data: { labels: rows.map(r => r[0]),
+          datasets: [{ label: 'Flagged (%)', data: rows.map(r => r[1]),
+            backgroundColor: '#66BB6A', borderRadius: 3 }] },
+        options: { ...CHART_DEFAULTS, indexAxis: 'y',
+          plugins: { ...CHART_DEFAULTS.plugins, legend: { display: false },
+            tooltip: { callbacks: { afterLabel: ctx => rows[ctx.dataIndex][2] + ' cases' } } },
+          scales: { x: { beginAtZero: true, title: { display: true, text: '% of that doctor\'s cases' } } } }
+      });
+    }
+  }
+
+  // Detail table — every flagged case in the current filter
+  const tbody = document.querySelector('#qualityTable tbody');
+  if (tbody) {
+    const flaggedRows = filteredCases
+      .map(c => ({ c: c, flags: qiForCase(c) }))
+      .filter(r => r.flags.length > 0)
+      .sort((a, b) => String(b.c.date || '').localeCompare(String(a.c.date || '')));
+
+    document.getElementById('qTableCount').textContent = flaggedRows.length;
+
+    if (flaggedRows.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:24px;color:var(--text-muted);">No flagged cases in the current filter.</td></tr>';
+    } else {
+      tbody.innerHTML = flaggedRows.map(r => `
+        <tr data-id="${escapeAttr(r.c.id)}">
+          <td class="mono">${formatDate(r.c.date)}</td>
+          <td>${escapeHtml(String(r.c.doctor || '').replace(/^Dr /, ''))}</td>
+          <td>${escapeHtml(r.c.specialty || '')}</td>
+          <td>${escapeHtml(r.c.procedure || '\u2014')}</td>
+          <td>${chipHtml(r.flags, '#E8F5E9', '#2E7D32')}</td>
+        </tr>`).join('');
+      tbody.querySelectorAll('tr[data-id]').forEach(tr => {
+        tr.addEventListener('click', () => openCaseModal(tr.getAttribute('data-id')));
+      });
+    }
+  }
 }
 
 function drawEmptyChartMessage(canvas, msg) {
