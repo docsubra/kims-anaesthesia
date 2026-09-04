@@ -2623,6 +2623,36 @@ table.data-table {
   color: #333;
 }
 
+/* v8: Comorbidity running count */
+.comorb-count-hint {
+  font-size: 12px;
+  font-weight: 600;
+  color: #E65100;
+  background: #FFF8E1;
+  border-left: 3px solid #F57C00;
+  border-radius: 0 6px 6px 0;
+  padding: 8px 12px;
+  margin: 12px 0;
+  min-height: 16px;
+}
+.comorb-count-hint:empty { display: none; }
+
+/* v8: Age unit selector */
+#view-entry .pill-grid[data-group="ageUnit"] .pill.on {
+  background: linear-gradient(135deg, #00897B 0%, #00695C 100%);
+  color: white;
+  border-color: #00695C;
+}
+#view-entry .pill-grid[data-group="ageUnit"] .pill[data-val="Days"].on,
+#view-entry .pill-grid[data-group="ageUnit"] .pill[data-val="Weeks"].on {
+  background: linear-gradient(135deg, #EC407A 0%, #C2185B 100%);
+  border-color: #C2185B;
+}
+#view-entry .pill-grid[data-group="ageUnit"] .pill[data-val="Months"].on {
+  background: linear-gradient(135deg, #AB47BC 0%, #8E24AA 100%);
+  border-color: #8E24AA;
+}
+
 /* v7: Quality Indicators dashboard panel */
 .quality-banner {
   background: linear-gradient(135deg, #1B5E20 0%, #2E7D32 50%, #43A047 100%);
@@ -2899,6 +2929,9 @@ table.data-table {
                   <option>Dental/Maxillofacial</option>
                   <option>Trauma/Emergency</option>
                   <option>Onco Surgery</option>
+                  <option>Organ Retrieval (deceased donor)</option>
+                  <option>Organ Donation — live donor surgery</option>
+                  <option>Transplant Surgery (recipient)</option>
                 </optgroup>
                 <optgroup label="Medical / Procedural">
                   <option>Cardiology</option>
@@ -2994,6 +3027,57 @@ table.data-table {
               <select class="input" id="f_second_anaesth">
                 <option value="">— None —</option>
               </select>
+            </div>
+
+            <!-- v8: Comorbidities — grouped by organ system, multi-select -->
+            <div class="field">
+              <label class="field-label">Comorbidities <span class="opt">(optional — tick all that apply)</span></label>
+              <button type="button" class="none-btn on" id="noComorbBtn">✓ No significant comorbidity</button>
+
+              <div id="comorbGrid" class="hidden">
+                <div class="comorb-count-hint" id="comorbCountHint"></div>
+
+                <div class="chk-group">
+                  <div class="chk-group-title">♥ Cardiovascular</div>
+                  <div class="chk-grid" id="grp-cmb-cardiac"></div>
+                </div>
+                <div class="chk-group">
+                  <div class="chk-group-title">🫁 Respiratory</div>
+                  <div class="chk-grid" id="grp-cmb-resp"></div>
+                </div>
+                <div class="chk-group">
+                  <div class="chk-group-title">🧠 Neurological</div>
+                  <div class="chk-grid" id="grp-cmb-neuro"></div>
+                </div>
+                <div class="chk-group">
+                  <div class="chk-group-title">⚖ Endocrine / Metabolic</div>
+                  <div class="chk-grid" id="grp-cmb-endo"></div>
+                </div>
+                <div class="chk-group">
+                  <div class="chk-group-title">🫀 Renal</div>
+                  <div class="chk-grid" id="grp-cmb-renal"></div>
+                </div>
+                <div class="chk-group">
+                  <div class="chk-group-title">🧪 Hepatic / GI</div>
+                  <div class="chk-grid" id="grp-cmb-hepgi"></div>
+                </div>
+                <div class="chk-group">
+                  <div class="chk-group-title">🩸 Haematological</div>
+                  <div class="chk-grid" id="grp-cmb-haem"></div>
+                </div>
+                <div class="chk-group">
+                  <div class="chk-group-title">🛡 Immunological / Oncological</div>
+                  <div class="chk-grid" id="grp-cmb-immuno"></div>
+                </div>
+                <div class="chk-group">
+                  <div class="chk-group-title">… Other</div>
+                  <div class="chk-grid" id="grp-cmb-other"></div>
+                </div>
+
+                <input type="text" class="input" id="f_comorbidity_other"
+                       placeholder="Anything not listed — specify"
+                       maxlength="200" style="margin-top:10px;" />
+              </div>
             </div>
 
             <div class="field">
@@ -3142,7 +3226,14 @@ table.data-table {
             <div class="row-2">
               <div class="field">
                 <label class="field-label">Patient Age <span class="opt">(optional)</span></label>
-                <input type="number" class="input" id="f_age" min="0" max="120" placeholder="years" />
+                <input type="number" class="input" id="f_age" min="0" max="999" step="0.5" placeholder="e.g. 6" />
+                <div class="pill-grid age-unit-pills" data-group="ageUnit" style="margin-top:8px;">
+                  <button type="button" class="pill small" data-val="Days">Days</button>
+                  <button type="button" class="pill small" data-val="Weeks">Weeks</button>
+                  <button type="button" class="pill small" data-val="Months">Months</button>
+                  <button type="button" class="pill small on" data-val="Years">Years</button>
+                </div>
+                <div id="ageBandHint" style="font-size:11px;color:var(--teal-dark);margin-top:6px;min-height:14px;"></div>
               </div>
               <div class="field">
                 <label class="field-label">Sex <span class="opt">(optional)</span></label>
@@ -4223,6 +4314,9 @@ table.data-table {
       <div class="chart-card"><h3>⑱ Spinal Needle Type</h3><div class="chart-wrap"><canvas id="ch18"></canvas></div></div>
       <div class="chart-card"><h3>⑲ Catheters per Month</h3><div class="chart-wrap"><canvas id="ch19"></canvas></div></div>
       <div class="chart-card"><h3>⑳ Patient Origin (Ward / ICU)</h3><div class="chart-wrap"><canvas id="ch20"></canvas></div></div>
+      <div class="chart-card"><h3>㉑ Age Distribution (paediatric-aware)</h3><div class="chart-wrap"><canvas id="ch21"></canvas></div></div>
+      <div class="chart-card"><h3>㉒ Comorbidity Frequency</h3><div class="chart-wrap"><canvas id="ch22"></canvas></div></div>
+      <div class="chart-card"><h3>㉓ Comorbidity Burden per Case</h3><div class="chart-wrap"><canvas id="ch23"></canvas></div></div>
     </div>
 
     <!-- v4: Second Anaesthetist panel -->
@@ -4536,6 +4630,82 @@ const COMPLICATIONS_SURG = [
   'Other surgical event'
 ];
 
+// === v8: COMORBIDITIES (Section A) ===
+// Grouped by organ system. Multi-select — tick every system that applies.
+// The count per case drives the comorbidity-burden chart, which is how we see
+// the complexity of the population we are actually anaesthetising.
+const COMORB_CARDIAC = [
+  'Hypertension',
+  'Ischaemic heart disease / prior MI',
+  'Heart failure / cardiomyopathy',
+  'Valvular heart disease',
+  'Arrhythmia / pacemaker / ICD',
+  'Pulmonary hypertension',
+  'Congenital heart disease'
+];
+const COMORB_RESP = [
+  'Asthma',
+  'COPD',
+  'Interstitial lung disease',
+  'Obstructive sleep apnoea',
+  'Pulmonary TB / post-TB sequelae',
+  'Recent respiratory infection',
+  'Current smoker'
+];
+const COMORB_NEURO = [
+  'Stroke / TIA',
+  'Parkinsonism',
+  'Epilepsy',
+  'Neuromuscular disease',
+  'Dementia / cognitive impairment',
+  'Raised intracranial pressure',
+  'Spinal cord injury'
+];
+const COMORB_ENDO = [
+  'Diabetes mellitus',
+  'Thyroid disease',
+  'Obesity (BMI \u2265 35)',
+  'Adrenal / pituitary disease'
+];
+const COMORB_RENAL = [
+  'Chronic kidney disease',
+  'Dialysis-dependent',
+  'Renal transplant recipient'
+];
+const COMORB_HEPGI = [
+  'Chronic liver disease',
+  'Cirrhosis / portal hypertension',
+  'Significant GORD',
+  'Inflammatory bowel disease'
+];
+const COMORB_HAEM = [
+  'Anaemia',
+  'On anticoagulant / antiplatelet',
+  'Coagulopathy / bleeding disorder',
+  'Sickle cell / thalassaemia'
+];
+const COMORB_IMMUNO = [
+  'Active malignancy',
+  'On chemotherapy / radiotherapy',
+  'Post-transplant / on immunosuppression',
+  'Autoimmune / connective tissue disease',
+  'Immunocompromised (other)'
+];
+const COMORB_OTHER = [
+  'Known difficult airway',
+  'Pregnancy',
+  'Frailty',
+  'Psychiatric illness',
+  'Substance dependence',
+  'Congenital syndrome / anomaly'
+];
+
+// Flat list, used for validation and dashboard tallies
+const COMORBIDITIES = [].concat(
+  COMORB_CARDIAC, COMORB_RESP, COMORB_NEURO, COMORB_ENDO, COMORB_RENAL,
+  COMORB_HEPGI, COMORB_HAEM, COMORB_IMMUNO, COMORB_OTHER
+);
+
 // === v7: QUALITY INDICATORS (Section G) ===
 // Technique-quality and process markers. As of v7 the four "failed technique"
 // items and change-of-plan were MOVED here out of COMPLICATIONS_ANAES, so
@@ -4606,7 +4776,7 @@ const EPIDURAL_LOR = ['Air','Saline'];
 const CSE_TECHNIQUES = ['Needle-through-needle','Separate (two-space)'];
 const MAC_TYPES = ['Monitoring only','Sedation given'];
 const MAC_SEDATION_LEVELS = ['Mild','Moderate','Deep'];
-const SURGICAL_SPECIALTIES = ['General Surgery','Orthopaedics','Gynaecology','Obstetrics','Urology','ENT','Ophthalmology','Neurosurgery','Cardiothoracic','Vascular Surgery','Plastics/Burns','Paediatric Surgery','Dental/Maxillofacial','Trauma/Emergency','Onco Surgery'];
+const SURGICAL_SPECIALTIES = ['General Surgery','Orthopaedics','Gynaecology','Obstetrics','Urology','ENT','Ophthalmology','Neurosurgery','Cardiothoracic','Vascular Surgery','Plastics/Burns','Paediatric Surgery','Dental/Maxillofacial','Trauma/Emergency','Onco Surgery','Organ Retrieval (deceased donor)','Organ Donation — live donor surgery','Transplant Surgery (recipient)'];
 
 // === v5: Kidney Transplant reference data ===
 const KT_DONOR_TYPES = [
@@ -5149,6 +5319,16 @@ function initForm() {
   buildCheckGroup('grp-comp-surg', COMPLICATIONS_SURG, 'comp_s');
   // v7: quality indicators
   buildCheckGroup('grp-quality', QUALITY_INDICATORS, 'qi');
+  // v8: comorbidities — grouped by organ system
+  buildCheckGroup('grp-cmb-cardiac', COMORB_CARDIAC, 'cmb');
+  buildCheckGroup('grp-cmb-resp',    COMORB_RESP,    'cmb');
+  buildCheckGroup('grp-cmb-neuro',   COMORB_NEURO,   'cmb');
+  buildCheckGroup('grp-cmb-endo',    COMORB_ENDO,    'cmb');
+  buildCheckGroup('grp-cmb-renal',   COMORB_RENAL,   'cmb');
+  buildCheckGroup('grp-cmb-hepgi',   COMORB_HEPGI,   'cmb');
+  buildCheckGroup('grp-cmb-haem',    COMORB_HAEM,    'cmb');
+  buildCheckGroup('grp-cmb-immuno',  COMORB_IMMUNO,  'cmb');
+  buildCheckGroup('grp-cmb-other',   COMORB_OTHER,   'cmb');
   // Legacy grp-complications may still exist in older cached DOM; guard
   const legacyComp = document.getElementById('grp-complications');
   if (legacyComp) buildCheckGroup('grp-complications', COMPLICATIONS, 'comp');
@@ -5271,9 +5451,67 @@ function initForm() {
     document.getElementById('noCompBtn').classList.add('on');
   });
 
+  // v8: comorbidity block — collapsed by default, expands on demand.
+  // Roughly forty boxes sitting permanently open in Section A would dominate
+  // the form, so the list stays hidden until the anaesthetist opens it.
+  const comorbCount = () => document.querySelectorAll('[data-cat="cmb"]:checked').length;
+  const anyComorbChecked = () =>
+    comorbCount() > 0 || document.getElementById('f_comorbidity_other').value.trim().length > 0;
+
+  const updateComorbCount = () => {
+    const hint = document.getElementById('comorbCountHint');
+    if (!hint) return;
+    const n = comorbCount();
+    hint.textContent = n === 0 ? '' : (n + ' comorbidit' + (n === 1 ? 'y' : 'ies') + ' selected');
+  };
+
+  const syncComorbBtn = () => {
+    const none = !anyComorbChecked();
+    document.getElementById('noComorbBtn').classList.toggle('on', none);
+    updateComorbCount();
+  };
+
+  document.querySelectorAll('[data-cat="cmb"]').forEach(cb => {
+    cb.addEventListener('change', syncComorbBtn);
+  });
+  document.getElementById('f_comorbidity_other').addEventListener('input', syncComorbBtn);
+
+  document.getElementById('noComorbBtn').addEventListener('click', () => {
+    const grid = document.getElementById('comorbGrid');
+    const btn = document.getElementById('noComorbBtn');
+    const wasNone = btn.classList.contains('on');
+    if (wasNone) {
+      // Opening the list to record comorbidities
+      grid.classList.remove('hidden');
+      btn.classList.remove('on');
+    } else {
+      // Declaring the patient has none — clear anything already ticked
+      document.querySelectorAll('[data-cat="cmb"]:checked').forEach(cb => cb.checked = false);
+      document.getElementById('f_comorbidity_other').value = '';
+      grid.classList.add('hidden');
+      btn.classList.add('on');
+    }
+    updateComorbCount();
+  });
+
   document.getElementById('f_notes').addEventListener('input', e => {
     document.getElementById('charCount').textContent = e.target.value.length;
   });
+
+  // v8: live age band hint — confirms the unit was read as intended
+  const ageInput = document.getElementById('f_age');
+  const ageUnitGrp = document.querySelector('[data-group="ageUnit"]');
+  const updateAgeHint = () => {
+    const hint = document.getElementById('ageBandHint');
+    if (!hint) return;
+    const v = ageInput.value;
+    if (v === '' || v == null) { hint.textContent = ''; return; }
+    const days = computeAgeDays(v, getGroupValue('ageUnit') || 'Years');
+    const band = ageBand(days);
+    hint.textContent = band ? '\u2192 ' + band : '';
+  };
+  if (ageInput) ageInput.addEventListener('input', updateAgeHint);
+  if (ageUnitGrp) ageUnitGrp.addEventListener('click', () => setTimeout(updateAgeHint, 0));
 
   // v5: Initialize Kidney Transplant module
   initKidneyTransplantModule();
@@ -5513,6 +5751,10 @@ async function submitCase(e) {
   const asa = getGroupValue('asa');
   const sex = getGroupValue('sex');
   const age = document.getElementById('f_age').value;
+  const comorbidities = Array.from(document.querySelectorAll('[data-cat="cmb"]:checked')).map(c => c.value);
+  const comorbidityOther = document.getElementById('f_comorbidity_other').value.trim();
+  const ageUnit = getGroupValue('ageUnit') || 'Years';
+  const ageDays = age === '' ? null : computeAgeDays(age, ageUnit);
   const durH = parseInt(document.getElementById('f_dur_h').value || '0', 10);
   const durM = parseInt(document.getElementById('f_dur_m').value || '0', 10);
   const durationMin = durH * 60 + durM;
@@ -5724,7 +5966,10 @@ async function submitCase(e) {
   const record = {
     id, date, doctor: currentUser.name, specialty, location,
     procedure, electiveEmergency: ee, anaesthesiaType: atype,
-    addons, asaGrade: asa, patientAge: age ? parseInt(age,10) : null,
+    addons, asaGrade: asa,
+    patientAge: age === '' || age == null ? null : parseFloat(age),
+    ageUnit, ageDays,
+    comorbidities, comorbidityOther, comorbidityCount: comorbidities.length,
     patientSex: sex, durationMin, airway, olv, blocks, blockGuidance,
     lines, otherSpecial, complications, notes,
     // v2 fields
@@ -5840,6 +6085,24 @@ function resetForm() {
   });
   clearHypoFields(); clearDaFields(); clearDeFields();
 
+  // v8: reset comorbidities
+  document.querySelectorAll('[data-cat="cmb"]:checked').forEach(cb => cb.checked = false);
+  const cmbOther = document.getElementById('f_comorbidity_other');
+  if (cmbOther) cmbOther.value = '';
+  const noCmbBtn = document.getElementById('noComorbBtn');
+  if (noCmbBtn) noCmbBtn.classList.add('on');
+  const cmbGrid = document.getElementById('comorbGrid');
+  if (cmbGrid) cmbGrid.classList.add('hidden');
+  const cmbHint = document.getElementById('comorbCountHint');
+  if (cmbHint) cmbHint.textContent = '';
+
+  // v8: reset age unit to Years and clear the band hint
+  clearGroup('ageUnit');
+  const yrPill = document.querySelector('[data-group="ageUnit"] [data-val="Years"]');
+  if (yrPill) yrPill.classList.add('on');
+  const ageHint = document.getElementById('ageBandHint');
+  if (ageHint) ageHint.textContent = '';
+
   // v7: reset quality indicators
   document.querySelectorAll('[data-cat="qi"]:checked').forEach(c => c.checked = false);
   const rnField = document.getElementById('f_reflectiveNote');
@@ -5912,6 +6175,11 @@ async function loadAllCases() {
           otherSpecial: Array.isArray(c.otherSpecial) ? c.otherSpecial : [],
           complications: Array.isArray(c.complications) ? c.complications : [],
           qualityFlags: Array.isArray(c.qualityFlags) ? c.qualityFlags : [],
+          comorbidities: Array.isArray(c.comorbidities) ? c.comorbidities : [],
+          comorbidityOther: c.comorbidityOther || '',
+          comorbidityCount: c.comorbidityCount === '' || c.comorbidityCount == null
+                              ? (Array.isArray(c.comorbidities) ? c.comorbidities.length : 0)
+                              : Number(c.comorbidityCount),
           blockDetails: bd,
           gaTechnique: c.gaTechnique || '',
           sedationDepth: c.sedationDepth || '',
@@ -5926,7 +6194,12 @@ async function loadAllCases() {
           catheters: Array.isArray(c.catheters) ? c.catheters : [],
           monitoring: Array.isArray(c.monitoring) ? c.monitoring : [],
           durationMin: Number(c.durationMin) || 0,
-          patientAge: c.patientAge === '' || c.patientAge == null ? null : Number(c.patientAge)
+          patientAge: c.patientAge === '' || c.patientAge == null ? null : Number(c.patientAge),
+          // v8: pre-v8 cases carry no unit — they were always years
+          ageUnit: c.ageUnit || (c.patientAge === '' || c.patientAge == null ? '' : 'Years'),
+          ageDays: c.ageDays === '' || c.ageDays == null
+                     ? computeAgeDays(c.patientAge, c.ageUnit || 'Years')
+                     : Number(c.ageDays)
         };
       });
       // Merge in any pending that haven't synced yet
@@ -7643,9 +7916,17 @@ function renderMyCases() {
 function renderCaseDetailHtml(c) {
   const rows = [];
   if (c.asaGrade) rows.push(['ASA Grade', escapeHtml(c.asaGrade)]);
+  // v8: comorbidities
+  if (c.comorbidities && c.comorbidities.length) {
+    rows.push(['Comorbidities <span style="font-size:11px;color:var(--text-muted);">(' + c.comorbidities.length + ')</span>',
+               chipHtml(c.comorbidities, '#FFF8E1', '#E65100')]);
+  }
+  if (c.comorbidityOther) rows.push(['Other comorbidity', escapeHtml(c.comorbidityOther)]);
   if (c.patientAge || c.patientSex) {
-    const pt = [c.patientAge ? c.patientAge + 'y' : null, c.patientSex].filter(Boolean).join(' · ');
-    if (pt) rows.push(['Patient', escapeHtml(pt)]);
+    const band = ageBand(caseAgeDays(c));
+    const ageStr = formatAge(c);
+    const pt = [ageStr || null, c.patientSex].filter(Boolean).join(' · ');
+    if (pt) rows.push(['Patient', escapeHtml(pt) + (band ? ' <span style="font-size:11px;color:var(--text-muted);">(' + escapeHtml(band) + ')</span>' : '')]);
   }
   // v3: surgical approach, second anaesthetist, patient from
   if (c.surgicalApproach) rows.push(['Surgical Approach', escapeHtml(c.surgicalApproach)]);
@@ -7826,6 +8107,55 @@ function formatDate(s) {
   if (isNaN(d.getTime())) return String(s);
   return d.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
 }
+/* ============================================================
+   v8 — AGE HANDLING (days / weeks / months / years)
+   ============================================================ */
+
+const AGE_UNIT_DAYS = { 'Days': 1, 'Weeks': 7, 'Months': 30.4375, 'Years': 365.25 };
+
+// Convert an entered age + unit into days. Cases saved before v8 have no
+// ageUnit, and were always entered in years — so a missing unit means years.
+function computeAgeDays(value, unit) {
+  const v = Number(value);
+  if (!isFinite(v) || v < 0) return null;
+  const mult = AGE_UNIT_DAYS[unit] || AGE_UNIT_DAYS['Years'];
+  return Math.round(v * mult * 100) / 100;
+}
+
+// Paediatric-aware age bands, by days.
+function ageBand(days) {
+  if (days == null || !isFinite(days)) return null;
+  if (days < 28) return 'Neonate (<28 days)';
+  if (days < 365.25) return 'Infant (1\u201312 months)';
+  if (days < 365.25 * 5) return 'Young child (1\u20134 yr)';
+  if (days < 365.25 * 12) return 'Child (5\u201311 yr)';
+  if (days < 365.25 * 18) return 'Adolescent (12\u201317 yr)';
+  if (days < 365.25 * 65) return 'Adult (18\u201364 yr)';
+  return 'Elderly (65+ yr)';
+}
+
+const AGE_BAND_ORDER = [
+  'Neonate (<28 days)', 'Infant (1\u201312 months)', 'Young child (1\u20134 yr)',
+  'Child (5\u201311 yr)', 'Adolescent (12\u201317 yr)', 'Adult (18\u201364 yr)', 'Elderly (65+ yr)'
+];
+
+// Human-readable age for a case, respecting the unit it was entered in.
+function formatAge(c) {
+  if (c.patientAge == null || c.patientAge === '') return '';
+  const unit = c.ageUnit || 'Years';
+  const v = Number(c.patientAge);
+  if (!isFinite(v)) return '';
+  const short = { 'Days': 'd', 'Weeks': 'wk', 'Months': 'mo', 'Years': 'y' }[unit] || 'y';
+  return v + short;
+}
+
+// Best-effort days for any case, including pre-v8 records.
+function caseAgeDays(c) {
+  if (c.ageDays != null && c.ageDays !== '' && isFinite(Number(c.ageDays))) return Number(c.ageDays);
+  if (c.patientAge == null || c.patientAge === '') return null;
+  return computeAgeDays(c.patientAge, c.ageUnit || 'Years');
+}
+
 function formatDuration(mins) {
   if (!mins || mins <= 0) return '—';
   const h = Math.floor(mins / 60);
@@ -7884,7 +8214,7 @@ function initDashboardFilters() {
   // v2: Preset specialties grouped. Actual data may have additional "Other"
   // specialties typed in — those get added dynamically in refreshSpecialtyFilter()
   const SPEC_PRESETS = {
-    'Surgical': ['General Surgery','Orthopaedics','Gynaecology','Obstetrics','Urology','ENT','Ophthalmology','Neurosurgery','Cardiothoracic','Vascular Surgery','Plastics/Burns','Paediatric Surgery','Dental/Maxillofacial','Trauma/Emergency','Onco Surgery'],
+    'Surgical': ['General Surgery','Orthopaedics','Gynaecology','Obstetrics','Urology','ENT','Ophthalmology','Neurosurgery','Cardiothoracic','Vascular Surgery','Plastics/Burns','Paediatric Surgery','Dental/Maxillofacial','Trauma/Emergency','Onco Surgery','Organ Retrieval (deceased donor)','Organ Donation — live donor surgery','Transplant Surgery (recipient)'],
     'Medical / Procedural': ['Cardiology','Interventional Cardiology','Interventional Radiology','Radiology','Pulmonology','Gastroenterology','Interventional Neurology','Neurology','Chronic Pain','Medical Oncology','Nephrology','Dermatology','Psychiatry (ECT)']
   };
   window.__SPEC_PRESETS = SPEC_PRESETS;
@@ -8006,6 +8336,8 @@ function renderCharts() {
   renderCh13(); renderCh14(); renderCh15();
   // v3 charts
   renderCh16(); renderCh17(); renderCh18(); renderCh19(); renderCh20();
+  // v8
+  renderCh21(); renderCh22(); renderCh23();
 }
 
 function lastNMonths(n) {
@@ -8390,6 +8722,102 @@ function renderCh20() {
   });
 }
 
+// v8: Comorbidity frequency. Cases with none recorded are shown as a baseline
+// bar, so the chart also reveals how often the section is being left blank.
+function renderCh22() {
+  const canvas = document.getElementById('ch22');
+  if (!canvas) return;
+  const m = {};
+  let none = 0;
+  filteredCases.forEach(c => {
+    const list = c.comorbidities || [];
+    if (!list.length && !c.comorbidityOther) { none++; return; }
+    list.forEach(k => { m[k] = (m[k] || 0) + 1; });
+    if (c.comorbidityOther) m['Other (specified)'] = (m['Other (specified)'] || 0) + 1;
+  });
+  const entries = Object.entries(m).sort((a,b) => b[1] - a[1]);
+  if (entries.length === 0 && none === 0) { drawEmptyChartMessage(canvas, 'No comorbidity data yet'); return; }
+  const labels = entries.map(e => e[0]).concat(none ? ['None recorded'] : []);
+  const data = entries.map(e => e[1]).concat(none ? [none] : []);
+  const colours = labels.map(l => l === 'None recorded' ? '#B0BEC5' : '#F57C00');
+  charts.ch22 = new Chart(canvas, {
+    type: 'bar',
+    data: { labels: labels,
+      datasets: [{ label: 'Cases', data: data, backgroundColor: colours, borderRadius: 3 }] },
+    options: { ...CHART_DEFAULTS, indexAxis: 'y',
+      plugins: { ...CHART_DEFAULTS.plugins, legend: { display: false } },
+      scales: { x: { beginAtZero: true, ticks: { precision: 0 } } } }
+  });
+}
+
+// v8: Comorbidity burden — how many conditions each patient carries.
+// This is the population-mix picture: a department doing mostly 0–1 comorbidity
+// patients is doing different work from one where a third carry three or more.
+function renderCh23() {
+  const canvas = document.getElementById('ch23');
+  if (!canvas) return;
+  const bands = { '0': 0, '1': 0, '2': 0, '3': 0, '4+': 0 };
+  let counted = 0;
+  filteredCases.forEach(c => {
+    // Only count cases where the section was actually engaged with — either
+    // comorbidities ticked, or explicitly saved since v8 with none.
+    const n = (c.comorbidities || []).length;
+    const hasOther = !!c.comorbidityOther;
+    const total = n + (hasOther ? 1 : 0);
+    counted++;
+    if (total === 0) bands['0']++;
+    else if (total === 1) bands['1']++;
+    else if (total === 2) bands['2']++;
+    else if (total === 3) bands['3']++;
+    else bands['4+']++;
+  });
+  if (counted === 0) { drawEmptyChartMessage(canvas, 'No case data yet'); return; }
+  const labels = ['0', '1', '2', '3', '4+'];
+  const colours = ['#B0BEC5', '#66BB6A', '#FFB300', '#FB8C00', '#C62828'];
+  charts.ch23 = new Chart(canvas, {
+    type: 'bar',
+    data: { labels: labels.map(l => l + (l === '4+' ? ' comorbidities' : (l === '1' ? ' comorbidity' : ' comorbidities'))),
+      datasets: [{ label: 'Cases', data: labels.map(l => bands[l]),
+        backgroundColor: colours, borderRadius: 3 }] },
+    options: { ...CHART_DEFAULTS,
+      plugins: { ...CHART_DEFAULTS.plugins, legend: { display: false },
+        tooltip: { callbacks: { afterLabel: ctx =>
+          counted ? (ctx.parsed.y / counted * 100).toFixed(1) + '% of cases' : '' } } },
+      scales: { y: { beginAtZero: true, ticks: { precision: 0 } } } }
+  });
+}
+
+// v8: Age distribution using paediatric-aware bands
+function renderCh21() {
+  const canvas = document.getElementById('ch21');
+  if (!canvas) return;
+  const m = {};
+  filteredCases.forEach(c => {
+    const b = ageBand(caseAgeDays(c));
+    if (b) m[b] = (m[b] || 0) + 1;
+  });
+  const labels = AGE_BAND_ORDER.filter(b => m[b]);
+  if (labels.length === 0) { drawEmptyChartMessage(canvas, 'No age data yet'); return; }
+  const colours = {
+    'Neonate (<28 days)': '#C2185B',
+    'Infant (1\u201312 months)': '#EC407A',
+    'Young child (1\u20134 yr)': '#AB47BC',
+    'Child (5\u201311 yr)': '#7E57C2',
+    'Adolescent (12\u201317 yr)': '#5C6BC0',
+    'Adult (18\u201364 yr)': '#00897B',
+    'Elderly (65+ yr)': '#0A2342'
+  };
+  charts.ch21 = new Chart(canvas, {
+    type: 'bar',
+    data: { labels: labels,
+      datasets: [{ label: 'Cases', data: labels.map(b => m[b]),
+        backgroundColor: labels.map(b => colours[b] || '#5C6B80'), borderRadius: 3 }] },
+    options: { ...CHART_DEFAULTS, indexAxis: 'y',
+      plugins: { ...CHART_DEFAULTS.plugins, legend: { display: false } },
+      scales: { x: { beginAtZero: true, ticks: { precision: 0 } } } }
+  });
+}
+
 /* ============================================================
    v7 — QUALITY INDICATORS DASHBOARD PANEL
    ============================================================ */
@@ -8616,7 +9044,7 @@ function exportCsv() {
     'Date','Doctor','SecondAnaesthetist','Specialty','SurgicalApproach','Procedure',
     'Location','PatientFrom','ElectiveEmergency','AnaesthesiaType','GATechnique','SedationDepth',
     'SpinalDetails','EpiduralDetails','CSEDetails','MACDetails',
-    'Addons','ASAGrade','PatientAge','PatientSex','DurationMin',
+    'Addons','ASAGrade','Comorbidities','ComorbidityCount','ComorbidityOther','PatientAge','AgeUnit','AgeDays','AgeBand','PatientSex','DurationMin',
     'Airway','OLV','SpecialAnalgesia',
     'Blocks','BlockDetails','BlockGuidance','Catheters',
     'Lines','Monitoring','OtherSpecial','Complications','QualityIndicators','Notes','CreatedAt'
@@ -8629,7 +9057,10 @@ function exportCsv() {
     c.electiveEmergency, c.anaesthesiaType,
     c.gaTechnique || '', c.sedationDepth || '',
     fmtJson(c.spinalDetails), fmtJson(c.epiduralDetails), fmtJson(c.cseDetails), fmtJson(c.macDetails),
-    (c.addons || []).join('; '), c.asaGrade, c.patientAge, c.patientSex, c.durationMin,
+    (c.addons || []).join('; '), c.asaGrade,
+    (c.comorbidities || []).join('; '), (c.comorbidities || []).length, c.comorbidityOther || '',
+    c.patientAge, c.ageUnit || '', c.ageDays == null ? '' : c.ageDays,
+    ageBand(caseAgeDays(c)) || '', c.patientSex, c.durationMin,
     (c.airway || []).join('; '), (c.olv || []).join('; '),
     (c.specialAnalgesia || []).join('; '),
     (c.blocks || []).join('; '),
